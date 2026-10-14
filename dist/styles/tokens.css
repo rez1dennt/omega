@@ -1,0 +1,24 @@
+/* Палитра № 4 — точные RGB-значения из исходного изображения 4800 × 2480. */
+:root {
+  --brand-graphite: #1A1A1D;
+  --brand-gray: #4E4E50;
+  --brand-burgundy: #6F2232;
+  --brand-wine: #950740;
+  --brand-crimson: #C3073F;
+  --color-white: #FFFFFF;
+  --color-surface: #F5F5F6;
+  --color-surface-alt: #EEEEEF;
+  --color-border: #D9D9DC;
+  --color-muted-light: #BDBDC2;
+  --color-primary: var(--brand-crimson);
+  --color-text: var(--brand-graphite);
+  --color-text-secondary: var(--brand-gray);
+  --font-heading: 'Oswald', 'Arial Narrow', sans-serif;
+  --font-body: 'Roboto', Arial, sans-serif;
+  --container: 1288px;
+  --gutter: clamp(24px, 5.4vw, 78px);
+  --header-height: 76px;
+  --radius: 4px;
+  --transition: 180ms ease;
+  --layer-header: 10;
+}

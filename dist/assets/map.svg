@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1288 245">
+  <defs>
+    <pattern id="blocks" width="152" height="90" patternUnits="userSpaceOnUse" patternTransform="rotate(-28)">
+      <rect width="152" height="90" fill="#E6E6E8"/>
+      <path d="M0 0h152M0 0v90M74 0v90M0 45h152" stroke="#FFFFFF" stroke-width="9" fill="none"/>
+      <path d="M0 0h152M0 0v90M74 0v90M0 45h152" stroke="#D9D9DC" stroke-width="1" fill="none"/>
+      <g fill="#D9D9DC" stroke="#CBCBCE" stroke-width=".6"><path d="M12 12h22v15H12ZM44 13h18v20H44ZM12 55h25v18H12ZM44 57h16v22H44ZM89 12h21v22H89ZM121 13h17v17h-17ZM91 57h18v18H91ZM117 58h23v17h-23Z"/></g>
+    </pattern>
+  </defs>
+  <rect width="1288" height="245" fill="url(#blocks)"/>
+  <path d="M363 245 590 220 798 189 995 129 1288 94V245Z" fill="#BCBFC4"/>
+  <path d="M345 245 581 211 795 179 991 119 1288 84" fill="none" stroke="#FFFFFF" stroke-width="12"/>
+  <path d="M346 245 581 211 795 179 991 119 1288 84" fill="none" stroke="#D9D9DC" stroke-width="1.5"/>
+  <path d="M522-20 764 245M754-25 539 238M987-20 761 208M362 46l515-13 411 26" fill="none" stroke="#FFFFFF" stroke-width="12"/>
+  <path d="M522-20 764 245M754-25 539 238M987-20 761 208M362 46l515-13 411 26" fill="none" stroke="#D9D9DC" stroke-width="1.1"/>
+  <g fill="#4E4E50" font-family="Arial,sans-serif" font-size="10" opacity=".75"><text x="720" y="61" transform="rotate(-28 720 61)">ул. Большая Садовая</text><text x="1080" y="92" transform="rotate(-17 1080 92)">ул. Чернышевского</text><text x="580" y="95" transform="rotate(49 580 95)">Новоузенская ул.</text><text x="1125" y="205" fill="#FFFFFF" font-size="16" transform="rotate(-16 1125 205)">р. Волга</text></g>
+</svg>
