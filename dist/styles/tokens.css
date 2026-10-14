@@ -15,9 +15,10 @@
   --color-text-secondary: var(--brand-gray);
   --font-heading: 'Oswald', 'Arial Narrow', sans-serif;
   --font-body: 'Roboto', Arial, sans-serif;
-  --container: 1288px;
-  --gutter: clamp(24px, 5.4vw, 78px);
-  --header-height: 76px;
+  --container: 1280px;
+  --gutter: clamp(24px, 4.4vw, 64px);
+  --header-height: 88px;
+  --section-space: 88px;
   --radius: 4px;
   --transition: 180ms ease;
   --layer-header: 10;
