@@ -37,9 +37,8 @@ machines.forEach(link => {
 });
 orderForm.addEventListener('submit', event => {
   event.preventDefault();
-  closeDropdown();
-  status.textContent = 'Это демонстрационная форма. Заявка не отправлена. Рабочий прием заказов подключим после утверждения сайта.';
-  status.hidden = false;
+  prepareRequest(null, true);
+  openDialog(requestDialog, orderForm.querySelector('button[type="submit"]'));
 });
 
 /* Accessible single-select combobox with keyboard and pointer navigation. */
@@ -117,15 +116,66 @@ trigger.addEventListener('keydown', event => {
 document.addEventListener('pointerdown', event => { if (!dropdown.contains(event.target)) closeDropdown(); });
 window.addEventListener('resize', () => closeDropdown());
 
-/* Native dialogs retain the contact and delivery content without extra bands. */
-const dialogOpeners = new Map();
+/* One scroll lock survives transitions between dialogs, retaining the page opener. */
+const requestDialog = document.querySelector('#request-dialog');
+const requestForm = document.querySelector('#request-form');
+const requestStatus = requestForm.querySelector('.request-status');
+const errorSummary = requestForm.querySelector('.request-error-summary');
+let activeDialog = null;
+let lockedPage = null;
+let lastOrderSummary = '';
+
+function fieldError(field, message) {
+  const error = document.getElementById(`request-${field.name}-error`);
+  if (message) field.setAttribute('aria-invalid', 'true');
+  else field.removeAttribute('aria-invalid');
+  error.textContent = message;
+  error.hidden = !message;
+}
+
+function prepareRequest(opener, forceTransfer = false) {
+  const lines = [];
+  if (opener?.hasAttribute('data-request-machine') && !/^Станок:/.test(comment.value)) {
+    lines.push(`Станок: ${document.querySelector('.selected-machine-name').textContent}`);
+  }
+  if (orderForm.elements.width.value) lines.push(`Ширина полотна: ${orderForm.elements.width.value} мм`);
+  const length = orderForm.elements.namedItem('length').value;
+  if (length) lines.push(`Длина полотна: ${length} мм`);
+  if (orderForm.elements.tpi.value) lines.push(`Шаг зуба: ${orderForm.elements.tpi.value}`);
+  if (orderForm.elements.material.value.trim()) lines.push(`Материал: ${orderForm.elements.material.value.trim()}`);
+  if (comment.value.trim()) lines.push(comment.value.trim());
+  const summary = lines.join('\n');
+  if (summary && (forceTransfer || summary !== lastOrderSummary)) {
+    requestForm.elements.parameters.value = summary;
+    lastOrderSummary = summary;
+    fieldError(requestForm.elements.parameters, '');
+  }
+  requestStatus.hidden = true;
+}
+
 function openDialog(dialog, opener) {
+  if (!dialog || dialog === activeDialog) return;
   closeDropdown();
   setMenu(false);
-  dialogOpeners.set(dialog, opener);
-  document.documentElement.style.setProperty('--scrollbar-gap', `${window.innerWidth - document.documentElement.clientWidth}px`);
-  document.body.classList.add('dialog-open');
+  if (!lockedPage) {
+    lockedPage = { x: window.scrollX, y: window.scrollY, opener };
+    const gutter = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+    document.documentElement.style.setProperty('--scrollbar-gap', `${gutter}px`);
+    document.documentElement.classList.add('dialog-open');
+    document.body.classList.add('dialog-open');
+  }
+  const previous = activeDialog;
+  activeDialog = dialog;
+  if (previous?.open) previous.close();
   dialog.showModal();
+  dialog.scrollTop = 0;
+  if (dialog === requestDialog) {
+    requestForm.scrollTop = 0;
+    const parameters = requestForm.elements.parameters;
+    parameters.focus({ preventScroll: true });
+    parameters.setSelectionRange(0, 0);
+    parameters.scrollTop = 0;
+  }
 }
 
 document.addEventListener('click', event => {
@@ -134,7 +184,9 @@ document.addEventListener('click', event => {
     event.preventDefault();
     const dialog = document.getElementById(opener.dataset.dialog);
     if (opener.dataset.legalTitle) document.querySelector('#legal-dialog-title').textContent = opener.dataset.legalTitle;
+    if (dialog === requestDialog) prepareRequest(opener);
     openDialog(dialog, opener);
+    return;
   }
   const closer = event.target.closest('[data-close-dialog]');
   if (closer) closer.closest('dialog').close();
@@ -145,13 +197,79 @@ document.querySelectorAll('dialog').forEach(dialog => {
     if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) dialog.close();
   });
   dialog.addEventListener('close', () => {
+    if (dialog !== activeDialog) return;
+    activeDialog = null;
+    const page = lockedPage;
+    lockedPage = null;
     document.body.classList.remove('dialog-open');
+    document.documentElement.classList.remove('dialog-open');
     document.documentElement.style.removeProperty('--scrollbar-gap');
-    const opener = dialogOpeners.get(dialog);
+    // Override smooth anchor scrolling for an exact, immediate restoration.
+    window.scrollTo({ left: page.x, top: page.y, behavior: 'instant' });
+    const opener = page.opener;
     if (opener?.closest('#main-nav') && window.innerWidth < 900) menuButton.focus({ preventScroll: true });
     else opener?.focus({ preventScroll: true });
   });
 });
+
+function validationMessage(field) {
+  if (field.name === 'consent') return field.checked ? '' : 'Подтвердите согласие на обработку данных.';
+  if (!field.value.trim()) return 'Заполните это поле.';
+  if (field.name === 'email' && field.validity.typeMismatch) return 'Введите e-mail в формате name@example.ru.';
+  if (field.name === 'phone' && (!/^[+\d\s()-]+$/.test(field.value) || !/^(?:[78]\d{10}|\d{10})$/.test(field.value.replace(/\D/g, '')))) {
+    return 'Введите телефон: +7 и 10 цифр номера.';
+  }
+  return '';
+}
+
+const requiredFields = [...requestForm.querySelectorAll('[required]')];
+requiredFields.forEach(field => {
+  const recheck = () => {
+    if (field.hasAttribute('aria-invalid')) fieldError(field, validationMessage(field));
+    if (!requestForm.querySelector('[aria-invalid="true"]')) errorSummary.hidden = true;
+    requestStatus.hidden = true;
+  };
+  field.addEventListener('input', recheck);
+  field.addEventListener('change', recheck);
+});
+requestForm.elements.phone.addEventListener('blur', () => {
+  const field = requestForm.elements.phone;
+  if (!field.value.trim() || validationMessage(field)) return;
+  let digits = field.value.replace(/\D/g, '');
+  if (digits.length === 10) digits = `7${digits}`;
+  else digits = `7${digits.slice(1)}`;
+  field.value = `+7 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7, 9)}-${digits.slice(9)}`;
+});
+requestForm.addEventListener('submit', event => {
+  event.preventDefault();
+  requestStatus.hidden = true;
+  let firstInvalid = null;
+  requiredFields.forEach(field => {
+    const message = validationMessage(field);
+    fieldError(field, message);
+    if (message && !firstInvalid) firstInvalid = field;
+  });
+  errorSummary.hidden = !firstInvalid;
+  if (firstInvalid) {
+    errorSummary.textContent = 'Проверьте поля, отмеченные малиновым цветом.';
+    firstInvalid.focus();
+    return;
+  }
+  requestStatus.textContent = 'Поля заполнены корректно. Это демонстрация: заявка не отправлена. Приём заявок подключим после утверждения сайта.';
+  requestStatus.hidden = false;
+  requestStatus.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+});
 document.addEventListener('keydown', event => {
+  if (event.key === 'Tab' && activeDialog) {
+    const focusable = [...activeDialog.querySelectorAll('a[href],button,input:not([type="hidden"]),textarea,select,summary,[tabindex]:not([tabindex="-1"])')]
+      .filter(element => !element.disabled && element.getClientRects().length);
+    const first = focusable[0];
+    const last = focusable.at(-1);
+    if (event.shiftKey && (document.activeElement === first || !activeDialog.contains(document.activeElement))) {
+      event.preventDefault(); last?.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !activeDialog.contains(document.activeElement))) {
+      event.preventDefault(); first?.focus();
+    }
+  }
   if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') setMenu(false, true);
 });

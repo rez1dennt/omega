@@ -67,10 +67,10 @@ try {
   assert.equal(await menu.evaluate(element => element === document.activeElement), true);
 
   await page.locator('[data-machine="PILOUS"]').click();
-  assert.equal(await page.locator('textarea').inputValue(), 'Станок: PILOUS');
-  await page.locator('textarea').fill('Станок: PILOUS\nМатериал: сталь');
+  assert.equal(await page.locator('#order-form textarea').inputValue(), 'Станок: PILOUS');
+  await page.locator('#order-form textarea').fill('Станок: PILOUS\nМатериал: сталь');
   await page.locator('[data-machine="JET"]').click();
-  assert.equal(await page.locator('textarea').inputValue(), 'Станок: JET\nМатериал: сталь');
+  assert.equal(await page.locator('#order-form textarea').inputValue(), 'Станок: JET\nМатериал: сталь');
   assert.equal(await page.locator('.selected-machine-name').textContent(), 'JET');
   await page.locator('.delivery-terms').click();
   assert.equal(await page.locator('#delivery-details').evaluate(dialog => dialog.open), true);
@@ -79,9 +79,17 @@ try {
   assert.equal(await page.locator('#delivery-details').evaluate(dialog => dialog.open), false);
   let outgoingSubmissions = 0;
   page.on('request', request => { if (request.method() !== 'GET') outgoingSubmissions++; });
-  await page.getByRole('button', { name: 'Отправить заявку' }).click();
-  await page.getByRole('status').waitFor({ state: 'visible' });
-  assert.match(await page.getByRole('status').textContent(), /Заявка не отправлена/);
+  await page.locator('#order-form button[type="submit"]').click();
+  assert.equal(await page.locator('#request-dialog').evaluate(dialog => dialog.open), true);
+  assert.equal(await page.locator('#request-parameters').inputValue(), 'Станок: JET\nМатериал: сталь');
+  await page.locator('#request-email').fill('test@example.com');
+  await page.locator('#request-phone').fill('+7 (999) 123-45-67');
+  await page.locator('#request-consent').check();
+  await page.locator('#request-form button[type="submit"]').click();
+  await page.locator('#request-form [role="status"]').waitFor({ state: 'visible' });
+  assert.match(await page.locator('#request-form [role="status"]').textContent(), /заявка не отправлена/);
+  await page.getByRole('button', { name: 'Закрыть заявку' }).click();
+  await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
   assert.equal(outgoingSubmissions, 0);
   assert.doesNotMatch(await page.locator('body').textContent(), /metal-rez/i);
 
