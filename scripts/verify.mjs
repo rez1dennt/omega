@@ -16,7 +16,7 @@ const evidence = [];
 const failures = [];
 await mkdir('qa', { recursive: true });
 try {
-  for (const width of [1920, 1440, 1280, 1024, 768, 390, 360, 320]) {
+  for (const width of [1920, 1440, 1280, 1024, 926, 768, 390, 360, 320]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle' });
     await page.evaluate(async () => {
@@ -41,7 +41,7 @@ try {
     evidence.push(result);
     if (result.scrollWidth > result.width || result.contentOverflow.length) failures.push(`${width}px: horizontal overflow ${result.scrollWidth}px ${JSON.stringify(result.contentOverflow)}`);
     if (result.brokenImages.length || result.unloadedFonts.length || result.h1Count !== 1 || result.headerTop !== 0) failures.push(`${width}px: resources or document structure failed`);
-    if ([1440, 390, 320].includes(width)) await page.screenshot({ path: `qa/final-${width}.png`, fullPage: true });
+    if ([1440, 926, 390, 320].includes(width)) await page.screenshot({ path: `qa/final-${width}.png`, fullPage: true });
   }
 
   await page.setViewportSize({ width: 360, height: 780 });
@@ -53,27 +53,44 @@ try {
   assert.equal(await menu.getAttribute('aria-expanded'), 'false');
   assert.equal(await menu.evaluate(element => element === document.activeElement), true);
   await menu.click();
+  const headerBefore = await page.locator('.site-header').boundingBox();
   await page.locator('#main-nav a[href="#contacts"]').click();
   assert.equal(await menu.getAttribute('aria-expanded'), 'false');
+  assert.equal(await page.locator('#contacts').evaluate(dialog => dialog.open), true);
+  assert.match(await page.locator('#contacts').textContent(), /6455054459/);
+  assert.match(await page.locator('#contacts').textContent(), /1116455002916/);
+  const headerDuring = await page.locator('.site-header').boundingBox();
+  assert.equal(headerBefore.width, headerDuring.width);
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#contacts').evaluate(dialog => dialog.open), false);
+  await page.waitForFunction(() => document.activeElement === document.querySelector('.menu-toggle'));
+  assert.equal(await menu.evaluate(element => element === document.activeElement), true);
 
   await page.locator('[data-machine="PILOUS"]').click();
   assert.equal(await page.locator('textarea').inputValue(), 'Станок: PILOUS');
   await page.locator('textarea').fill('Станок: PILOUS\nМатериал: сталь');
   await page.locator('[data-machine="JET"]').click();
   assert.equal(await page.locator('textarea').inputValue(), 'Станок: JET\nМатериал: сталь');
+  assert.equal(await page.locator('.selected-machine-name').textContent(), 'JET');
+  await page.locator('.delivery-terms').click();
+  assert.equal(await page.locator('#delivery-details').evaluate(dialog => dialog.open), true);
+  assert.match(await page.locator('#delivery-details').textContent(), /каждую среду/);
+  await page.getByRole('button', { name: 'Закрыть условия доставки' }).click();
+  assert.equal(await page.locator('#delivery-details').evaluate(dialog => dialog.open), false);
   let outgoingSubmissions = 0;
   page.on('request', request => { if (request.method() !== 'GET') outgoingSubmissions++; });
   await page.getByRole('button', { name: 'Отправить заявку' }).click();
   await page.getByRole('status').waitFor({ state: 'visible' });
   assert.match(await page.getByRole('status').textContent(), /Заявка не отправлена/);
   assert.equal(outgoingSubmissions, 0);
+  assert.doesNotMatch(await page.locator('body').textContent(), /metal-rez/i);
 
   const linkChecks = await page.evaluate(() => [...document.querySelectorAll('a[href^="#"]')].filter(link => !document.querySelector(link.getAttribute('href'))).map(link => link.getAttribute('href')));
   assert.deepEqual(linkChecks, []);
   assert.deepEqual(errors, []);
-  await writeFile('qa/verification.json', JSON.stringify({ viewports: evidence, errors, failures, interactions: 'menu, Escape, menu anchors, machine selection, comment preservation, demo form without submission: PASS' }, null, 2));
+  await writeFile('qa/verification.json', JSON.stringify({ viewports: evidence, errors, failures, interactions: 'menu, Escape, contacts/delivery dialogs, stable header, machine selection, comment preservation, demo form without submission, correct company identity: PASS' }, null, 2));
   assert.deepEqual(failures, []);
-  console.log(`PASS: ${evidence.length} viewports; local images/fonts, overflow, header, navigation, machine selection and demo form. No console errors or outgoing submissions.`);
+  console.log(`PASS: ${evidence.length} viewports; local assets, overflow, header, navigation, dialogs, machine selection and demo form. No console errors or outgoing submissions.`);
 } finally {
   await browser.close();
 }

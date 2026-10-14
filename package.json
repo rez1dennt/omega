@@ -3,5 +3,5 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "scripts": { "dev": "node scripts/serve.mjs", "verify": "node scripts/verify.mjs" }
+  "scripts": { "dev": "node scripts/serve.mjs", "verify": "node scripts/verify.mjs", "verify:dropdown": "node scripts/dropdown-check.mjs" }
 }

@@ -23,4 +23,4 @@ Use case: photorealistic-natural. Asset type: industrial website wide delivery b
 
 Локальные файлы: dist/assets/images/bandsaw.webp, production.webp, delivery.webp. Все интерфейсные надписи, слои и линии выполнены HTML/CSS/SVG, не входят в фотографии.
 
-Шрифты: Oswald 600/700, Roboto 400/500/700, Google Fonts. Локальные TTF с поддержкой кириллицы. Лицензии рядом с файлами шрифтов.
+Текущие шрифты: Roboto Condensed 300 для тонкого заголовка и Roboto 400/500/700 для остальной страницы, Google Fonts. Локальные TTF с поддержкой кириллицы. Лицензии рядом с файлами шрифтов. Oswald использовался только в первой итерации.
