@@ -9,6 +9,8 @@ const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
 page.setDefaultTimeout(5000);
 try {
   await page.goto('http://127.0.0.1:4173');
+  await page.locator('#cookie-banner [data-cookie-save]').click();
+  await page.locator('#cookie-banner').waitFor({ state: 'hidden' });
   const combo = page.getByRole('combobox');
   assert.equal(await combo.evaluate(element => element.tagName), 'BUTTON', 'TPI must use the custom control, not an OS select');
   await combo.click();

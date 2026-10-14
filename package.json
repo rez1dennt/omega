@@ -3,5 +3,5 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "scripts": { "dev": "node scripts/serve.mjs", "verify": "node scripts/verify.mjs", "verify:dropdown": "node scripts/dropdown-check.mjs", "verify:modal": "node scripts/modal-check.mjs" }
+  "scripts": { "dev": "node scripts/serve.mjs", "verify": "node scripts/verify.mjs", "verify:dropdown": "node scripts/dropdown-check.mjs", "verify:modal": "node scripts/modal-check.mjs", "verify:polish": "node scripts/polish-check.mjs", "render:legal": "node scripts/render-legal.mjs" }
 }

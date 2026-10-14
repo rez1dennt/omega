@@ -19,6 +19,10 @@ try {
   for (const width of [1920, 1440, 1280, 1024, 926, 768, 390, 360, 320]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle' });
+    if (await page.locator('#cookie-banner').isVisible()) {
+      await page.locator('#cookie-banner [data-cookie-save]').click();
+      await page.locator('#cookie-banner').waitFor({ state: 'hidden' });
+    }
     await page.evaluate(async () => {
       await document.fonts.ready;
       document.querySelectorAll('img').forEach(image => { image.loading = 'eager'; });
@@ -41,7 +45,10 @@ try {
     evidence.push(result);
     if (result.scrollWidth > result.width || result.contentOverflow.length) failures.push(`${width}px: horizontal overflow ${result.scrollWidth}px ${JSON.stringify(result.contentOverflow)}`);
     if (result.brokenImages.length || result.unloadedFonts.length || result.h1Count !== 1 || result.headerTop !== 0) failures.push(`${width}px: resources or document structure failed`);
-    if ([1440, 926, 390, 320].includes(width)) await page.screenshot({ path: `qa/final-${width}.png`, fullPage: true });
+    if ([1440, 926, 390, 320].includes(width)) {
+      await page.evaluate(() => document.querySelectorAll('.motion-reveal').forEach(el => el.classList.add('is-visible')));
+      await page.screenshot({ path: `qa/final-${width}.png`, fullPage: true, animations: 'disabled' });
+    }
   }
 
   await page.setViewportSize({ width: 360, height: 780 });
@@ -62,6 +69,7 @@ try {
   const headerDuring = await page.locator('.site-header').boundingBox();
   assert.equal(headerBefore.width, headerDuring.width);
   await page.keyboard.press('Escape');
+  await page.waitForFunction(() => !document.querySelector('#contacts').open);
   assert.equal(await page.locator('#contacts').evaluate(dialog => dialog.open), false);
   await page.waitForFunction(() => document.activeElement === document.querySelector('.menu-toggle'));
   assert.equal(await menu.evaluate(element => element === document.activeElement), true);
@@ -76,6 +84,7 @@ try {
   assert.equal(await page.locator('#delivery-details').evaluate(dialog => dialog.open), true);
   assert.match(await page.locator('#delivery-details').textContent(), /каждую среду/);
   await page.getByRole('button', { name: 'Закрыть условия доставки' }).click();
+  await page.waitForFunction(() => !document.querySelector('#delivery-details').open);
   assert.equal(await page.locator('#delivery-details').evaluate(dialog => dialog.open), false);
   let outgoingSubmissions = 0;
   page.on('request', request => { if (request.method() !== 'GET') outgoingSubmissions++; });

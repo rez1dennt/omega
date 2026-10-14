@@ -38,6 +38,8 @@ function stable(before, during) {
 try {
   await mkdir('qa', { recursive: true });
   await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle' });
+  await page.locator('#cookie-banner [data-cookie-save]').click();
+  await page.locator('#cookie-banner').waitFor({ state: 'hidden' });
   await page.locator('.header-cta').click();
   assert.equal(await modal.count(), 1, 'application CTA must open the request modal');
   assert.equal(await modal.evaluate(dialog => dialog.open), true);

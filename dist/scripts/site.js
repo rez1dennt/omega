@@ -121,8 +121,6 @@ const requestDialog = document.querySelector('#request-dialog');
 const requestForm = document.querySelector('#request-form');
 const requestStatus = requestForm.querySelector('.request-status');
 const errorSummary = requestForm.querySelector('.request-error-summary');
-let activeDialog = null;
-let lockedPage = null;
 let lastOrderSummary = '';
 
 function fieldError(field, message) {
@@ -153,63 +151,10 @@ function prepareRequest(opener, forceTransfer = false) {
   requestStatus.hidden = true;
 }
 
-function openDialog(dialog, opener) {
-  if (!dialog || dialog === activeDialog) return;
+document.addEventListener('site:dialog-open', event => {
   closeDropdown();
   setMenu(false);
-  if (!lockedPage) {
-    lockedPage = { x: window.scrollX, y: window.scrollY, opener };
-    const gutter = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-    document.documentElement.style.setProperty('--scrollbar-gap', `${gutter}px`);
-    document.documentElement.classList.add('dialog-open');
-    document.body.classList.add('dialog-open');
-  }
-  const previous = activeDialog;
-  activeDialog = dialog;
-  if (previous?.open) previous.close();
-  dialog.showModal();
-  dialog.scrollTop = 0;
-  if (dialog === requestDialog) {
-    requestForm.scrollTop = 0;
-    const parameters = requestForm.elements.parameters;
-    parameters.focus({ preventScroll: true });
-    parameters.setSelectionRange(0, 0);
-    parameters.scrollTop = 0;
-  }
-}
-
-document.addEventListener('click', event => {
-  const opener = event.target.closest('[data-dialog]');
-  if (opener) {
-    event.preventDefault();
-    const dialog = document.getElementById(opener.dataset.dialog);
-    if (opener.dataset.legalTitle) document.querySelector('#legal-dialog-title').textContent = opener.dataset.legalTitle;
-    if (dialog === requestDialog) prepareRequest(opener);
-    openDialog(dialog, opener);
-    return;
-  }
-  const closer = event.target.closest('[data-close-dialog]');
-  if (closer) closer.closest('dialog').close();
-});
-document.querySelectorAll('dialog').forEach(dialog => {
-  dialog.addEventListener('click', event => {
-    const rect = dialog.getBoundingClientRect();
-    if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) dialog.close();
-  });
-  dialog.addEventListener('close', () => {
-    if (dialog !== activeDialog) return;
-    activeDialog = null;
-    const page = lockedPage;
-    lockedPage = null;
-    document.body.classList.remove('dialog-open');
-    document.documentElement.classList.remove('dialog-open');
-    document.documentElement.style.removeProperty('--scrollbar-gap');
-    // Override smooth anchor scrolling for an exact, immediate restoration.
-    window.scrollTo({ left: page.x, top: page.y, behavior: 'instant' });
-    const opener = page.opener;
-    if (opener?.closest('#main-nav') && window.innerWidth < 900) menuButton.focus({ preventScroll: true });
-    else opener?.focus({ preventScroll: true });
-  });
+  if (event.detail.dialog === requestDialog) prepareRequest(event.detail.opener);
 });
 
 function validationMessage(field) {
@@ -232,14 +177,7 @@ requiredFields.forEach(field => {
   field.addEventListener('input', recheck);
   field.addEventListener('change', recheck);
 });
-requestForm.elements.phone.addEventListener('blur', () => {
-  const field = requestForm.elements.phone;
-  if (!field.value.trim() || validationMessage(field)) return;
-  let digits = field.value.replace(/\D/g, '');
-  if (digits.length === 10) digits = `7${digits}`;
-  else digits = `7${digits.slice(1)}`;
-  field.value = `+7 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7, 9)}-${digits.slice(9)}`;
-});
+attachPhoneMask(requestForm.elements.phone);
 requestForm.addEventListener('submit', event => {
   event.preventDefault();
   requestStatus.hidden = true;
@@ -260,16 +198,5 @@ requestForm.addEventListener('submit', event => {
   requestStatus.scrollIntoView({ block: 'nearest', behavior: 'instant' });
 });
 document.addEventListener('keydown', event => {
-  if (event.key === 'Tab' && activeDialog) {
-    const focusable = [...activeDialog.querySelectorAll('a[href],button,input:not([type="hidden"]),textarea,select,summary,[tabindex]:not([tabindex="-1"])')]
-      .filter(element => !element.disabled && element.getClientRects().length);
-    const first = focusable[0];
-    const last = focusable.at(-1);
-    if (event.shiftKey && (document.activeElement === first || !activeDialog.contains(document.activeElement))) {
-      event.preventDefault(); last?.focus();
-    } else if (!event.shiftKey && (document.activeElement === last || !activeDialog.contains(document.activeElement))) {
-      event.preventDefault(); first?.focus();
-    }
-  }
   if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') setMenu(false, true);
 });

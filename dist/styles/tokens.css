@@ -23,5 +23,10 @@
   --scrollbar-gap: 0px;
   --radius: 4px;
   --transition: 180ms ease;
+  --motion-enter: 240ms;
+  --motion-exit: 160ms;
+  --motion-reveal: 560ms;
+  --motion-ease: cubic-bezier(.22,1,.36,1);
+  --cookie-gap: 24px;
   --layer-header: 10;
 }
