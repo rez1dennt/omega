@@ -36,7 +36,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .text-link:hover { color: var(--brand-wine); }
 .text-link .icon { width: calc(22 * var(--u)); height: calc(22 * var(--u)); }
 
-.site-header { position: fixed; z-index: 100; inset: 0 0 auto; height: var(--header-height); color: var(--color-white); transition: background var(--transition); }
+.site-header { position: fixed; z-index: 100; inset: 0 0 auto; height: var(--header-height); color: var(--color-white); }
 .site-header.is-scrolled { background: rgba(26,26,29,.96); }
 .header-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: calc(35 * var(--u)); }
 .brand { display: inline-flex; align-items: center; gap: calc(14 * var(--u)); flex-shrink: 0; }
