@@ -255,8 +255,11 @@ body.dialog-open .site-header { right: var(--scrollbar-gap); }
 .consent-details summary { width: fit-content; color: var(--color-primary); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .request-dialog .consent-details p { margin: 9px 0 0; }
 .request-dialog .request-submit { width: 100%; min-height: 48px; margin: 0; padding: 13px 22px; gap: 22px; font-size: 14px; border-radius: 8px; }
-.request-dialog .request-demo { display: flex; align-items: center; justify-content: center; gap: 7px; margin: -7px 0 0; color: var(--brand-gray); font-size: 10px; }
-.request-dialog .request-demo .icon { width: 12px; height: 15px; }
+.request-dialog .request-note { display: flex; align-items: center; justify-content: center; gap: 7px; margin: -7px 0 0; color: var(--brand-gray); font-size: 10px; }
+.request-dialog .request-note .icon { width: 12px; height: 15px; }
+.request-submit:disabled { cursor: progress; opacity: .65; }
+.request-form[aria-busy=true] .request-submit .icon { visibility: hidden; }
+.request-dialog .request-status[data-state=error] { color: var(--color-primary); }
 .request-dialog .request-status { margin: 0; padding: 13px 16px; border-left: 3px solid var(--color-primary); background: var(--color-surface); font-size: 12px; line-height: 1.5; }
 .request-dialog .request-error-summary { margin: 0; color: var(--color-primary); font-size: 12px; }
 @keyframes request-reveal { from { opacity: 0; } to { opacity: 1; } }

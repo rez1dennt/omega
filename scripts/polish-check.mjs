@@ -18,6 +18,10 @@ try {
   await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle' });
   await page.locator('.header-cta').click();
   const phone = page.locator('#request-phone');
+  await phone.fill('8 (917) 206-21-00');
+  assert.equal(await phone.inputValue(), '+7 (917) 206-21-00', 'first paste into an empty focused mask must not duplicate the country code');
+  await page.keyboard.press('Control+A');
+  await page.keyboard.press('Backspace');
   await phone.focus();
   await page.keyboard.type('9991234567');
   assert.equal(await phone.inputValue(), '+7 (999) 123-45-67', 'phone is masked while typing');

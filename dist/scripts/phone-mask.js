@@ -2,7 +2,11 @@
 function attachPhoneMask(input) {
   const nationalDigits = value => {
     const digits = value.replace(/\D/g, '');
-    if (value.trim().startsWith('+7') || (digits.length > 10 && /^[78]/.test(digits))) return digits.slice(1, 11);
+    if (value.trim().startsWith('+7')) {
+      const national = digits.slice(1);
+      return (national.length > 10 && /^[78]/.test(national) ? national.slice(1) : national).slice(0, 10);
+    }
+    if (digits.length > 10 && /^[78]/.test(digits)) return digits.slice(1, 11);
     return digits.slice(0, 10);
   };
   const format = digits => {

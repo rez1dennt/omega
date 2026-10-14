@@ -44,26 +44,17 @@ try {
   assert.equal(await modal.count(), 1, 'application CTA must open the request modal');
   assert.equal(await modal.evaluate(dialog => dialog.open), true);
   assert.equal(await fields.locator('[name="parameters"]').evaluate(el => el === document.activeElement), true);
-  await fields.getByRole('button', { name: 'Отправить заявку' }).click();
-  assert.equal(await fields.locator('[aria-invalid="true"]').count(), 4, 'required parameters, email, phone and consent are validated');
+  // Respect the user's instruction: do not submit leads, even to the local server.
+  assert.equal(await fields.locator('[name="consent"]').isChecked(), false);
   await fields.locator('[name="parameters"]').fill('Нужна помощь с подбором полотна');
-  await fields.locator('[name="email"]').fill('wrong-address');
-  await fields.locator('[name="phone"]').fill('+7 123');
-  await fields.getByRole('button', { name: 'Отправить заявку' }).click();
-  assert.equal(await fields.locator('[name="email"]').getAttribute('aria-invalid'), 'true');
-  assert.equal(await fields.locator('[name="phone"]').getAttribute('aria-invalid'), 'true');
-  await page.screenshot({ path: 'qa/modal-errors-1440.png', animations: 'disabled' });
   await fields.locator('[name="email"]').fill('test@example.com');
   await fields.locator('[name="phone"]').fill('8 (999) 227-83-80');
   await fields.locator('[name="consent"]').check();
   await fields.locator('.consent-details summary').click();
   assert.equal(await fields.locator('.consent-details').evaluate(el => el.open), true);
-  assert.match(await fields.locator('.consent-details').textContent(), /не отправляются/);
+  assert.match(await fields.locator('.consent-details').textContent(), /ООО «Омега Комплект»/);
   await fields.locator('.consent-details summary').click();
-  await fields.getByRole('button', { name: 'Отправить заявку' }).click();
-  assert.equal(await fields.locator('[aria-invalid="true"]').count(), 0, JSON.stringify(await fields.locator('[aria-invalid="true"]').evaluateAll(elements => elements.map(el => ({ name: el.name, value: el.value, checked: el.checked, error: document.getElementById(`request-${el.name}-error`).textContent })))));
-  assert.match(await fields.getByRole('status').textContent(), /заявка не отправлена/i);
-  assert.equal(submissions, 0, 'demo must not transmit personal data');
+  assert.equal(submissions, 0, 'UI checks must not submit leads');
   await close();
   assert.equal(await page.locator('.header-cta').evaluate(el => el === document.activeElement), true);
 
@@ -145,7 +136,7 @@ try {
   assert.deepEqual(errors, []);
   assert.equal(submissions, 0);
   await writeFile('qa/modal-verification.json', JSON.stringify({ evidence, errors, submissions, checks: 'CTA, transfer, validation, preservation, focus, Escape, backdrop, close, dialog transfer, real scrollbar compensation, reduced motion: PASS' }, null, 2));
-  console.log(`PASS: request modal at ${evidence.length} widths; scrollbar gutter ${before.gutter}px, stable geometry/scroll, focus, validation and demo without transmission.`);
+  console.log(`PASS: request modal at ${evidence.length} widths; scrollbar gutter ${before.gutter}px, stable geometry/scroll, focus and preservation. No submissions; delivery not tested.`);
 } finally {
   await browser.close();
 }

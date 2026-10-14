@@ -94,9 +94,9 @@ try {
   await page.locator('#request-email').fill('test@example.com');
   await page.locator('#request-phone').fill('+7 (999) 123-45-67');
   await page.locator('#request-consent').check();
-  await page.locator('#request-form button[type="submit"]').click();
-  await page.locator('#request-form [role="status"]').waitFor({ state: 'visible' });
-  assert.match(await page.locator('#request-form [role="status"]').textContent(), /заявка не отправлена/);
+  // User prohibited submission/delivery testing. Validate UI only; never press send.
+  assert.equal(await page.locator('#request-form').getAttribute('data-endpoint'), 'api/request.php');
+  assert.doesNotMatch(await page.locator('#request-dialog').textContent(), /демонстрац/i);
   await page.getByRole('button', { name: 'Закрыть заявку' }).click();
   await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
   assert.equal(outgoingSubmissions, 0);
@@ -105,9 +105,9 @@ try {
   const linkChecks = await page.evaluate(() => [...document.querySelectorAll('a[href^="#"]')].filter(link => !document.querySelector(link.getAttribute('href'))).map(link => link.getAttribute('href')));
   assert.deepEqual(linkChecks, []);
   assert.deepEqual(errors, []);
-  await writeFile('qa/verification.json', JSON.stringify({ viewports: evidence, errors, failures, interactions: 'menu, Escape, contacts/delivery dialogs, stable header, machine selection, comment preservation, demo form without submission, correct company identity: PASS' }, null, 2));
+  await writeFile('qa/verification.json', JSON.stringify({ viewports: evidence, errors, failures, interactions: 'menu, Escape, contacts/delivery dialogs, stable header, machine selection, parameter preservation, request UI without submission, correct company identity: PASS' }, null, 2));
   assert.deepEqual(failures, []);
-  console.log(`PASS: ${evidence.length} viewports; local assets, overflow, header, navigation, dialogs, machine selection and demo form. No console errors or outgoing submissions.`);
+  console.log(`PASS: ${evidence.length} viewports; local assets, overflow, header, navigation, dialogs, machine selection and request UI. No console errors or outgoing submissions. Delivery not tested.`);
 } finally {
   await browser.close();
 }

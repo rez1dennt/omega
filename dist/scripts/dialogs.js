@@ -78,7 +78,7 @@ document.querySelectorAll('dialog').forEach(dialog => {
 document.addEventListener('keydown', event => {
   if (event.key !== 'Tab' || !activeDialog) return;
   const items = [...activeDialog.querySelectorAll('a[href],button,input:not([type="hidden"]),textarea,select,summary,[tabindex]:not([tabindex="-1"])')]
-    .filter(element => !element.disabled && element.getClientRects().length);
+    .filter(element => !element.disabled && element.tabIndex !== -1 && !element.closest('[aria-hidden="true"]') && element.getClientRects().length);
   const first = items[0];
   const last = items.at(-1);
   if (event.shiftKey && (document.activeElement === first || !activeDialog.contains(document.activeElement))) { event.preventDefault(); last?.focus(); }

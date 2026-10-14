@@ -1,4 +1,4 @@
-/* Demonstration only: form data is never transmitted or stored. */
+/* Landing-page interactions and the PHP request workflow. */
 const header = document.querySelector('.site-header');
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#main-nav');
@@ -127,8 +127,7 @@ function fieldError(field, message) {
   const error = document.getElementById(`request-${field.name}-error`);
   if (message) field.setAttribute('aria-invalid', 'true');
   else field.removeAttribute('aria-invalid');
-  error.textContent = message;
-  error.hidden = !message;
+  if (error) { error.textContent = message; error.hidden = !message; }
 }
 
 function prepareRequest(opener, forceTransfer = false) {
@@ -143,7 +142,7 @@ function prepareRequest(opener, forceTransfer = false) {
   if (orderForm.elements.material.value.trim()) lines.push(`Материал: ${orderForm.elements.material.value.trim()}`);
   if (comment.value.trim()) lines.push(comment.value.trim());
   const summary = lines.join('\n');
-  if (summary && (forceTransfer || summary !== lastOrderSummary)) {
+  if (summary && (forceTransfer || summary !== lastOrderSummary || !requestForm.elements.parameters.value.trim())) {
     requestForm.elements.parameters.value = summary;
     lastOrderSummary = summary;
     fieldError(requestForm.elements.parameters, '');
@@ -178,8 +177,12 @@ requiredFields.forEach(field => {
   field.addEventListener('change', recheck);
 });
 attachPhoneMask(requestForm.elements.phone);
-requestForm.addEventListener('submit', event => {
+let submitting = false;
+let submissionId = '';
+let submissionSignature = '';
+requestForm.addEventListener('submit', async event => {
   event.preventDefault();
+  if (submitting) return;
   requestStatus.hidden = true;
   let firstInvalid = null;
   requiredFields.forEach(field => {
@@ -193,9 +196,51 @@ requestForm.addEventListener('submit', event => {
     firstInvalid.focus();
     return;
   }
-  requestStatus.textContent = 'Поля заполнены корректно. Это демонстрация: заявка не отправлена. Приём заявок подключим после утверждения сайта.';
-  requestStatus.hidden = false;
-  requestStatus.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+  const payload = {
+    parameters: requestForm.elements.parameters.value.trim(),
+    email: requestForm.elements.email.value.trim(),
+    phone: requestForm.elements.phone.value.trim(),
+    name: requestForm.elements.name.value.trim(),
+    consent: requestForm.elements.consent.checked,
+    website: requestForm.elements.website.value,
+  };
+  const signature = JSON.stringify(payload);
+  if (signature !== submissionSignature) {
+    submissionSignature = signature;
+    submissionId = crypto.randomUUID();
+  }
+  payload.requestId = submissionId;
+  const button = requestForm.querySelector('button[type="submit"]');
+  const label = button.querySelector('.request-submit-label');
+  const controls = [...requestForm.querySelectorAll('input,textarea,button')];
+  submitting = true;
+  requestForm.setAttribute('aria-busy', 'true');
+  controls.forEach(control => { control.disabled = true; });
+  label.textContent = 'Отправляем…';
+  try {
+    await sendRequest(payload);
+    requestStatus.textContent = 'Заявка отправлена. Спасибо! Свяжемся с вами по указанным контактам.';
+    requestStatus.dataset.state = 'success';
+    requestForm.reset();
+    submissionId = '';
+    submissionSignature = '';
+  } catch (error) {
+    for (const [name, message] of Object.entries(error.fieldErrors || {})) {
+      const field = requestForm.elements.namedItem(name);
+      if (field && typeof message === 'string' && message.length < 200) fieldError(field, message);
+    }
+    requestStatus.dataset.state = 'error';
+    requestStatus.textContent = error.message === 'rate_limited'
+      ? 'Слишком много попыток. Попробуйте через несколько минут или позвоните нам.'
+      : 'Не удалось подтвердить отправку. Данные сохранены в форме. Свяжитесь с нами: +7 (8452) 52-93-50.';
+  } finally {
+    submitting = false;
+    requestForm.removeAttribute('aria-busy');
+    controls.forEach(control => { control.disabled = false; });
+    label.textContent = 'Отправить заявку';
+    requestStatus.hidden = false;
+    requestStatus.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+  }
 });
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') setMenu(false, true);
