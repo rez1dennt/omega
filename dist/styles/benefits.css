@@ -1,0 +1,67 @@
+/* A manually controlled showcase; static articles remain readable without JS. */
+.benefit-showcase { --benefit-shift-x: 0px; --benefit-shift-y: 0px; --benefit-spot-x: 70%; --benefit-spot-y: 50%; }
+.benefit-guide { display: none; font-size: var(--text-small); color: var(--brand-gray); margin-bottom: var(--benefit-gap); }
+.benefit-tablist { display: none; grid-template-columns: repeat(4,minmax(0,1fr)); gap: var(--benefit-gap); margin-bottom: var(--benefit-gap); }
+.is-ready .benefit-tablist { display: grid; }
+.is-ready .benefit-guide { display: block; }
+.benefit-tab { position: relative; display: flex; flex-direction: column; gap: var(--benefit-gap); min-width: 0; padding: var(--benefit-tab-padding); border: 1px solid var(--color-border); border-radius: var(--equipment-photo-radius); background: transparent; color: var(--brand-graphite); text-align: left; cursor: pointer; transition: background var(--transition), border-color var(--transition); }
+.benefit-tab::before { content: ''; position: absolute; left: var(--benefit-tab-padding); right: var(--benefit-tab-padding); top: -1px; height: 2px; background: var(--color-primary); transform: scaleX(0); transform-origin: left; transition: transform var(--benefit-motion) var(--motion-ease); }
+.benefit-tab[aria-selected="true"] { background: var(--color-white); border-color: var(--color-primary); }
+.benefit-tab[aria-selected="true"]::before { transform: scaleX(1); }
+.benefit-tab:hover { background: var(--color-white); }
+.benefit-tab:focus-visible { outline: 2px solid var(--brand-graphite); outline-offset: 4px; }
+.benefit-tab-top { display: flex; justify-content: space-between; align-items: center; color: var(--color-primary); font-size: var(--text-small); font-weight: 600; letter-spacing: .1em; }
+.benefit-tab-top .icon { width: 1.125rem; height: 1.125rem; transform: rotate(45deg); transition: transform var(--transition); }
+.benefit-tab[aria-selected="true"] .icon { transform: rotate(0); }
+.benefit-tab-title { font-size: var(--text-card); font-family: var(--font-heading); font-weight: var(--weight-heading); line-height: 1.3; letter-spacing: var(--tracking-heading); }
+.benefit-tab-description { font-size: var(--text-small); line-height: 1.5; color: var(--brand-gray); }
+.benefit-panels { position: relative; display: grid; gap: var(--benefit-gap); overflow: hidden; border-radius: var(--equipment-radius); background: var(--brand-graphite); touch-action: pan-y pinch-zoom; }
+.is-ready .benefit-panels { gap: 0; }
+.benefit-panel { position: relative; isolation: isolate; overflow: hidden; min-width: 0; min-height: var(--benefit-panel-height); padding: var(--benefit-panel-padding); color: var(--color-white); background: var(--brand-graphite); }
+.is-ready .benefit-panel { grid-area: 1/1; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--benefit-motion) var(--motion-ease), visibility 0s var(--benefit-motion); }
+.is-ready .benefit-panel.is-active { z-index: 1; opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
+.benefit-photo { position: absolute; z-index: -3; top: 0; right: 0; width: 70%; height: 100%; object-fit: cover; object-position: 65% center; filter: grayscale(1); transform: scale(1.1); transition: transform var(--benefit-motion) var(--motion-ease); }
+.benefit-panel-weld .benefit-photo { object-position: 85% center; }
+.benefit-panel.is-active .benefit-photo { transform: translate3d(var(--benefit-shift-x),var(--benefit-shift-y),0) scale(1.045); }
+.benefit-panel::before { content: ''; position: absolute; z-index: -2; inset: 0; background: linear-gradient(90deg,var(--brand-graphite) 18%,color-mix(in srgb,var(--brand-graphite) 94%,transparent) 38%,color-mix(in srgb,var(--brand-graphite) 20%,transparent) 78%),linear-gradient(0deg,color-mix(in srgb,var(--brand-graphite) 88%,transparent),transparent 65%); }
+.benefit-panel::after { content: ''; position: absolute; z-index: -1; inset: 0; pointer-events: none; background: radial-gradient(36rem circle at var(--benefit-spot-x) var(--benefit-spot-y),color-mix(in srgb,var(--brand-crimson) 20%,transparent),transparent 70%); }
+.benefit-content { position: relative; z-index: 1; width: 52%; max-width: 36rem; }
+.benefit-content .eyebrow { color: var(--color-muted-light); margin-bottom: var(--benefit-gap); }
+.benefit-content h3 { font-size: var(--benefit-title); line-height: 1.15; letter-spacing: var(--tracking-heading); }
+.benefit-description { margin-top: var(--benefit-gap); max-width: 43ch; font-size: var(--text-copy); line-height: var(--leading-body); color: var(--color-surface); }
+.benefit-tags { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: var(--benefit-gap); font-size: var(--text-small); color: var(--color-muted-light); }
+.benefit-tags li { padding-left: .75rem; position: relative; }
+.benefit-tags li::before { content: ''; position: absolute; left: 0; top: .55em; width: .25rem; height: .25rem; border-radius: 50%; background: var(--color-primary); }
+.benefit-content .button { margin-top: calc(var(--benefit-gap) * 1.5); }
+.benefit-stat { position: absolute; right: var(--benefit-panel-padding); bottom: var(--benefit-panel-padding); max-width: 40%; text-align: right; }
+.benefit-stat strong { display: block; font-size: var(--benefit-stat); font-weight: 600; line-height: 1.05; letter-spacing: -.05em; }
+.benefit-stat span { display: block; font-size: var(--text-small); line-height: 1.5; margin-top: .5rem; }
+.benefit-counter { position: absolute; top: var(--benefit-panel-padding); right: var(--benefit-panel-padding); padding: .375rem .5rem; border-radius: var(--radius); background: color-mix(in srgb,var(--brand-graphite) 88%,transparent); font-size: var(--text-small); letter-spacing: .15em; color: var(--color-muted-light); }
+@media (max-width: 1099px) {
+  .benefit-tab-title { font-size: var(--text-control); }
+  .benefit-content { width: 60%; }
+  .benefit-photo { width: 75%; }
+  .benefit-stat { max-width: 32%; }
+}
+@media (max-width: 767px) {
+  .benefit-tablist { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .benefit-tab { gap: .625rem; }
+  .benefit-tab-description { display: none; }
+  .benefit-panel { padding-top: var(--benefit-mobile-content-start); }
+  .benefit-photo { width: 100%; height: var(--benefit-photo-mobile-height); object-position: center; }
+  .benefit-panel::before { background: linear-gradient(180deg,color-mix(in srgb,var(--brand-graphite) 80%,transparent),transparent 28%),linear-gradient(0deg,var(--brand-graphite) 0%,var(--brand-graphite) 48%,transparent 100%); }
+  .benefit-content { width: 100%; max-width: none; }
+  .benefit-content h3 br { display: none; }
+  .benefit-stat { top: var(--benefit-panel-padding); right: var(--benefit-panel-padding); bottom: auto; max-width: 75%; }
+  .benefit-stat strong { font-size: var(--benefit-stat); }
+  .benefit-counter { right: auto; left: var(--benefit-panel-padding); }
+}
+@media (max-width: 399px) {
+  .benefit-tab { --benefit-tab-padding: .875rem; }
+  .benefit-content .button { width: 100%; padding-inline: .75rem; gap: .625rem; font-size: var(--text-small); }
+  .benefit-content .button .icon { width: 1.125rem; height: 1.125rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .benefit-showcase *, .benefit-showcase *::before { transition: none !important; animation: none !important; }
+  .benefit-panel .benefit-photo, .benefit-panel.is-active .benefit-photo { transform: none; }
+}

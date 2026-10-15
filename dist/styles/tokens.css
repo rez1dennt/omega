@@ -52,6 +52,15 @@
   --equipment-photo-padding: 1.5rem;
   --equipment-photo-radius: .625rem;
   --equipment-photo-tablet-width: 14rem;
+  --benefit-panel-height: 25rem;
+  --benefit-panel-padding: clamp(1.5rem, 3vw, 3rem);
+  --benefit-gap: 1rem;
+  --benefit-tab-padding: 1.25rem;
+  --benefit-title: clamp(1.75rem, 2.8vw, 2.625rem);
+  --benefit-stat: clamp(3rem, 5.3vw, 5rem);
+  --benefit-photo-mobile-height: 18rem;
+  --benefit-mobile-content-start: 14rem;
+  --benefit-motion: 540ms;
   --u: clamp(.625px, calc(100vw / 1440), 1px);
   --container: calc(1288 * var(--u));
   --gutter: calc(76 * var(--u));

@@ -16,6 +16,7 @@
     "verify:form-layout": "node scripts/form-layout-check.mjs",
     "verify:request-data": "node scripts/request-data-check.mjs",
     "verify:validation": "node scripts/validation-check.mjs",
-    "verify:equipment": "node scripts/equipment-check.mjs"
+    "verify:equipment": "node scripts/equipment-check.mjs",
+    "verify:benefits": "node scripts/benefits-check.mjs"
   }
 }

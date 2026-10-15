@@ -11,13 +11,14 @@
   <link rel="preload" href="assets/fonts/golos-text-variable.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="assets/images/bandsaw.webp" as="image" fetchpriority="high">
   <link rel="stylesheet" href="styles/tokens.css">
-  <link rel="stylesheet" href="styles/site.css"><link rel="stylesheet" href="styles/typography.css"><link rel="stylesheet" href="styles/equipment.css">
+  <link rel="stylesheet" href="styles/site.css"><link rel="stylesheet" href="styles/typography.css"><link rel="stylesheet" href="styles/equipment.css"><link rel="stylesheet" href="styles/benefits.css">
   <script src="scripts/phone-mask.js" defer></script>
   <script src="scripts/dialogs.js" defer></script>
   <script src="scripts/request-client.js" defer></script>
   <script src="scripts/site.js" defer></script>
   <script src="scripts/preferences.js" defer></script>
   <script src="scripts/motion.js" defer></script>
+  <script src="scripts/benefits.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержимому</a>
@@ -66,7 +67,37 @@
       <svg class="section-lines decorative" viewBox="0 0 1440 450" preserveAspectRatio="none" aria-hidden="true"><path d="m430 220 1000-247M753 182 700-155"/></svg>
       <div class="container">
         <div class="section-heading"><div><p class="eyebrow">ОТ ПОДБОРА ДО ГОТОВОГО ЗАКАЗА</p><h2 id="advantages-title">Все, что нужно<br>для точного реза.</h2></div><p>Полотна под ваши параметры.<br>Поддержка на каждом этапе покупки.<br>Доставка удобным для вас способом.</p></div>
-        <div class="advantages-grid"><article class="advantage"><span class="step-number">01</span><h3>Изготовление за 1 день</h3><p>Изготовим ленту под ваши параметры и кратчайшие сроки.</p></article><article class="advantage"><span class="step-number">02</span><h3>Сварка за 1 час</h3><p>Сварим полотно в кольцо на профессиональном оборудовании.</p></article><article class="advantage"><span class="step-number">03</span><h3>Инженерный подбор</h3><p>Подберем полотно под задачу: станок, металл, дерево.</p></article><article class="advantage"><span class="step-number">04</span><h3>Доставка по России</h3><p>Получите инструмент в любой регион страны.</p></article></div>
+        <div class="benefit-showcase" id="benefit-showcase">
+          <p class="benefit-guide">Выберите преимущество — узнайте, как мы работаем.</p>
+          <div class="benefit-tablist" aria-label="Преимущества Омега Комплект">
+            <button class="benefit-tab" id="benefit-tab-1" type="button" aria-controls="benefit-panel-1"><span class="benefit-tab-top"><span>01</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span><span class="benefit-tab-title">Изготовление за 1 день</span><span class="benefit-tab-description">Полотно под параметры вашего станка.</span></button>
+            <button class="benefit-tab" id="benefit-tab-2" type="button" aria-controls="benefit-panel-2"><span class="benefit-tab-top"><span>02</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span><span class="benefit-tab-title">Сварка за 1 час</span><span class="benefit-tab-description">Соединяем полотно в готовое кольцо.</span></button>
+            <button class="benefit-tab" id="benefit-tab-3" type="button" aria-controls="benefit-panel-3"><span class="benefit-tab-top"><span>03</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span><span class="benefit-tab-title">Инженерный подбор</span><span class="benefit-tab-description">Учитываем материал и задачу.</span></button>
+            <button class="benefit-tab" id="benefit-tab-4" type="button" aria-controls="benefit-panel-4"><span class="benefit-tab-top"><span>04</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span><span class="benefit-tab-title">Доставка по России</span><span class="benefit-tab-description">Передаём заказ удобным вам способом.</span></button>
+          </div>
+          <div class="benefit-panels">
+            <article class="benefit-panel" id="benefit-panel-1">
+              <img class="benefit-photo" src="assets/images/production.webp" width="1672" height="941" alt="Ленточное полотно на производственном оборудовании" loading="lazy" decoding="async">
+              <div class="benefit-content"><p class="eyebrow">ИЗГОТОВЛЕНИЕ ПОЛОТЕН</p><h3>Под размеры<br> вашего станка.</h3><p class="benefit-description">Изготовим ленточное полотно под ваши параметры. Укажите размеры и материал — подготовим решение под задачу.</p><ul class="benefit-tags"><li>Длина</li><li>Ширина</li><li>Шаг зуба</li></ul><a class="button" href="#request-dialog" data-dialog="request-dialog">Обсудить изготовление<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+              <div class="benefit-stat"><strong>1 день</strong><span>на изготовление</span></div><span class="benefit-counter" aria-hidden="true">01 / 04</span>
+            </article>
+            <article class="benefit-panel benefit-panel-weld" id="benefit-panel-2">
+              <img class="benefit-photo" src="assets/images/production.webp" width="1672" height="941" alt="Зона соединения стального ленточного полотна на оборудовании" loading="lazy" decoding="async">
+              <div class="benefit-content"><p class="eyebrow">СВАРКА В КОЛЬЦО</p><h3>Точный стык.<br> Надёжное соединение.</h3><p class="benefit-description">Сварим полотно в кольцо на профессиональном оборудовании. Подготовим инструмент к работе на вашем станке.</p><ul class="benefit-tags"><li>Профессиональное оборудование</li><li>Контроль качества</li></ul><a class="button" href="#request-dialog" data-dialog="request-dialog">Заказать сварку<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+              <div class="benefit-stat"><strong>1 час</strong><span>на сварку</span></div><span class="benefit-counter" aria-hidden="true">02 / 04</span>
+            </article>
+            <article class="benefit-panel" id="benefit-panel-3">
+              <img class="benefit-photo" src="assets/images/bandsaw.webp" width="1672" height="941" alt="Зубья и рабочая поверхность ленточных полотен для разных задач" loading="lazy" decoding="async">
+              <div class="benefit-content"><p class="eyebrow">ИНЖЕНЕРНЫЙ ПОДБОР</p><h3>Станок. Материал.<br> Правильное полотно.</h3><p class="benefit-description">Подберём полотно и шаг зуба под ваш станок, материал и сечение заготовки. Поможем разобраться с параметрами.</p><ul class="benefit-tags"><li>Металл</li><li>Дерево</li><li>Пластик</li></ul><a class="button" href="#request-dialog" data-dialog="request-dialog">Подобрать полотно<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+              <div class="benefit-stat"><strong>TPI</strong><span>шаг зуба под материал</span></div><span class="benefit-counter" aria-hidden="true">03 / 04</span>
+            </article>
+            <article class="benefit-panel" id="benefit-panel-4">
+              <img class="benefit-photo" src="assets/images/delivery.webp" width="1672" height="941" alt="Грузовой автомобиль на дороге — доставка готового заказа" loading="lazy" decoding="async">
+              <div class="benefit-content"><p class="eyebrow">ДОСТАВКА ПО РОССИИ</p><h3>Готовое полотно —<br> в ваш регион.</h3><p class="benefit-description">Упакуем заказ, оформим документы и передадим выбранному перевозчику. Можно забрать заказ со склада в Саратове.</p><ul class="benefit-tags"><li>Самовывоз</li><li>Транспортные компании</li></ul><a class="button" href="#delivery-details" data-dialog="delivery-details">Условия доставки<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+              <div class="benefit-stat"><strong>РФ</strong><span>из Саратова в ваш регион</span></div><span class="benefit-counter" aria-hidden="true">04 / 04</span>
+            </article>
+          </div>
+        </div>
       </div>
     </section>
 
