@@ -81,28 +81,28 @@
       <svg class="order-lines decorative" viewBox="0 0 1440 410" preserveAspectRatio="none" aria-hidden="true"><path d="M1280-70C1122 100 1125 241 1021 469"/><path class="line-neutral" d="M1305-20C1197 117 1158 288 1092 425"/></svg>
       <div class="container order-grid"><div class="order-copy"><p class="eyebrow">ПОДБОР ПОД ВАШЕ ОБОРУДОВАНИЕ</p><h2 id="order-title">Какое полотно<br>нужно вашему<br>станку? <span>—</span></h2><p>Укажите параметры полотна и контакты — подберем решение, рассчитаем стоимость и свяжемся с вами.</p></div>
         <form class="order-form" id="order-form" data-endpoint="api/request.php" novalidate>
+          <div class="request-error-summary" role="alert" hidden></div>
           <div class="form-grid">
             <div class="order-field"><label for="order-width">Ширина полотна, мм</label><input id="order-width" name="width" type="number" min="1" step="any" inputmode="decimal" placeholder="Например, 27" aria-describedby="order-width-error"><p class="field-error" id="order-width-error" hidden></p></div>
             <div class="order-field"><label for="order-length">Длина полотна, мм</label><input id="order-length" name="length" type="number" min="1" step="any" inputmode="decimal" placeholder="Например, 2450" aria-describedby="order-length-error"><p class="field-error" id="order-length-error" hidden></p></div>
             <div class="order-field"><span class="order-field-label" id="order-tpi-label">Шаг зуба / TPI</span><div class="tpi-dropdown"><input type="hidden" name="tpi" value=""><button class="tpi-trigger" type="button" role="combobox" aria-expanded="false" aria-controls="tpi-options" aria-haspopup="listbox"><span class="tpi-caption">Шаг зуба / TPI</span><svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg></button><ul class="tpi-options" id="tpi-options" role="listbox" aria-label="Шаг зуба / TPI" hidden><li id="tpi-0" role="option" aria-selected="true" data-value="">Шаг зуба / TPI</li><li id="tpi-1" role="option" aria-selected="false" data-value="3/4 TPI">3/4 TPI</li><li id="tpi-2" role="option" aria-selected="false" data-value="4/6 TPI">4/6 TPI</li><li id="tpi-3" role="option" aria-selected="false" data-value="6/10 TPI">6/10 TPI</li><li id="tpi-4" role="option" aria-selected="false" data-value="Нужна помощь с подбором">Нужна помощь с подбором</li></ul></div></div>
             <div class="order-field"><label for="order-material">Материал / сплав</label><input id="order-material" name="material" type="text" maxlength="160" placeholder="Например, сталь"></div>
-            <div class="order-field form-wide"><label for="order-comment">Параметры оборудования / задача</label><textarea id="order-comment" name="comment" maxlength="2500" rows="3" placeholder="Модель станка, количество полотен или помощь с подбором" aria-describedby="order-parameters-error"></textarea><p class="field-error" id="order-parameters-error" hidden></p></div>
+            <div class="order-field form-wide"><label for="order-comment">Параметры оборудования / задача</label><textarea id="order-comment" name="comment" maxlength="2500" rows="2" placeholder="Модель станка, количество полотен или помощь с подбором" aria-describedby="order-parameters-error"></textarea><p class="field-error" id="order-parameters-error" hidden></p></div>
           </div>
           <div class="order-contacts">
-            <p class="order-contacts-title">Как с вами связаться</p>
             <div class="form-grid">
               <div class="order-field"><label for="order-email">E-mail <span class="required-mark">*</span></label><input id="order-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required placeholder="name@example.ru" aria-describedby="order-email-error"><p class="field-error" id="order-email-error" hidden></p></div>
               <div class="order-field"><label for="order-phone">Телефон <span class="required-mark">*</span></label><input id="order-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="24" required placeholder="+7 (___) ___-__-__" aria-describedby="order-phone-error"><p class="field-error" id="order-phone-error" hidden></p></div>
-              <div class="order-field form-wide"><label for="order-name">Имя / Компания <span class="order-optional">необязательно</span></label><input id="order-name" name="name" type="text" autocomplete="name" maxlength="160" placeholder="Как к вам обращаться"><p class="field-error" id="order-name-error" hidden></p></div>
+
             </div>
           </div>
+          <details class="order-extra"><summary>Добавить имя или компанию <span>необязательно</span></summary><div class="order-field"><label for="order-name">Имя / Компания <span class="order-optional">необязательно</span></label><input id="order-name" name="name" type="text" autocomplete="name" maxlength="160" placeholder="Как к вам обращаться"><p class="field-error" id="order-name-error" hidden></p></div></details>
           <div class="order-consent">
             <label class="consent-label"><input id="order-consent" name="consent" type="checkbox" required aria-describedby="order-consent-error"><span>Даю <a href="consent/" target="_blank" rel="noopener">согласие на обработку персональных данных</a> <span class="required-mark">*</span></span></label>
             <p class="field-error" id="order-consent-error" hidden></p><a class="order-policy" href="privacy/" target="_blank" rel="noopener">Политика обработки данных</a>
           </div>
-          <p class="request-error-summary" role="alert" hidden></p>
           <div class="visually-hidden" aria-hidden="true"><label for="order-website">Не заполняйте это поле</label><input id="order-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-          <div class="form-bottom"><button class="button" type="submit"><span class="request-submit-label">Отправить заявку</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button><p class="privacy-note"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span>Контакты используем<br>для ответа на заявку.</span></p></div><p class="form-status" role="status" hidden></p>
+          <div class="form-bottom"><button class="button" type="submit"><span class="request-submit-label">Отправить заявку</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div><p class="form-status" role="status" hidden></p>
         </form>
       </div><svg class="order-wave decorative" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6C487 99 1071 44 1358 58L1440 6V110H0Z"/></svg>
     </section>
@@ -138,6 +138,7 @@
       <p id="request-intro">Укажите параметры полотна и контакты для уточнения заказа.</p>
     </header>
     <form class="request-form" id="request-form" data-endpoint="api/request.php" novalidate>
+      <div class="request-error-summary" role="alert" hidden></div>
       <p class="request-required">Поля со <span>*</span> обязательны</p>
       <div class="request-field">
         <label for="request-parameters">Параметры заказа <span>*</span></label>
@@ -166,7 +167,6 @@
         <p class="field-error" id="request-consent-error" hidden></p>
         <details class="consent-details"><summary>Условия обработки данных</summary><p>Контакты и параметры заказа передаются ООО «Омега Комплект» для подбора полотна и ответа на заявку. <a href="consent/" target="_blank" rel="noopener">Отдельное согласие</a> · <a href="privacy/" target="_blank" rel="noopener">Политика обработки данных</a>.</p></details>
       </div>
-      <p class="request-error-summary" role="alert" hidden></p>
       <div class="visually-hidden" aria-hidden="true"><label for="request-website">Не заполняйте это поле</label><input id="request-website" name="website" type="text" tabindex="-1" autocomplete="off"></div><button class="button request-submit" type="submit"><span class="request-submit-label">Отправить заявку</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
       <p class="request-note"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>Контакты используем только для ответа по заявке.</p>
       <p class="request-status" role="status" hidden></p>

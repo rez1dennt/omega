@@ -14,6 +14,7 @@
     "render:legal": "node scripts/render-legal.mjs",
     "build:hosting": "node scripts/build-hosting.mjs",
     "verify:form-layout": "node scripts/form-layout-check.mjs",
-    "verify:request-data": "node scripts/request-data-check.mjs"
+    "verify:request-data": "node scripts/request-data-check.mjs",
+    "verify:validation": "node scripts/validation-check.mjs"
   }
 }

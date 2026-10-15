@@ -31,7 +31,7 @@ try {
       appearance: getComputedStyle(el.elements.width).appearance,
       scrollWidth: el.scrollWidth, width: el.clientWidth,
       placeholders: [...el.querySelectorAll('input:not([type=hidden]):not([type=checkbox])')].filter(input => {
-        if (!input.placeholder || input.closest('[aria-hidden="true"]')) return false;
+        if (!input.placeholder || input.closest('[aria-hidden="true"]') || !input.checkVisibility()) return false;
         const css = getComputedStyle(input); const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d'); context.font = css.font;
         return context.measureText(input.placeholder).width > input.clientWidth - parseFloat(css.paddingLeft) - parseFloat(css.paddingRight) - 3;

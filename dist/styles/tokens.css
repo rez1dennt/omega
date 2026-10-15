@@ -39,6 +39,9 @@
   --tracking-heading: -.035em;
   --control-height: 3.25rem;
   --control-height-small: 2.75rem;
+  --order-control-height: 2.875rem;
+  --order-textarea-height: 5rem;
+  --order-field-gap: .75rem;
   --space-section: clamp(3rem, 5vw, 5rem);
   --space-type-gap: 1.5rem;
   --u: clamp(.625px, calc(100vw / 1440), 1px);
