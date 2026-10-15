@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import {mkdir,writeFile} from 'node:fs/promises';
+import {mkdir,readFile,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
 import {createRequire} from 'node:module';
 import {resolve} from 'node:path';
 const require=createRequire(import.meta.url);
@@ -20,6 +21,13 @@ try {
   if(await page.locator('#cookie-banner').isVisible())await page.locator('#cookie-banner [data-cookie-save]').click();
   const root=page.locator('#benefit-showcase');
   assert.equal(await root.count(),1,'advantages become an interactive showcase');
+  const pictures=await root.locator('.benefit-photo').evaluateAll(images=>images.map(image=>image.getAttribute('src')));
+  assert.equal(new Set(pictures).size,4,'each advantage has a different photograph');
+  const hashes=await Promise.all(pictures.map(async src=>createHash('sha256').update(await readFile(`dist/${src}`)).digest('hex')));
+  assert.equal(new Set(hashes).size,4,'photograph files must have different contents, not just names');
+  for(const src of pictures)assert.match(src,/^assets\/images\/benefits\//,'benefit photos are separate from the rest of the website');
+  const repeated=await page.locator('img:not(.benefit-photo)').evaluateAll((images,pictures)=>images.filter(image=>pictures.includes(image.getAttribute('src'))).map(image=>image.getAttribute('src')),pictures);
+  assert.deepEqual(repeated,[],'benefits must not repeat photos used in other sections');
   await root.scrollIntoViewIfNeeded();
   const tabs=root.getByRole('tab');
   assert.equal(await tabs.count(),4);
@@ -34,6 +42,7 @@ try {
    assert.equal(await active.evaluate(el=>el.inert),false);
    assert.equal(await root.locator('.benefit-panel[inert]').count(),3);
    await active.locator('img').evaluate(img=>img.decode());
+   if([1440,320].includes(width))await active.screenshot({path:`qa/benefit-photo-${i+1}-${width}.png`,animations:'disabled',style:'.site-header,.skip-link{visibility:hidden!important}'});
    heights.push((await root.locator('.benefit-panels').boundingBox()).height);
    const geometry=await active.evaluate(el=>({
     overflow:document.documentElement.scrollWidth>innerWidth,

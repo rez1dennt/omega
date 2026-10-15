@@ -1,0 +1,61 @@
+{
+  "method": "Built-in image_gen; no CLI/API fallback",
+  "date": "2026-10-15",
+  "purpose": "Four distinct illustrative photo scenes for the benefit showcase, not documentary photographs of the client company",
+  "outputDirectory": "dist/assets/images/benefits",
+  "originalDirectory": "$CODEX_HOME/generated_images/01a13aa6-be5d-7da3-be81-2d07bb4f0e06",
+  "assets": [
+    {
+      "name": "manufacture",
+      "scene": "Размотка зубчатой ленты и подготовка длины",
+      "source": "exec-a770f4f6-5184-4610-8013-ada2ad7a3f6e.png",
+      "bytes": 134110,
+      "smallBytes": 48486
+    },
+    {
+      "name": "welding",
+      "scene": "Сварной стык крупным планом",
+      "source": "exec-660974cd-0d6a-4f02-8d94-582ffb0178ff.png",
+      "bytes": 150606,
+      "smallBytes": 52594
+    },
+    {
+      "name": "selection",
+      "scene": "Измерение ширины полотна штангенциркулем",
+      "source": "exec-4fb0d83f-6b09-46e2-ac5c-8a64065d00d3.png",
+      "bytes": 74840,
+      "smallBytes": 29700
+    },
+    {
+      "name": "shipping",
+      "scene": "Защитная упаковка полотна перед отправкой",
+      "source": "exec-9f42d1fc-df91-4d62-9341-48c96302004f.png",
+      "bytes": 104574,
+      "smallBytes": 38398
+    }
+  ],
+  "prompts": [
+    {
+      "key": "manufacture",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape editorial photograph for an industrial metal bandsaw blade service website. Premium realistic industrial photography, convincing physical engineering, graphite and brushed silver palette with tiny restrained burgundy accents, soft directional light, detailed metal texture, photographic not a render. A single scene, not a collage. Main subject large and clearly recognisable around the center-right (55-65 percent of the frame), upper middle useful for a mobile crop. Left quarter relatively dark and quiet. No text, lettering, logos, watermarks, labels, overlays or UI. No dramatic sci-fi machinery. This is generic illustrative photography, no specific company or factory identity. Scene: a wider three-quarter view of a substantial metal bandsaw blade decoiling and length preparation station in a tidy workshop. A large upright spool of narrow toothed steel strip on the right, one straight strip feeds horizontally across steel guide rollers into a robust precision length cutting fixture; spare neatly wound rolls in soft focus behind. The sharp individual teeth along one edge of the strip are recognisable. Wide industrial composition, no people. The defining subject is the large round steel coil and the feeding rollers, NOT a macro welding clamp or stacked finished sawblade loops."
+    },
+    {
+      "key": "welding",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape editorial photograph for an industrial metal bandsaw blade service website. Premium realistic industrial photography, convincing physical engineering, graphite and brushed silver palette with tiny restrained burgundy accents, soft directional light, detailed metal texture, photographic not a render. A single scene, not a collage. Main subject large and clearly recognisable around the center-right (55-65 percent of the frame), upper middle useful for a mobile crop. Left quarter relatively dark and quiet. No text, lettering, logos, watermarks, labels, overlays or UI. No dramatic sci-fi machinery. This is generic illustrative photography, no specific company or factory identity. Scene: very close macro view of flash butt welding the two ends of one narrow metal bandsaw blade, aligned end-to-end horizontally between two substantial worn steel clamping jaws. Single straight strip, sharp teeth along its upper edge; a small orange-white hot line exactly at the butt joint and a small burst of tiny sparks. Mechanical clamp detail fills the image. Blade ends meet flush, no overlaps. Background almost black and out of focus. No human and no handheld welding torch. The defining subject is the glowing narrow seam between the two clamps, not a whole industrial machine or a coiled blade."
+    },
+    {
+      "key": "selection",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape editorial photograph for an industrial metal bandsaw blade service website. Premium realistic industrial photography, graphite and brushed silver palette with tiny restrained burgundy accents, soft directional light, photographic not a render. One coherent scene, not a collage. Main subject large and clearly recognisable around the center-right (55-65 percent of the frame), upper middle useful for a mobile crop. Left quarter relatively dark and quiet. No logos, watermarks, readable text, lettering, labels, charts, overlays or website UI. This is generic illustrative photography, no specific company identity. Scene: close-up of an engineer's two hands in neat dark work sleeves using a real stainless steel mechanical vernier caliper to measure the width of a stationary narrow toothed bandsaw blade on a dark clean technical workbench. The caliper outside jaws correctly embrace the smooth lower edge and upper tooth edge of a single straight blade sample, demonstrating width measurement, not a tool floating over it. Mechanical caliper, no electronic display or invented digital numbers. Only two natural anatomically correct hands visible, no face. A second straight bandsaw blade sample and a metal ruler softly blurred on the table behind. The sharp saw teeth and the measuring tool remain recognizable. Defining subject: hands, caliper and measurement, not a coil, welding or factory machine."
+    },
+    {
+      "key": "shipping",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape editorial photograph for an industrial metal bandsaw blade service website. Premium realistic industrial photography, graphite and brushed silver palette with tiny restrained burgundy accents, soft directional light, photographic not a render. One coherent scene, not a collage. Main subject large and clearly recognisable around the center-right (55-65 percent of the frame), upper middle useful for a mobile crop. Left quarter relatively dark and quiet. No logos, watermarks, readable text, lettering, labels, charts, overlays or website UI. This is generic illustrative photography, no specific company identity. Scene: a tidy warehouse packing workbench with flat brown corrugated cardboard cartons for bandsaw blade loops, one open shallow square carton in foreground showing one compact triple-folded bandsaw blade held securely with dark ties, teeth covered by narrow burgundy protective edging. A worker's single gloved hand at the edge of the frame positions a cardboard protective insert. Two closed flat cartons stacked behind with plain dark packing straps, a small pallet and soft-focus storage racks in the background. No printed labels, company marks or invented shipping text. Boxes are realistic small parcel scale for tools, not huge cargo. Subject emphasis on prepared protected shipment of cutting tools, visibly different from any truck on a road, sparks, machinery, or measuring tools."
+    }
+  ],
+  "selectionEdit": {
+    "input": "exec-fd09cdc2-5844-4545-bed8-eaae7cc5a5e4.png",
+    "output": "exec-4fb0d83f-6b09-46e2-ac5c-8a64065d00d3.png",
+    "prompt": "Use case: precise-object-edit. Edit this single industrial measurement photograph. Keep the same two natural hands, workbench, lighting, blade sample and camera composition. Correct only the steel vernier caliper mechanics and placement: its TWO large lower outside-measurement jaws must be closed down to exactly embrace the width of the vertical bandsaw strip, with the fixed left jaw touching the left smooth blade edge and the movable right jaw touching the right toothed blade edge. No air gaps between the measuring faces and the two blade edges. Make it a recognisably correct mechanical vernier caliper with a single fixed jaw and a single sliding jaw, not extra prongs. Keep the bandsaw blade unmoving, the tool held horizontally by the right hand and the blade held by the left hand. Photorealistic, no extra fingers, no logos, no added overlay text. Preserve everything else."
+  },
+  "optimization": "ImageMagick -auto-orient -resize 1600x> / 800x> -strip -quality 84 -define webp:method=6"
+}

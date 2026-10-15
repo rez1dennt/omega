@@ -20,8 +20,11 @@
 .benefit-panel { position: relative; isolation: isolate; overflow: hidden; min-width: 0; min-height: var(--benefit-panel-height); padding: var(--benefit-panel-padding); color: var(--color-white); background: var(--brand-graphite); }
 .is-ready .benefit-panel { grid-area: 1/1; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--benefit-motion) var(--motion-ease), visibility 0s var(--benefit-motion); }
 .is-ready .benefit-panel.is-active { z-index: 1; opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
-.benefit-photo { position: absolute; z-index: -3; top: 0; right: 0; width: 70%; height: 100%; object-fit: cover; object-position: 65% center; filter: grayscale(1); transform: scale(1.1); transition: transform var(--benefit-motion) var(--motion-ease); }
-.benefit-panel-weld .benefit-photo { object-position: 85% center; }
+.benefit-photo { position: absolute; z-index: -3; top: 0; right: 0; width: 70%; height: 100%; object-fit: cover; object-position: var(--benefit-photo-position,center); filter: grayscale(1); transform: scale(1.1); transition: transform var(--benefit-motion) var(--motion-ease); }
+#benefit-panel-1 { --benefit-photo-position: 72% 52%; }
+#benefit-panel-2 { --benefit-photo-position: 55% 50%; }
+#benefit-panel-3 { --benefit-photo-position: 55% 48%; }
+#benefit-panel-4 { --benefit-photo-position: 62% 55%; }
 .benefit-panel.is-active .benefit-photo { transform: translate3d(var(--benefit-shift-x),var(--benefit-shift-y),0) scale(1.045); }
 .benefit-panel::before { content: ''; position: absolute; z-index: -2; inset: 0; background: linear-gradient(90deg,var(--brand-graphite) 18%,color-mix(in srgb,var(--brand-graphite) 94%,transparent) 38%,color-mix(in srgb,var(--brand-graphite) 20%,transparent) 78%),linear-gradient(0deg,color-mix(in srgb,var(--brand-graphite) 88%,transparent),transparent 65%); }
 .benefit-panel::after { content: ''; position: absolute; z-index: -1; inset: 0; pointer-events: none; background: radial-gradient(36rem circle at var(--benefit-spot-x) var(--benefit-spot-y),color-mix(in srgb,var(--brand-crimson) 20%,transparent),transparent 70%); }
@@ -48,7 +51,7 @@
   .benefit-tab { gap: .625rem; }
   .benefit-tab-description { display: none; }
   .benefit-panel { padding-top: var(--benefit-mobile-content-start); }
-  .benefit-photo { width: 100%; height: var(--benefit-photo-mobile-height); object-position: center; }
+  .benefit-photo { width: 100%; height: var(--benefit-photo-mobile-height); }
   .benefit-panel::before { background: linear-gradient(180deg,color-mix(in srgb,var(--brand-graphite) 80%,transparent),transparent 28%),linear-gradient(0deg,var(--brand-graphite) 0%,var(--brand-graphite) 48%,transparent 100%); }
   .benefit-content { width: 100%; max-width: none; }
   .benefit-content h3 br { display: none; }
