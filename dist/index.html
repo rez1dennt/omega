@@ -11,9 +11,10 @@
   <link rel="preload" href="assets/fonts/golos-text-variable.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="assets/images/bandsaw.webp" as="image" fetchpriority="high">
   <link rel="stylesheet" href="styles/tokens.css">
-  <link rel="stylesheet" href="styles/site.css"><link rel="stylesheet" href="styles/typography.css"><link rel="stylesheet" href="styles/equipment.css"><link rel="stylesheet" href="styles/benefits.css"><link rel="stylesheet" href="styles/contacts.css">
+  <link rel="stylesheet" href="styles/site.css"><link rel="stylesheet" href="styles/typography.css"><link rel="stylesheet" href="styles/equipment.css"><link rel="stylesheet" href="styles/benefits.css"><link rel="stylesheet" href="styles/contacts.css"><link rel="stylesheet" href="styles/overlays.css">
   <script src="scripts/phone-mask.js" defer></script>
   <script src="scripts/dialogs.js" defer></script>
+  <script src="scripts/navigation.js" defer></script>
   <script src="scripts/request-client.js" defer></script>
   <script src="scripts/site.js" defer></script>
   <script src="scripts/preferences.js" defer></script>
@@ -36,9 +37,18 @@
   </svg>
 
   <header class="site-header">
+    <div class="nav-backdrop" aria-hidden="true"></div>
     <div class="container header-inner">
       <a class="brand" href="#main" aria-label="Омега Комплект — на главную"><span class="brand-mark" aria-hidden="true"></span><span><strong>ОМЕГА КОМПЛЕКТ</strong></span></a>
-      <nav class="main-nav" id="main-nav" aria-label="Основная навигация"><a href="#production">О компании</a><a href="#machines">Полотна</a><a href="#equipment">Оборудование</a><a href="#delivery">Доставка</a><a href="#contacts">Контакты</a></nav>
+      <nav class="main-nav" id="main-nav" aria-label="Основная навигация">
+        <p class="mobile-nav-label">Навигация по сайту</p>
+        <a href="#production"><span>О компании</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a href="#machines"><span>Полотна</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a href="#equipment"><span>Оборудование</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a href="#delivery"><span>Доставка</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a href="#contacts"><span>Контакты</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <div class="mobile-nav-footer"><a class="nav-contact" href="tel:+78452529350">+7 (8452) 52-93-50</a><span>9:00–17:00 (МСК)</span><a class="button nav-request" href="#request-dialog" data-dialog="request-dialog">Оставить заявку<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+      </nav>
       <a class="header-phone" href="tel:+78452529350"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg><span>+7 (8452) 52-93-50</span></a>
       <a class="button button-small header-cta" href="#request-dialog" data-dialog="request-dialog">Оставить заявку</a>
       <button class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Открыть меню"><span></span><span></span><span></span></button>
@@ -220,10 +230,10 @@
           <p class="field-error" id="request-phone-error" hidden></p>
         </div>
       </div>
-      <div class="request-field">
+      <details class="request-name-details"><summary>Добавить имя / компанию <span>необязательно</span></summary><div class="request-field">
         <label for="request-name">Имя / Компания <span class="request-optional">необязательно</span></label>
         <input id="request-name" name="name" type="text" maxlength="160" autocomplete="name" placeholder="Как к вам обращаться">
-      </div>
+      </div></details>
       <div class="request-consent">
         <label class="consent-label"><input id="request-consent" name="consent" type="checkbox" required aria-describedby="request-consent-error"><span>Даю согласие на обработку персональных данных <span class="required-mark">*</span></span></label>
         <p class="field-error" id="request-consent-error" hidden></p>

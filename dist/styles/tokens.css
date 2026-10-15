@@ -77,4 +77,26 @@
   --motion-ease: cubic-bezier(.22,1,.36,1);
   --cookie-gap: 24px;
   --layer-header: 10;
+  --overlay-inset: .75rem;
+  --overlay-viewport-height: 100dvh;
+  --overlay-viewport-top: 0px;
+  --overlay-padding: 1rem;
+  --overlay-radius: 1rem;
+  --overlay-close-size: 2.75rem;
+  --overlay-control-height: 2.875rem;
+  --overlay-field-gap: .75rem;
+  --overlay-field-padding: .625rem;
+  --overlay-label: .875rem;
+  --overlay-title: 1.5rem;
+  --overlay-textarea-height: 5rem;
+  --overlay-edge: .0625rem;
+  --overlay-focus: .125rem;
+  --overlay-shadow: 0 1rem 3rem rgba(0,0,0,.24);
+  --nav-max-width: 28rem;
+  --nav-row-height: 3.25rem;
+  --nav-link-size: 1.125rem;
+  --nav-arrow-size: 1.25rem;
+  --nav-travel: .625rem;
+  --nav-contact-gap: .25rem;
+  --nav-backdrop: rgba(26,26,29,.62);
 }

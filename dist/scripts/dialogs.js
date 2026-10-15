@@ -1,18 +1,45 @@
 /* Shared dialog lifecycle for the landing page, legal pages and Cookie settings. */
 let activeDialog = null;
 let lockedPage = null;
+const scrollOwners = new Set();
 const dialogClosures = new WeakMap();
+function lockPageScroll(owner, opener) {
+  scrollOwners.add(owner);
+  if (lockedPage) return;
+  lockedPage = { x: scrollX, y: scrollY, opener };
+  document.documentElement.style.setProperty('--scrollbar-gap', `${Math.max(0, innerWidth - document.documentElement.clientWidth)}px`);
+  document.documentElement.classList.add('scroll-locked');
+  document.body.classList.add('scroll-locked');
+  scrollTo({ left: lockedPage.x, top: lockedPage.y, behavior: 'instant' });
+}
+function releasePageScroll(owner, returnFocus = true) {
+  scrollOwners.delete(owner);
+  if (scrollOwners.size || !lockedPage) return;
+  const page = lockedPage;
+  lockedPage = null;
+  document.body.classList.remove('scroll-locked');
+  document.documentElement.classList.remove('scroll-locked');
+  document.documentElement.style.removeProperty('--scrollbar-gap');
+  scrollTo({ left: page.x, top: page.y, behavior: 'instant' });
+  if (!returnFocus) return;
+  if (page.opener?.closest('#main-nav') && innerWidth < 1200) document.querySelector('.menu-toggle')?.focus({ preventScroll: true });
+  else page.opener?.focus({ preventScroll: true });
+}
+function updateOverlayViewport() {
+  const viewport = window.visualViewport;
+  document.documentElement.style.setProperty('--overlay-viewport-height', `${viewport?.height || innerHeight}px`);
+  document.documentElement.style.setProperty('--overlay-viewport-top', `${viewport?.offsetTop || 0}px`);
+}
+window.visualViewport?.addEventListener('resize', updateOverlayViewport);
+window.visualViewport?.addEventListener('scroll', updateOverlayViewport);
+window.addEventListener('resize', updateOverlayViewport);
+updateOverlayViewport();
 function openDialog(dialog, opener) {
   if (!dialog || dialog === activeDialog) return;
   document.dispatchEvent(new CustomEvent('site:dialog-open', { detail: { dialog, opener } }));
-  if (!lockedPage) {
-    lockedPage = { x: scrollX, y: scrollY, opener };
-    document.documentElement.style.setProperty('--scrollbar-gap', `${Math.max(0, innerWidth - document.documentElement.clientWidth)}px`);
-    document.documentElement.classList.add('dialog-open');
-    document.body.classList.add('dialog-open');
-    // Stop a smooth anchor/focus scroll already in flight before locking the page.
-    scrollTo({ left: lockedPage.x, top: lockedPage.y, behavior: 'instant' });
-  }
+  lockPageScroll('dialog', opener);
+  document.documentElement.classList.add('dialog-open');
+  document.body.classList.add('dialog-open');
   const previous = activeDialog;
   activeDialog = dialog;
   if (previous?.open) {
@@ -20,11 +47,15 @@ function openDialog(dialog, opener) {
     previous.close();
   }
   dialog.classList.remove('is-closing');
+  const autofocus = dialog.querySelector('[autofocus]');
+  const compact = matchMedia('(max-width: 599px), (max-height: 599px)').matches;
+  if (compact) autofocus?.removeAttribute('autofocus');
   dialog.showModal();
+  if (compact) autofocus?.setAttribute('autofocus', '');
   dialog.scrollTop = 0;
   const form = dialog.querySelector('form');
   if (form) form.scrollTop = 0;
-  const initial = dialog.querySelector('[autofocus]');
+  const initial = compact ? dialog.querySelector('[data-close-dialog]') : autofocus;
   initial?.focus({ preventScroll: true });
   if (initial?.tagName === 'TEXTAREA') { initial.setSelectionRange(0, 0); initial.scrollTop = 0; }
 }
@@ -67,14 +98,9 @@ document.querySelectorAll('dialog').forEach(dialog => {
     dialogClosures.get(dialog)?.();
     if (dialog !== activeDialog) return;
     activeDialog = null;
-    const page = lockedPage;
-    lockedPage = null;
     document.body.classList.remove('dialog-open');
     document.documentElement.classList.remove('dialog-open');
-    document.documentElement.style.removeProperty('--scrollbar-gap');
-    scrollTo({ left: page.x, top: page.y, behavior: 'instant' });
-    if (page.opener?.closest('#main-nav') && innerWidth < 1200) document.querySelector('.menu-toggle')?.focus({ preventScroll: true });
-    else page.opener?.focus({ preventScroll: true });
+    releasePageScroll('dialog');
   });
 });
 document.addEventListener('keydown', event => {

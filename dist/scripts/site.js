@@ -1,19 +1,5 @@
 /* Landing-page interactions and the PHP request workflow. */
 const header = document.querySelector('.site-header');
-const menuButton = document.querySelector('.menu-toggle');
-const navigation = document.querySelector('#main-nav');
-
-function setMenu(open, returnFocus = false) {
-  menuButton.setAttribute('aria-expanded', String(open));
-  menuButton.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
-  navigation.classList.toggle('is-open', open);
-  if (returnFocus) menuButton.focus({ preventScroll: true });
-}
-
-menuButton.addEventListener('click', () => setMenu(menuButton.getAttribute('aria-expanded') !== 'true'));
-navigation.addEventListener('click', event => { if (event.target.closest('a')) setMenu(false); });
-document.addEventListener('click', event => { if (!event.target.closest('.site-header')) setMenu(false); });
-window.matchMedia('(min-width: 1200px)').addEventListener('change', event => { if (event.matches) setMenu(false); });
 function updateHeader() { header.classList.toggle('is-scrolled', window.scrollY > 24); }
 window.addEventListener('scroll', updateHeader, { passive: true });
 updateHeader();
@@ -175,10 +161,6 @@ document.addEventListener('site:dialog-open', event => {
 attachRequestWorkflow(requestForm, () => requestForm.elements.parameters.value.trim());
 attachRequestWorkflow(orderForm, () => collectOrderParameters(orderForm));
 requestForm.addEventListener('reset', () => { requestDrafts.delete(activeRequestContext); lastOrderSummary = ''; });
-document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') setMenu(false, true);
-});
-
 /* Keep every brand inside the SVG frame, including the long names. */
 function fitMachineWord() {
   const text = document.querySelector('.machine-word text');
