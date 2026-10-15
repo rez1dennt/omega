@@ -61,6 +61,9 @@
   --benefit-photo-mobile-height: 18rem;
   --benefit-mobile-content-start: 14rem;
   --benefit-motion: 540ms;
+  --contacts-gap: 1.25rem;
+  --contacts-card-padding: clamp(1.25rem,2.5vw,2rem);
+  --contacts-map-height: 27rem;
   --u: clamp(.625px, calc(100vw / 1440), 1px);
   --container: calc(1288 * var(--u));
   --gutter: calc(76 * var(--u));

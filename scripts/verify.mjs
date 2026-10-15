@@ -1,3 +1,4 @@
+import {isolateYandexMap} from './map-fixture.mjs';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
@@ -8,6 +9,7 @@ const modules = process.env.CODEX_NODE_MODULES;
 const { chromium } = modules ? require(resolve(modules, 'playwright')) : require('playwright');
 const browser = await chromium.launch({ headless: true, channel: process.env.PLAYWRIGHT_CHANNEL || 'msedge' });
 const page = await browser.newPage();
+await isolateYandexMap(page);
 const errors = [];
 page.on('pageerror', error => errors.push(error.message));
 page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
@@ -63,16 +65,14 @@ try {
   const headerBefore = await page.locator('.site-header').boundingBox();
   await page.locator('#main-nav a[href="#contacts"]').click();
   assert.equal(await menu.getAttribute('aria-expanded'), 'false');
-  assert.equal(await page.locator('#contacts').evaluate(dialog => dialog.open), true);
+  assert.equal(await page.locator('#contacts').evaluate(section => section.tagName), 'SECTION');
+  assert.equal(await page.locator('dialog[open]').count(), 0);
   assert.match(await page.locator('#contacts').textContent(), /6455054459/);
   assert.match(await page.locator('#contacts').textContent(), /1116455002916/);
   const headerDuring = await page.locator('.site-header').boundingBox();
   assert.equal(headerBefore.width, headerDuring.width);
-  await page.keyboard.press('Escape');
-  await page.waitForFunction(() => !document.querySelector('#contacts').open);
-  assert.equal(await page.locator('#contacts').evaluate(dialog => dialog.open), false);
-  await page.waitForFunction(() => document.activeElement === document.querySelector('.menu-toggle'));
-  assert.equal(await menu.evaluate(element => element === document.activeElement), true);
+  await page.waitForFunction(() => document.activeElement === document.querySelector('#contacts'));
+  assert.equal(await page.locator('#contacts').evaluate(element => element === document.activeElement), true);
 
   await page.locator('[data-machine="PILOUS"]').click();
   assert.equal(await page.locator('#order-form textarea').inputValue(), 'Станок: PILOUS');
@@ -105,7 +105,7 @@ try {
   const linkChecks = await page.evaluate(() => [...document.querySelectorAll('a[href^="#"]')].filter(link => !document.querySelector(link.getAttribute('href'))).map(link => link.getAttribute('href')));
   assert.deepEqual(linkChecks, []);
   assert.deepEqual(errors, []);
-  await writeFile('qa/verification.json', JSON.stringify({ viewports: evidence, errors, failures, interactions: 'menu, Escape, contacts/delivery dialogs, stable header, machine selection, parameter preservation, request UI without submission, correct company identity: PASS' }, null, 2));
+  await writeFile('qa/verification.json', JSON.stringify({ viewports: evidence, errors, failures, interactions: 'menu, Escape, permanent contacts anchor, delivery dialog, stable header, machine selection, parameter preservation, request UI without submission, correct company identity: PASS; external map isolated and verified separately live' }, null, 2));
   assert.deepEqual(failures, []);
   console.log(`PASS: ${evidence.length} viewports; local assets, overflow, header, navigation, dialogs, machine selection and request UI. No console errors or outgoing submissions. Delivery not tested.`);
 } finally {

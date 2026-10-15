@@ -1,3 +1,4 @@
+import {isolateYandexMap} from './map-fixture.mjs';
 import assert from 'node:assert/strict';
 import { mkdir,writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
@@ -6,6 +7,7 @@ const require=createRequire(import.meta.url);
 const {chromium}=require(resolve(process.env.CODEX_NODE_MODULES,'playwright'));
 const browser=await chromium.launch({channel:'msedge',headless:true,ignoreDefaultArgs:['--hide-scrollbars']});
 const page=await browser.newPage();
+await isolateYandexMap(page);
 const failures=[],evidence=[];
 let apiRequests=0,nonGet=0;
 page.on('request',request=>{if(request.url().includes('/api/'))apiRequests++;if(request.method()!=='GET')nonGet++;});

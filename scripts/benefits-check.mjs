@@ -1,3 +1,4 @@
+import {isolateYandexMap} from './map-fixture.mjs';
 import assert from 'node:assert/strict';
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -7,6 +8,7 @@ const require=createRequire(import.meta.url);
 const {chromium}=require(resolve(process.env.CODEX_NODE_MODULES,'playwright'));
 const browser=await chromium.launch({channel:'msedge',headless:true,ignoreDefaultArgs:['--hide-scrollbars']});
 const page=await browser.newPage();
+await isolateYandexMap(page);
 const errors=[],evidence=[];
 let outgoing=0;
 page.on('pageerror',e=>errors.push(e.message));
@@ -106,6 +108,7 @@ try {
  await root.getByRole('tab').nth(0).click();
  assert.equal(await root.getByRole('tabpanel').evaluate(el=>getComputedStyle(el).transitionDuration),'0s');
  const fallback=await browser.newPage({javaScriptEnabled:false,viewport:{width:360,height:780}});
+ await isolateYandexMap(fallback);
  await fallback.goto('http://127.0.0.1:4173');
  assert.equal(await fallback.locator('.benefit-panel:visible').count(),4,'all benefits remain readable without JavaScript');
  await fallback.close();

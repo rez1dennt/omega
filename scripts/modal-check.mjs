@@ -1,3 +1,4 @@
+import {isolateYandexMap} from './map-fixture.mjs';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
@@ -9,6 +10,7 @@ const { chromium } = modules ? require(resolve(modules, 'playwright')) : require
 // Keep the real Windows scrollbar: compensation must also work with a nonzero gutter.
 const browser = await chromium.launch({ headless: true, channel: 'msedge', ignoreDefaultArgs: ['--hide-scrollbars'] });
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+await isolateYandexMap(page);
 const errors = [];
 let submissions = 0;
 page.on('pageerror', error => errors.push(error.message));
@@ -143,9 +145,8 @@ try {
   }
   await page.setViewportSize({ width: 1000, height: 780 });
   await page.locator('.menu-toggle').click();
-  await page.locator('#main-nav [data-dialog="contacts"]').click();
   await page.keyboard.press('Escape');
-  await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
+  await page.waitForFunction(() => document.querySelector('.menu-toggle').getAttribute('aria-expanded') === 'false');
   assert.equal(await page.locator('.menu-toggle').evaluate(element => element === document.activeElement), true, 'closed tablet navigation must return focus to the visible menu button');
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.locator('.header-cta').click();

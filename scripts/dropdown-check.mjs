@@ -1,3 +1,4 @@
+import {isolateYandexMap} from './map-fixture.mjs';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
@@ -6,6 +7,7 @@ const require = createRequire(import.meta.url);
 const { chromium } = require(resolve(process.env.CODEX_NODE_MODULES, 'playwright'));
 const browser = await chromium.launch({ headless: true, channel: 'msedge' });
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+await isolateYandexMap(page);
 page.setDefaultTimeout(5000);
 try {
   await page.goto('http://127.0.0.1:4173');

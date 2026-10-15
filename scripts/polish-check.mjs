@@ -1,3 +1,4 @@
+import {isolateYandexMap} from './map-fixture.mjs';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
@@ -7,11 +8,12 @@ const modules = process.env.CODEX_NODE_MODULES;
 const { chromium } = modules ? require(resolve(modules, 'playwright')) : require('playwright');
 const browser = await chromium.launch({ headless: true, channel: 'msedge', ignoreDefaultArgs: ['--hide-scrollbars'] });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await isolateYandexMap(page);
 const errors = [];
 const thirdParty = [];
 page.on('pageerror', error => errors.push(error.message));
 page.on('requestfailed', request => errors.push(request.url()));
-page.on('request', request => { if (!request.url().startsWith('http://127.0.0.1:4173')) thirdParty.push(request.url()); });
+page.on('request', request => { if (!request.url().startsWith('http://127.0.0.1:4173') && !request.url().startsWith('https://yandex.ru/map-widget/')) thirdParty.push(request.url()); });
 const evidence = [];
 try {
   await mkdir('qa', { recursive: true });
@@ -52,7 +54,8 @@ try {
   assert.equal(await page.evaluate(() => localStorage.length), 0, 'no preferences stored before a choice');
   await banner.getByRole('button', { name: 'Настройки' }).click();
   assert.equal(await page.locator('#cookie-settings').evaluate(el => el.open), true);
-  assert.match(await page.locator('#cookie-settings').textContent(), /Не используются/);
+  assert.match(await page.locator('#cookie-settings').textContent(), /Аналитика сайтаНе подключена/);
+  assert.match(await page.locator('#cookie-settings').textContent(), /Яндекс КартыВнешний сервис/);
   await page.getByRole('button', { name: 'Сохранить настройки' }).click();
   await banner.waitFor({ state: 'hidden' });
   await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
@@ -67,7 +70,7 @@ try {
   await page.getByRole('button', { name: 'Удалить сохранённый выбор' }).click();
   await banner.waitFor({ state: 'visible' });
   assert.equal(await page.evaluate(() => localStorage.getItem('omega-cookie-preferences')), null);
-  await banner.getByRole('button', { name: 'Только необходимые' }).click();
+  await banner.getByRole('button', { name: 'Понятно', exact: true }).click();
   await banner.waitFor({ state: 'hidden' });
 
   for (const route of ['/', '/privacy/', '/consent/']) {
@@ -121,7 +124,7 @@ try {
   assert.equal(await page.locator('.delivery-copy').evaluate(el => getComputedStyle(el).transform), 'none');
   assert.equal(await page.locator('.delivery-copy').evaluate(el => getComputedStyle(el).opacity), '1');
   assert.deepEqual(errors, []);
-  assert.deepEqual(thirdParty, [], 'no third-party trackers or requests from the site code');
+  assert.deepEqual(thirdParty, [], 'no unexpected third-party requests; the explicit Yandex map is isolated in regression tests');
   await writeFile('qa/polish-verification.json', JSON.stringify({ evidence, errors, thirdParty, checks: 'phone editing and paste; Cookie settings/persistence/deletion; legal routes; delivery layout; reduced motion: PASS' }, null, 2));
   console.log(`PASS: mask deletion and paste, Cookie lifecycle, ${evidence.length} route/viewport checks, delivery and reduced motion.`);
 } finally {
