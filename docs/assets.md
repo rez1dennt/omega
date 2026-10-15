@@ -1,5 +1,20 @@
 # Фотографии и шрифты
 
+## Оборудование — каталожные фотографии PILOUS, 15 октября 2026
+
+Четыре схемы оборудования заменены изображениями из официального каталога производителя. Это каталожные изображения техники, а не съёмка предприятия «Омега Комплект». Фото иллюстрируют категории; наличие конкретной модели на складе не заявляется. Источники и правообладатель — PILOUS. Новые изображения не создавались ImageGen.
+
+| Локальный WebP в `dist/assets/images/equipment/` | Изображённое оборудование | Размер | Источник |
+| --- | --- | --- | --- |
+| `hydraulic.webp` | ARG 235, гидроразгрузка | 736 × 800, 55288 байт | [Страница](https://www.pilous.cz/ru/metall/stanki-lentochnopilnye/s-gidrorazgruzkoj/arg-235), [файл](https://www.pilous.cz/uploads/fe_catalog_product_photogallery/01_235_cc8d798504bf73fbc31ebd7f6a9ffc21.png) |
+| `semiautomatic.webp` | ARG 300 plus S.A.F., полуавтомат | 414 × 362, 32764 байт | [Страница](https://www.pilous.cz/ru/metall/stanki-lentochnopilnye/poluavtomaticheskie/arg-300-plus-s-a-f), [файл](https://www.pilous.cz/uploads/fe_catalog_product/300_plus_SAF_9fe4fdacc25b8144b1ccf7e440b9da98.png) |
+| `automatic.webp` | ARG 300 CF-NC, автомат | 800 × 648, 60824 байт | [Страница](https://www.pilous.cz/ru/metall/stanki-lentochnopilnye/avtomaticheskie-chpu/arg-300-cf-nc-automat), [файл](https://www.pilous.cz/uploads/fe_catalog_product_photogallery/01_300_CF_NC_1ef6d0fd6c6caf11370becfb9e67a05a.png) |
+| `roller.webp` | Рольганг серии L с упором | 756 × 455, 26600 байт | [Страница](https://www.pilous.cz/ru/metall/rolgangi/serija-l), [файл](https://www.pilous.cz/user_uploads/METAL/Dopravniky/L/dopravn%C3%ADk%20L%20-KO.jpg) |
+
+Оптимизация: ImageMagick, удаление пустых полей `-trim +repage`, уменьшение до 800 × 800 без увеличения, `-strip -quality 86 -define webp:method=6`. Прозрачность PNG сохранена. CSS `grayscale(1)` согласует изображения с монохромными фото сайта, `object-fit: contain` сохраняет оборудование целиком. Файлы раздаются с самого сайта; внешние запросы к PILOUS при просмотре не выполняются.
+
+## Главные фотографии сайта
+
 Три фотографии созданы встроенным ImageGen для демонстрации. Они не являются съемкой предприятия клиента. Оптимизированы ImageMagick в WebP; оригиналы сохранены в стандартной папке generated_images.
 
 ## hero

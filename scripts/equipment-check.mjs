@@ -18,11 +18,27 @@ try {
   await page.goto('http://127.0.0.1:4173',{waitUntil:'networkidle'});
   assert.equal(await page.locator('#equipment').count(),1,'dedicated equipment sales section exists');
   if(await page.locator('#cookie-banner').isVisible()){await page.locator('#cookie-banner [data-cookie-save]').click();await page.locator('#cookie-banner').waitFor({state:'hidden'});}
+  await page.mouse.move(0,0);
   await page.evaluate(()=>document.fonts.ready);
   await page.locator('#equipment').scrollIntoViewIfNeeded();
   await page.evaluate(()=>document.querySelectorAll('#equipment .motion-reveal').forEach(el=>el.classList.add('is-visible')));
   assert.equal(await page.locator('#equipment .equipment-card').count(),3);
   assert.equal(await page.locator('#equipment .equipment-rollers').count(),1);
+  assert.equal(await page.locator('#equipment .equipment-photo').count(),4,'all four equipment categories have real product photographs');
+  await page.locator('#equipment .equipment-photo').evaluateAll(images=>Promise.all(images.map(image=>image.decode())));
+  const photos=await page.locator('#equipment .equipment-photo').evaluateAll(images=>images.map(image=>({
+   src:image.getAttribute('src'),alt:image.alt,naturalWidth:image.naturalWidth,
+   fit:getComputedStyle(image).objectFit,
+   width:image.getBoundingClientRect().width,height:image.getBoundingClientRect().height,
+   frameHeight:image.parentElement.clientHeight,
+  })));
+  for(const photo of photos){
+   assert.match(photo.src,/^assets\/images\/equipment\//);assert.ok(photo.alt.length>15);
+   assert.ok(photo.naturalWidth>=300);assert.equal(photo.fit,'contain');
+   assert.ok(photo.width>=160&&photo.height>=160,`${width}: product photograph is large enough to recognise`);
+   assert.ok(Math.abs(photo.height-photo.frameHeight)<=1,`photograph fills its intentional frame: ${JSON.stringify(photo)}`);
+  }
+  assert.equal(await page.locator('#equipment .equipment-sketch,.equipment-roller-visual svg').count(),0,'schematic illustrations are replaced');
   assert.equal(await page.locator('#equipment [data-request-equipment]').count(),5);
   assert.equal(await page.locator('.main-nav a[href="#equipment"],.footer-nav a[href="#equipment"]').count(),2);
   const geometry=await page.locator('#equipment').evaluate(el=>({
@@ -37,7 +53,7 @@ try {
   }));
   assert.ok(geometry.scrollWidth<=width);assert.deepEqual(geometry.clipped,[]);assert.equal(geometry.headerOverflow,false);
   assert.deepEqual(geometry.actionOverflow,[],`${width}: equipment actions stay inside their content column`);
-  evidence.push(geometry);
+  evidence.push({...geometry,photos});
   if([1440,768,360,320].includes(width))await page.locator('#equipment').screenshot({path:`qa/equipment-${width}.png`,animations:'disabled',style:'.site-header,.skip-link{visibility:hidden!important}'});
  }
  await page.setViewportSize({width:1280,height:900});

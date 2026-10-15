@@ -48,6 +48,10 @@
   --equipment-card-padding: 26px;
   --equipment-group-title: 1.75rem;
   --equipment-radius: 14px;
+  --equipment-photo-height: clamp(14rem, 18vw, 16rem);
+  --equipment-photo-padding: 1.5rem;
+  --equipment-photo-radius: .625rem;
+  --equipment-photo-tablet-width: 14rem;
   --u: clamp(.625px, calc(100vw / 1440), 1px);
   --container: calc(1288 * var(--u));
   --gutter: calc(76 * var(--u));
