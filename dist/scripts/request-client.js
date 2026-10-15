@@ -15,7 +15,7 @@ async function sendRequest(payload, endpointPath) {
     const response = await fetch(endpoint, {
       method: 'POST', credentials: 'same-origin', cache: 'no-store', signal: controller.signal,
       headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'X-CSRF-Token': setup.csrfToken },
-      body: JSON.stringify({ ...payload, consentVersion: '2026-10-14' }),
+      body: JSON.stringify({ ...payload, consentVersion: '2026-10-15' }),
     });
     const result = await parse(response);
     if (!response.ok || result.ok !== true || result.status !== 'accepted' || result.requestId !== payload.requestId) {
@@ -40,7 +40,7 @@ function collectOrderParameters(form) {
 
 function validateRequestPayload(payload) {
   const errors = {};
-  if (!payload.parameters) errors.parameters = 'Укажите хотя бы размер полотна или опишите задачу.';
+  if (!payload.parameters) errors.parameters = 'Укажите размеры или опишите задачу.';
   else if (payload.parameters.length > 3000) errors.parameters = 'Сократите описание до 3000 символов.';
   if (!payload.email) errors.email = 'Укажите e-mail для ответа.';
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email) || payload.email.length > 254) errors.email = 'Проверьте e-mail: например, name@example.ru.';

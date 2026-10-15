@@ -28,6 +28,20 @@ const geometry = () => page.evaluate(() => ({
   content: document.querySelector('.order-grid').getBoundingClientRect().toJSON(),
   overflow: getComputedStyle(document.body).overflow,
 }));
+// Measure the modal itself after responsive reveal/anchor motion has settled.
+// Locator.click also scrolls moving targets before dispatching the real click.
+const settleOpener = () => page.locator('.machine-description .text-link').evaluate(element => new Promise(resolve => {
+  let last = '', stableSince = performance.now();
+  const started = stableSince;
+  function frame(now) {
+    const rect = element.getBoundingClientRect();
+    const current = `${scrollY}:${rect.x}:${rect.y}:${rect.width}`;
+    if (current !== last) { last = current; stableSince = now; }
+    if (now - stableSince >= 150 || now - started >= 2500) resolve();
+    else requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}));
 function stable(before, during) {
   assert.ok(Math.abs(before.y - during.y) <= 1, `page scroll must stay unchanged: ${before.y} -> ${during.y}; widths ${before.header.width} -> ${during.header.width}`);
   for (const key of ['header', 'brand', 'content']) {
@@ -109,6 +123,7 @@ try {
   for (const width of [1280, 768, 390, 360, 320]) {
     await page.setViewportSize({ width, height: 780 });
     await page.locator('.machine-description .text-link').scrollIntoViewIfNeeded();
+    await settleOpener();
     const start = await geometry();
     await page.locator('.machine-description .text-link').click();
     const open = await geometry();
@@ -126,6 +141,12 @@ try {
     stable(start, await geometry());
     evidence.push({ width, before: start, during: open, after: await geometry() });
   }
+  await page.setViewportSize({ width: 1000, height: 780 });
+  await page.locator('.menu-toggle').click();
+  await page.locator('#main-nav [data-dialog="contacts"]').click();
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
+  assert.equal(await page.locator('.menu-toggle').evaluate(element => element === document.activeElement), true, 'closed tablet navigation must return focus to the visible menu button');
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.locator('.header-cta').click();
   await page.screenshot({ path: 'qa/modal-1440.png', animations: 'disabled' });

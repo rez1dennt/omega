@@ -4,7 +4,7 @@ declare(strict_types=1);
 use PHPMailer\PHPMailer\PHPMailer;
 
 const OMEGA_RECIPIENT = 'omegakomplekt@mail.ru';
-const OMEGA_CONSENT_VERSION = '2026-10-14';
+const OMEGA_CONSENT_VERSION = '2026-10-15';
 
 function omegaJson(int $status, array $data): never
 {
@@ -132,7 +132,7 @@ function omegaHandleRequest(array $config): never
         $mail->setFrom($config['smtp_username'], 'Омега Комплект — сайт');
         $mail->addAddress(OMEGA_RECIPIENT);
         $mail->addReplyTo($email);
-        $mail->Subject = 'Заявка на изготовление полотна — ' . substr($id, 0, 8);
+        $mail->Subject = 'Заявка с сайта «Омега Комплект» — ' . substr($id, 0, 8);
         $mail->isHTML(false);
         $mail->Body = "Новая заявка с сайта\n\nПараметры заказа:\n{$parameters}\n\nИмя / Компания: {$name}\nТелефон: +{$digits}\nE-mail: {$email}\n\nНомер заявки: {$id}\nВремя: {$acceptedAt}\nСогласие на обработку данных: подтверждено\nРедакция согласия: " . OMEGA_CONSENT_VERSION;
         if (!$mail->send()) throw new RuntimeException('Delivery not accepted');

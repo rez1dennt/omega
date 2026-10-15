@@ -119,13 +119,42 @@ const requestDialog = document.querySelector('#request-dialog');
 const requestForm = document.querySelector('#request-form');
 const requestStatus = requestForm.querySelector('.request-status');
 let lastOrderSummary = '';
+let activeRequestContext = 'blades';
+const requestDrafts = new Map();
+const requestCopy = {
+  title: document.querySelector('#request-title').firstChild.textContent,
+  intro: document.querySelector('#request-intro').textContent,
+  help: document.querySelector('#request-parameters-help').textContent,
+  placeholder: requestForm.elements.parameters.placeholder,
+};
 
 function prepareRequest(opener, forceTransfer = false) {
+  const equipment = opener?.dataset.requestEquipment;
+  const context = equipment ? `equipment:${equipment}` : 'blades';
+  if (context !== activeRequestContext) {
+    requestDrafts.set(activeRequestContext, { value: requestForm.elements.parameters.value, summary: lastOrderSummary });
+    const draft = requestDrafts.get(context);
+    requestForm.elements.parameters.value = draft?.value || '';
+    lastOrderSummary = draft?.summary || '';
+    activeRequestContext = context;
+  }
+  const kind = opener?.dataset.requestKind;
+  document.querySelector('#request-title').firstChild.textContent = equipment
+    ? kind === 'roller' ? 'Подбор рольганга' : kind === 'machine' ? 'Подбор станка' : 'Подбор оборудования'
+    : requestCopy.title;
+  document.querySelector('#request-intro').textContent = equipment
+    ? 'Расскажите о задаче и оставьте контакты — обсудим подходящее оборудование.' : requestCopy.intro;
+  document.querySelector('#request-parameters-help').textContent = equipment
+    ? kind === 'roller' ? 'Укажите длину и вес заготовок, нужную длину рольганга и модель станка, если он уже есть.' : 'Укажите материал, сечение заготовки и объём работ. Модель, комплектацию и стоимость уточним при подборе.'
+    : requestCopy.help;
+  requestForm.elements.parameters.placeholder = equipment
+    ? 'Опишите заготовку и задачу для оборудования' : requestCopy.placeholder;
   const lines = [];
-  if (opener?.hasAttribute('data-request-machine') && !/^Станок:/.test(comment.value)) {
+  if (equipment) lines.push(`Оборудование: ${equipment}`);
+  else if (opener?.hasAttribute('data-request-machine') && !/^Станок:/.test(comment.value)) {
     lines.push(`Станок: ${document.querySelector('.selected-machine-name').textContent}`);
   }
-  const orderSummary = collectOrderParameters(orderForm);
+  const orderSummary = equipment ? '' : collectOrderParameters(orderForm);
   if (orderSummary) lines.push(orderSummary);
   const summary = lines.join('\n');
   if (summary && (forceTransfer || summary !== lastOrderSummary || !requestForm.elements.parameters.value.trim())) {
@@ -133,6 +162,7 @@ function prepareRequest(opener, forceTransfer = false) {
     lastOrderSummary = summary;
     setRequestFieldError(requestForm, 'parameters', '');
   }
+  if (requestForm.dataset.validationShown === 'true') checkRequestForm(requestForm, () => requestForm.elements.parameters.value.trim());
   requestStatus.hidden = true;
 }
 
@@ -144,6 +174,7 @@ document.addEventListener('site:dialog-open', event => {
 
 attachRequestWorkflow(requestForm, () => requestForm.elements.parameters.value.trim());
 attachRequestWorkflow(orderForm, () => collectOrderParameters(orderForm));
+requestForm.addEventListener('reset', () => { requestDrafts.delete(activeRequestContext); lastOrderSummary = ''; });
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') setMenu(false, true);
 });
@@ -172,5 +203,6 @@ orderForm.addEventListener('reset', () => {
   caption.textContent = options[0].textContent;
   options.forEach((option,index) => option.setAttribute('aria-selected', String(index === 0)));
   closeDropdown();
-  lastOrderSummary = '';
+  if (activeRequestContext === 'blades') lastOrderSummary = '';
+  requestDrafts.delete('blades');
 });

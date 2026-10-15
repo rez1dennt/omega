@@ -10,6 +10,8 @@ function openDialog(dialog, opener) {
     document.documentElement.style.setProperty('--scrollbar-gap', `${Math.max(0, innerWidth - document.documentElement.clientWidth)}px`);
     document.documentElement.classList.add('dialog-open');
     document.body.classList.add('dialog-open');
+    // Stop a smooth anchor/focus scroll already in flight before locking the page.
+    scrollTo({ left: lockedPage.x, top: lockedPage.y, behavior: 'instant' });
   }
   const previous = activeDialog;
   activeDialog = dialog;
@@ -71,7 +73,7 @@ document.querySelectorAll('dialog').forEach(dialog => {
     document.documentElement.classList.remove('dialog-open');
     document.documentElement.style.removeProperty('--scrollbar-gap');
     scrollTo({ left: page.x, top: page.y, behavior: 'instant' });
-    if (page.opener?.closest('#main-nav') && innerWidth < 900) document.querySelector('.menu-toggle')?.focus({ preventScroll: true });
+    if (page.opener?.closest('#main-nav') && innerWidth < 1200) document.querySelector('.menu-toggle')?.focus({ preventScroll: true });
     else page.opener?.focus({ preventScroll: true });
   });
 });

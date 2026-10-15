@@ -1,0 +1,73 @@
+/* Equipment is a separate offer alongside bandsaw blades. */
+.equipment { padding-block: var(--space-section); background: var(--color-surface-alt); }
+.equipment-intro { display: grid; grid-template-columns: minmax(0,1.6fr) minmax(0,1fr); gap: 48px; align-items: end; margin-bottom: 40px; }
+.equipment-intro .eyebrow { margin-bottom: 16px; }
+.equipment-intro h2 > span { color: var(--brand-wine); }
+.equipment-intro > p { max-width: 400px; justify-self: end; font-size: var(--text-copy); color: var(--brand-gray); line-height: var(--leading-body); }
+.equipment-group-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px 24px; margin-bottom: 22px; }
+.equipment-group-heading h3 { font-size: var(--equipment-group-title); line-height: 1.2; letter-spacing: -.025em; }
+.equipment-group-heading p { font-size: var(--text-small); color: var(--brand-gray); }
+.equipment-types { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: var(--equipment-gap); }
+.equipment-card { min-width: 0; display: flex; flex-direction: column; padding: var(--equipment-card-padding); border: 1px solid var(--color-border); border-radius: var(--equipment-radius); background: var(--color-white); }
+.equipment-card-top { display: flex; align-items: start; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+.equipment-index { font-size: var(--text-small); font-weight: 600; color: var(--color-primary); letter-spacing: .08em; }
+.equipment-sketch { width: 170px; height: 76px; color: var(--brand-gray); fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.equipment-sketch .accent { stroke: var(--color-primary); }
+.equipment-card-body { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.equipment-card h4 { margin: 0; font-size: var(--text-card); font-weight: var(--weight-heading); line-height: 1.25; letter-spacing: -.025em; }
+.equipment-card-description { margin-top: 14px; margin-bottom: 20px; font-size: var(--text-copy); line-height: var(--leading-body); color: var(--brand-gray); }
+.equipment-feed { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 12px; margin: auto 0 0; padding-top: 16px; border-top: 1px solid var(--color-border); }
+.equipment-feed dt { font-size: var(--text-small); color: var(--brand-gray); }
+.equipment-feed dd { margin: 0; font-size: var(--text-control); font-weight: 500; }
+.equipment-card .text-link { align-self: start; margin-top: 18px; min-height: 44px; gap: 16px; }
+.equipment-rollers { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); align-items: center; gap: 40px; margin-top: 26px; padding: 34px; border-radius: var(--equipment-radius); background: var(--brand-graphite); color: var(--color-white); }
+.equipment-rollers-copy { min-width: 0; }
+.equipment-rollers .eyebrow { color: var(--color-muted-light); margin-bottom: 14px; }
+.equipment-rollers h3 { font-size: var(--text-heading-small); line-height: var(--leading-heading); }
+.equipment-rollers-copy > p:not(.eyebrow) { max-width: 600px; margin-top: 14px; font-size: var(--text-copy); line-height: var(--leading-body); }
+.equipment-uses { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 20px; font-size: var(--text-small); }
+.equipment-uses li { position: relative; padding-left: 13px; }
+.equipment-uses li::before { content: ''; position: absolute; top: .55em; left: 0; width: 5px; height: 5px; background: var(--color-primary); border-radius: 50%; }
+.equipment-rollers .button { margin-top: 24px; }
+.equipment-roller-visual { min-width: 0; margin: 0; }
+.equipment-roller-visual svg { display: block; width: 100%; height: auto; fill: none; stroke: var(--color-muted-light); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.equipment-roller-visual .accent { stroke: var(--color-primary); }
+.equipment-roller-visual figcaption { text-align: center; margin-top: 12px; color: var(--color-muted-light); font-size: var(--text-small); line-height: 1.5; }
+.equipment-assist { display: flex; align-items: center; justify-content: space-between; gap: 24px 40px; margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--color-border); }
+.equipment-assist strong { display: block; font-size: var(--text-card); line-height: 1.3; }
+.equipment-assist p { margin-top: 9px; font-size: var(--text-copy); color: var(--brand-gray); line-height: var(--leading-body); }
+.equipment-assist .text-link { flex-shrink: 0; }
+.main-nav { gap: 18px; }
+@media (max-width: 1099px) {
+  .equipment-intro { grid-template-columns: 1fr; gap: 22px; margin-bottom: 32px; }
+  .equipment-intro > p { max-width: 650px; justify-self: start; }
+  .equipment-types { grid-template-columns: 1fr; gap: 16px; }
+  .equipment-card { display: grid; grid-template-columns: 110px minmax(0,1fr); gap: 0 24px; }
+  .equipment-card-top { grid-row: 1/3; flex-direction: column; justify-content: start; gap: 16px; margin: 0; }
+  .equipment-sketch { width: 110px; height: 65px; }
+  .equipment-card-body, .equipment-card .text-link { grid-column: 2; }
+  .equipment-card-description { margin-bottom: 16px; }
+  .equipment-rollers { gap: 24px; padding: 28px; }
+}
+@media (max-width: 767px) {
+  .equipment-rollers { grid-template-columns: 1fr; }
+  .equipment-roller-visual { max-width: 460px; width: 100%; justify-self: center; }
+  .equipment-assist { align-items: start; flex-direction: column; gap: 14px; }
+}
+@media (max-width: 599px) {
+  .equipment { --equipment-card-padding: 22px; --equipment-group-title: 1.5rem; }
+  .equipment-intro h2 { font-size: var(--text-heading); }
+  .equipment-intro h2 br { display: none; }
+  .equipment-group-heading { gap: 9px; }
+  .equipment-card { display: flex; }
+  .equipment-card-top { flex-direction: row; align-items: start; margin-bottom: 18px; }
+  .equipment-sketch { width: 140px; height: 62px; }
+  .equipment-card h4 { font-size: 1.5rem; }
+  .equipment-feed { gap: 6px 12px; }
+  .equipment-card .text-link { margin-top: 12px; }
+  .equipment-rollers { padding: 24px; margin-top: 20px; gap: 20px; }
+  .equipment-rollers .button { padding-inline: 12px; gap: 8px; }
+  .equipment-rollers .button .icon { width: 20px; height: 20px; }
+  .equipment-uses { flex-direction: column; gap: 9px; }
+  .equipment-roller-visual figcaption { font-size: var(--text-fine); }
+}

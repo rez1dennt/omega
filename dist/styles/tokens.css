@@ -44,6 +44,10 @@
   --order-field-gap: .75rem;
   --space-section: clamp(3rem, 5vw, 5rem);
   --space-type-gap: 1.5rem;
+  --equipment-gap: 20px;
+  --equipment-card-padding: 26px;
+  --equipment-group-title: 1.75rem;
+  --equipment-radius: 14px;
   --u: clamp(.625px, calc(100vw / 1440), 1px);
   --container: calc(1288 * var(--u));
   --gutter: calc(76 * var(--u));
