@@ -49,6 +49,24 @@ h2 { font-size: var(--text-heading); line-height: var(--leading-heading); letter
 .order-copy > p:not(.eyebrow) { max-width: 500px; }
 .order-form input:not([type=hidden]), .order-form textarea, .tpi-trigger { font-size: var(--text-control); line-height: 1.5; min-height: var(--control-height); padding: 14px 16px; }
 .order-form textarea { min-height: 120px; }
+.order-form input[type=number] { appearance: textfield; -moz-appearance: textfield; }
+.order-form input[type=number]::-webkit-inner-spin-button,
+.order-form input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.order-grid { align-items: start; }
+.order-field { min-width: 0; }
+.order-field > label, .order-field-label { display: block; margin-bottom: 8px; font-size: var(--text-label); line-height: 1.4; color: var(--color-muted-light); }
+.order-contacts { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--brand-gray); }
+.order-contacts-title { margin-bottom: 18px; font-size: var(--text-body); font-weight: 500; }
+.order-optional { margin-left: 10px; font-size: var(--text-fine); color: var(--color-muted-light); }
+.order-consent { margin-top: 24px; font-size: var(--text-small); line-height: 1.5; }
+.order-consent a { text-decoration: underline; text-underline-offset: 3px; }
+.order-policy { display: inline-block; margin: 12px 0 0 28px; color: var(--color-muted-light); }
+.order-form .consent-label input { appearance: none; display: inline-block; flex-shrink: 0; width: 18px; height: 18px; min-height: 18px; margin: 2px 0 0; padding: 0; border: 1px solid var(--color-muted-light); border-radius: 4px; background: transparent; }
+.order-form .consent-label input:checked { background: var(--color-primary); border-color: var(--color-primary); }
+.order-form .field-error, .order-form .request-error-summary { margin-top: 8px; font-size: var(--text-small); line-height: 1.5; color: var(--color-white); }
+.order-form [aria-invalid=true] { border-color: var(--color-primary); }
+.order-form [aria-busy=true], .order-form button:disabled { cursor: progress; }
+.order-form button:disabled { opacity: .65; }
 .tpi-options { font-size: var(--text-control); }
 .tpi-options [role=option] { min-height: var(--control-height-small); }
 .form-bottom { flex-wrap: wrap; gap: 20px; }

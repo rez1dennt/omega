@@ -28,17 +28,14 @@ machines.forEach(link => {
     const name = link.dataset.machine;
     const text = comment.value.replace(/^Станок: [^\n]*(\n|$)/, '');
     comment.value = `Станок: ${name}${text ? `\n${text}` : ''}`;
+    orderForm.dispatchEvent(new Event('input', { bubbles: true }));
     machines.forEach(machine => machine.removeAttribute('aria-current'));
     link.setAttribute('aria-current', 'true');
     document.querySelector('.selected-machine-name').textContent = name;
     document.querySelector('.machine-word text').textContent = name;
+    fitMachineWord();
     status.hidden = true;
   });
-});
-orderForm.addEventListener('submit', event => {
-  event.preventDefault();
-  prepareRequest(null, true);
-  openDialog(requestDialog, orderForm.querySelector('button[type="submit"]'));
 });
 
 /* Accessible single-select combobox with keyboard and pointer navigation. */
@@ -84,6 +81,7 @@ function selectOption(index) {
   caption.textContent = options[index].textContent;
   options.forEach((option, item) => option.setAttribute('aria-selected', String(item === index)));
   closeDropdown(true);
+  orderForm.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
 trigger.addEventListener('click', () => listbox.hidden ? openDropdown() : closeDropdown());
@@ -120,32 +118,20 @@ window.addEventListener('resize', () => closeDropdown());
 const requestDialog = document.querySelector('#request-dialog');
 const requestForm = document.querySelector('#request-form');
 const requestStatus = requestForm.querySelector('.request-status');
-const errorSummary = requestForm.querySelector('.request-error-summary');
 let lastOrderSummary = '';
-
-function fieldError(field, message) {
-  const error = document.getElementById(`request-${field.name}-error`);
-  if (message) field.setAttribute('aria-invalid', 'true');
-  else field.removeAttribute('aria-invalid');
-  if (error) { error.textContent = message; error.hidden = !message; }
-}
 
 function prepareRequest(opener, forceTransfer = false) {
   const lines = [];
   if (opener?.hasAttribute('data-request-machine') && !/^Станок:/.test(comment.value)) {
     lines.push(`Станок: ${document.querySelector('.selected-machine-name').textContent}`);
   }
-  if (orderForm.elements.width.value) lines.push(`Ширина полотна: ${orderForm.elements.width.value} мм`);
-  const length = orderForm.elements.namedItem('length').value;
-  if (length) lines.push(`Длина полотна: ${length} мм`);
-  if (orderForm.elements.tpi.value) lines.push(`Шаг зуба: ${orderForm.elements.tpi.value}`);
-  if (orderForm.elements.material.value.trim()) lines.push(`Материал: ${orderForm.elements.material.value.trim()}`);
-  if (comment.value.trim()) lines.push(comment.value.trim());
+  const orderSummary = collectOrderParameters(orderForm);
+  if (orderSummary) lines.push(orderSummary);
   const summary = lines.join('\n');
   if (summary && (forceTransfer || summary !== lastOrderSummary || !requestForm.elements.parameters.value.trim())) {
     requestForm.elements.parameters.value = summary;
     lastOrderSummary = summary;
-    fieldError(requestForm.elements.parameters, '');
+    setRequestFieldError(requestForm, 'parameters', '');
   }
   requestStatus.hidden = true;
 }
@@ -156,92 +142,35 @@ document.addEventListener('site:dialog-open', event => {
   if (event.detail.dialog === requestDialog) prepareRequest(event.detail.opener);
 });
 
-function validationMessage(field) {
-  if (field.name === 'consent') return field.checked ? '' : 'Подтвердите согласие на обработку данных.';
-  if (!field.value.trim()) return 'Заполните это поле.';
-  if (field.name === 'email' && field.validity.typeMismatch) return 'Введите e-mail в формате name@example.ru.';
-  if (field.name === 'phone' && (!/^[+\d\s()-]+$/.test(field.value) || !/^(?:[78]\d{10}|\d{10})$/.test(field.value.replace(/\D/g, '')))) {
-    return 'Введите телефон: +7 и 10 цифр номера.';
-  }
-  return '';
-}
-
-const requiredFields = [...requestForm.querySelectorAll('[required]')];
-requiredFields.forEach(field => {
-  const recheck = () => {
-    if (field.hasAttribute('aria-invalid')) fieldError(field, validationMessage(field));
-    if (!requestForm.querySelector('[aria-invalid="true"]')) errorSummary.hidden = true;
-    requestStatus.hidden = true;
-  };
-  field.addEventListener('input', recheck);
-  field.addEventListener('change', recheck);
-});
-attachPhoneMask(requestForm.elements.phone);
-let submitting = false;
-let submissionId = '';
-let submissionSignature = '';
-requestForm.addEventListener('submit', async event => {
-  event.preventDefault();
-  if (submitting) return;
-  requestStatus.hidden = true;
-  let firstInvalid = null;
-  requiredFields.forEach(field => {
-    const message = validationMessage(field);
-    fieldError(field, message);
-    if (message && !firstInvalid) firstInvalid = field;
-  });
-  errorSummary.hidden = !firstInvalid;
-  if (firstInvalid) {
-    errorSummary.textContent = 'Проверьте поля, отмеченные малиновым цветом.';
-    firstInvalid.focus();
-    return;
-  }
-  const payload = {
-    parameters: requestForm.elements.parameters.value.trim(),
-    email: requestForm.elements.email.value.trim(),
-    phone: requestForm.elements.phone.value.trim(),
-    name: requestForm.elements.name.value.trim(),
-    consent: requestForm.elements.consent.checked,
-    website: requestForm.elements.website.value,
-  };
-  const signature = JSON.stringify(payload);
-  if (signature !== submissionSignature) {
-    submissionSignature = signature;
-    submissionId = crypto.randomUUID();
-  }
-  payload.requestId = submissionId;
-  const button = requestForm.querySelector('button[type="submit"]');
-  const label = button.querySelector('.request-submit-label');
-  const controls = [...requestForm.querySelectorAll('input,textarea,button')];
-  submitting = true;
-  requestForm.setAttribute('aria-busy', 'true');
-  controls.forEach(control => { control.disabled = true; });
-  label.textContent = 'Отправляем…';
-  try {
-    await sendRequest(payload);
-    requestStatus.textContent = 'Заявка отправлена. Спасибо! Свяжемся с вами по указанным контактам.';
-    requestStatus.dataset.state = 'success';
-    requestForm.reset();
-    submissionId = '';
-    submissionSignature = '';
-  } catch (error) {
-    for (const [name, message] of Object.entries(error.fieldErrors || {})) {
-      const field = requestForm.elements.namedItem(name);
-      if (field && typeof message === 'string' && message.length < 200) fieldError(field, message);
-    }
-    requestStatus.dataset.state = 'error';
-    requestStatus.textContent = error.message === 'rate_limited'
-      ? 'Слишком много попыток. Попробуйте через несколько минут или позвоните нам.'
-      : 'Не удалось подтвердить отправку. Данные сохранены в форме. Свяжитесь с нами: +7 (8452) 52-93-50.';
-  } finally {
-    submitting = false;
-    requestForm.removeAttribute('aria-busy');
-    controls.forEach(control => { control.disabled = false; });
-    label.textContent = 'Отправить заявку';
-    requestStatus.hidden = false;
-    requestStatus.scrollIntoView({ block: 'nearest', behavior: 'instant' });
-  }
-});
+attachRequestWorkflow(requestForm, () => requestForm.elements.parameters.value.trim());
+attachRequestWorkflow(orderForm, () => collectOrderParameters(orderForm));
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') setMenu(false, true);
+});
+
+/* Keep every brand inside the SVG frame, including the long names. */
+function fitMachineWord() {
+  const text = document.querySelector('.machine-word text');
+  const view = text.ownerSVGElement.viewBox.baseVal;
+  let size = 170;
+  text.setAttribute('font-size', String(size));
+  text.setAttribute('y', String(view.height / 2));
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const box = text.getBBox();
+    const scale = Math.min(1, view.width * .84 / box.width, view.height * .8 / box.height);
+    if (scale >= .999) break;
+    size *= scale;
+    text.setAttribute('font-size', String(size));
+  }
+  const box = text.getBBox();
+  text.setAttribute('y', String(view.height - box.y - box.height / 2));
+}
+fitMachineWord();
+document.fonts.ready.then(fitMachineWord);
+orderForm.addEventListener('reset', () => {
+  selectedIndex = 0; activeIndex = 0;
+  caption.textContent = options[0].textContent;
+  options.forEach((option,index) => option.setAttribute('aria-selected', String(index === 0)));
+  closeDropdown();
+  lastOrderSummary = '';
 });

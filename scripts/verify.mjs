@@ -88,7 +88,7 @@ try {
   assert.equal(await page.locator('#delivery-details').evaluate(dialog => dialog.open), false);
   let outgoingSubmissions = 0;
   page.on('request', request => { if (request.method() !== 'GET') outgoingSubmissions++; });
-  await page.locator('#order-form button[type="submit"]').click();
+  await page.locator('.machine-description .text-link').click();
   assert.equal(await page.locator('#request-dialog').evaluate(dialog => dialog.open), true);
   assert.equal(await page.locator('#request-parameters').inputValue(), 'Станок: JET\nМатериал: сталь');
   await page.locator('#request-email').fill('test@example.com');

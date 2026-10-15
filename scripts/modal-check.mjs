@@ -73,9 +73,9 @@ try {
   await page.getByRole('combobox').click();
   await page.getByRole('option', { name: '4/6 TPI', exact: true }).click();
   await page.locator('[data-machine="PILOUS"]').click();
-  await page.locator('#order-form button[type="submit"]').scrollIntoViewIfNeeded();
+  await page.locator('.machine-description .text-link').scrollIntoViewIfNeeded();
   const before = await geometry();
-  await page.locator('#order-form button[type="submit"]').click();
+  await page.locator('.machine-description .text-link').click();
   const during = await geometry();
   assert.equal(during.overflow, 'hidden');
   assert.equal(during.gutter, 0, 'vertical page scrollbar must disappear');
