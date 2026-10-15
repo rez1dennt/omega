@@ -23,4 +23,6 @@ Use case: photorealistic-natural. Asset type: industrial website wide delivery b
 
 Локальные файлы: dist/assets/images/bandsaw.webp, production.webp, delivery.webp. Все интерфейсные надписи, слои и линии выполнены HTML/CSS/SVG, не входят в фотографии.
 
-Текущие шрифты: Roboto Condensed 300 для тонкого заголовка и Roboto 400/500/700 для остальной страницы, Google Fonts. Локальные TTF с поддержкой кириллицы. Лицензии рядом с файлами шрифтов. Oswald использовался только в первой итерации.
+Текущий шрифт с 15 октября 2026 года: **Golos Text**. Один локальный вариативный TTF с кириллицей, диапазон 400–900; обычный текст 400, кнопки 600, заголовки 650. Источник: [официальный репозиторий Google Fonts](https://github.com/google/fonts/tree/main/ofl/golostext), разработка — Paratype. SIL Open Font License 1.1 сохранена рядом с файлом в `dist/assets/fonts/GolosText-OFL.txt`. Сайт не запрашивает шрифты у внешних сервисов.
+
+Roboto, Roboto Condensed и Oswald относятся к предыдущим вариантам; их файлы сохранены, но больше не подключаются.

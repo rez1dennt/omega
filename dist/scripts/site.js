@@ -13,7 +13,7 @@ function setMenu(open, returnFocus = false) {
 menuButton.addEventListener('click', () => setMenu(menuButton.getAttribute('aria-expanded') !== 'true'));
 navigation.addEventListener('click', event => { if (event.target.closest('a')) setMenu(false); });
 document.addEventListener('click', event => { if (!event.target.closest('.site-header')) setMenu(false); });
-window.matchMedia('(min-width: 900px)').addEventListener('change', event => { if (event.matches) setMenu(false); });
+window.matchMedia('(min-width: 1200px)').addEventListener('change', event => { if (event.matches) setMenu(false); });
 function updateHeader() { header.classList.toggle('is-scrolled', window.scrollY > 24); }
 window.addEventListener('scroll', updateHeader, { passive: true });
 updateHeader();
