@@ -99,4 +99,16 @@
   --nav-travel: .625rem;
   --nav-contact-gap: .25rem;
   --nav-backdrop: rgba(26,26,29,.62);
+  --pitch-padding: clamp(1rem,2.6vw,2rem);
+  --pitch-gap: 1.25rem;
+  --pitch-radius: 1rem;
+  --pitch-choice-size: 2rem;
+  --pitch-table-cell: .875rem;
+  --pitch-table-width: 62rem;
+  --pitch-first-column: 5rem;
+  --pitch-control-height: 3rem;
+  --pitch-border: .0625rem;
+  --pitch-half: .5rem;
+  --pitch-quarter: .25rem;
+  --pitch-motion: 220ms;
 }

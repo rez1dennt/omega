@@ -70,6 +70,24 @@ function selectOption(index) {
   orderForm.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
+document.addEventListener('site:pitch-select',event=>{
+  const {tpi,parameters}=event.detail;
+  const index=options.findIndex(option=>option.dataset.value===tpi);
+  if(index<0){event.preventDefault();return;}
+  const original=comment.value.split('\n').filter(line=>!line.startsWith('Подбор шага:')).join('\n').trim();
+  const next=[original,`Подбор шага: ${parameters}`].filter(Boolean).join('\n');
+  if(next.length>comment.maxLength) {
+    event.preventDefault();
+    status.textContent='Подбор не добавлен: сократите комментарий, чтобы в нём поместились размеры заготовки. Ваш текст и прежний шаг сохранены.';status.hidden=false;
+    comment.focus({preventScroll:true});
+    document.querySelector('#order').scrollIntoView({behavior:'instant',block:'start'});return;
+  }
+  selectOption(index);
+  comment.value=next;
+  orderForm.dispatchEvent(new Event('input',{bubbles:true}));
+  document.querySelector('#order').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+});
+
 trigger.addEventListener('click', () => listbox.hidden ? openDropdown() : closeDropdown());
 options.forEach((option, index) => {
   option.addEventListener('click', () => selectOption(index));

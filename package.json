@@ -20,6 +20,9 @@
     "verify:benefits": "node scripts/benefits-check.mjs",
     "verify:contacts": "node scripts/contacts-check.mjs",
     "verify:map-live": "node scripts/contacts-check.mjs --live-map",
-    "verify:mobile-overlays": "node scripts/mobile-overlays-check.mjs"
+    "verify:mobile-overlays": "node scripts/mobile-overlays-check.mjs",
+    "render:pitch": "node scripts/render-pitch-guide.mjs",
+    "verify:pitch-data": "node scripts/pitch-data-check.mjs",
+    "verify:pitch": "node scripts/pitch-guide-check.mjs"
   }
 }
