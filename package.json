@@ -23,6 +23,7 @@
     "verify:mobile-overlays": "node scripts/mobile-overlays-check.mjs",
     "render:pitch": "node scripts/render-pitch-guide.mjs",
     "verify:pitch-data": "node scripts/pitch-data-check.mjs",
-    "verify:pitch": "node scripts/pitch-guide-check.mjs"
+    "verify:pitch": "node scripts/pitch-guide-check.mjs",
+    "verify:pages": "node scripts/pages-check.mjs"
   }
 }

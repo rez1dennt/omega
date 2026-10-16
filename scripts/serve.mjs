@@ -5,10 +5,20 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
 const port = Number(process.env.PORT || 4173);
+const basePath = `/${(process.env.BASE_PATH || '').replace(/^\/+|\/+$/g, '')}`.replace(/\/$/, '');
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ttf': 'font/ttf', '.txt': 'text/plain; charset=utf-8' };
 http.createServer(async (request, response) => {
   try {
-    const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
+    const url = new URL(request.url, 'http://localhost');
+    if (basePath && url.pathname === basePath) {
+      response.writeHead(308, { Location: `${basePath}/${url.search}` }).end();
+      return;
+    }
+    if (!url.pathname.startsWith(`${basePath}/`)) {
+      response.writeHead(404).end('Not found');
+      return;
+    }
+    const pathname = decodeURIComponent(url.pathname.slice(basePath.length));
     const path = resolve(root, `.${pathname === '/' ? '/index.html' : pathname}`);
     if (!path.startsWith(root.endsWith(sep) ? root : `${root}${sep}`)) {
       response.writeHead(403).end('Forbidden');
@@ -21,4 +31,4 @@ http.createServer(async (request, response) => {
   } catch {
     response.writeHead(404).end('Not found');
   }
-}).listen(port, '127.0.0.1', () => console.log(`Local: http://127.0.0.1:${port}`));
+}).listen(port, '127.0.0.1', () => console.log(`Local: http://127.0.0.1:${port}${basePath}/`));

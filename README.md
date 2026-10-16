@@ -34,6 +34,22 @@
 
 `npm run dev`, затем http://127.0.0.1:4173. Установка зависимостей для самого сайта не нужна. Этот сервер показывает интерфейс и не исполняет PHP.
 
+## GitHub Pages
+
+Сайт: **https://rez1dennt.github.io/omega/**. В Settings → Pages → Build and deployment выбран **GitHub Actions**. Workflow `.github/workflows/pages.yml` публикует содержимое `dist/` при изменении сайта в `main`; его можно запустить вручную через Actions → Deploy website to GitHub Pages → Run workflow. Корень репозитория с README не публикуется.
+
+GitHub Pages показывает статический интерфейс. Для отправки заявок необходим PHP-хостинг из раздела «Почтовая форма»; SMTP остаётся выключенным до подключения. Workflow не запускает PHP и не содержит почтовых секретов.
+
+Проверка путей проекта перед публикацией (PowerShell):
+
+```powershell
+$env:PORT='4174'
+$env:BASE_PATH='/omega'
+npm run dev
+```
+
+В другом терминале: `npm run verify:pages`. Проверяются главная, политика и согласие по адресу `/omega/`, ресурсы, модули и интерфейс на 1280, 768, 360 и 320 px. Можно указать другой адрес через `BASE_URL` с завершающим `/`. Проверка блокирует обращения к API и любые отправки форм.
+
 ## Проверки
 
 `npm run verify`, `verify:typography`, `verify:modal`, `verify:polish`, `verify:dropdown`, `verify:mail`. Browser-проверкам нужен Playwright в node_modules или путь CODEX_NODE_MODULES. По указанию заказчика проверки не нажимают окончательную отправку и не тестируют доставку. PHP проверяется `php -l`. QA-скриншоты и отчёты не попадают в Git.
