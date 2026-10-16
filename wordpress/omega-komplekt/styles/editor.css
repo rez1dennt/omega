@@ -1,0 +1,4 @@
+@font-face { font-family: 'Golos Text'; font-style: normal; font-weight: 400 900; font-display: swap; src: url('../assets/fonts/golos-text-variable.ttf') format('truetype'); }
+.editor-styles-wrapper { font-family: var(--font-body); color: var(--color-text); font-size: var(--text-copy); line-height: var(--leading-body); }
+.editor-styles-wrapper h1, .editor-styles-wrapper h2, .editor-styles-wrapper h3 { font-family: var(--font-heading); line-height: var(--leading-heading); }
+.editor-styles-wrapper a { color: var(--color-primary); }

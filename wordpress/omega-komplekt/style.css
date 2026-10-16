@@ -1,0 +1,15 @@
+/*
+Theme Name: Омега Комплект
+Description: Корпоративная тема ООО «Омега Комплект». Самостоятельные шаблоны секций, локальные ресурсы и интерфейс будущего плагина контента и заявок.
+Version: 1.0.0
+Requires at least: 6.6
+Tested up to: 7.1
+Requires PHP: 8.1
+Author: Омега Комплект
+Text Domain: omega-komplekt
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Tags: featured-images, translation-ready
+*/
+
+/* The front-end cascade is registered in inc/assets.php. */

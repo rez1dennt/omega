@@ -1,0 +1,2 @@
+<?php defined( 'ABSPATH' ) || exit; ?>
+<footer class="legal-footer"><div class="container"><span>© <?php echo esc_html( wp_date( 'Y' ) ); ?> ООО «Омега Комплект»</span><a href="<?php echo esc_url( omega_theme_document_url( 'privacy', '' ) ); ?>">Политика обработки данных</a><a href="<?php echo esc_url( omega_theme_document_url( 'consent', '' ) ); ?>">Отдельное согласие</a><button class="cookie-reopen" type="button" data-cookie-settings>Настройки cookie</button></div></footer>

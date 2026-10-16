@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schemas.wp.org/wp/6.6/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": false,
+    "layout": {"contentSize": "52rem", "wideSize": "80.5rem"},
+    "color": {
+      "defaultPalette": false,
+      "palette": [
+        {"slug": "graphite", "name": "Графит", "color": "#1A1A1D"},
+        {"slug": "gray", "name": "Серый", "color": "#4E4E50"},
+        {"slug": "burgundy", "name": "Бордовый", "color": "#6F2232"},
+        {"slug": "wine", "name": "Винный", "color": "#950740"},
+        {"slug": "crimson", "name": "Малиновый", "color": "#C3073F"},
+        {"slug": "white", "name": "Белый", "color": "#FFFFFF"}
+      ]
+    },
+    "typography": {
+      "defaultFontSizes": false,
+      "fontFamilies": [{"slug": "golos", "name": "Golos Text", "fontFamily": "\"Golos Text\", Arial, sans-serif"}]
+    }
+  }
+}

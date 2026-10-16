@@ -24,6 +24,10 @@
     "render:pitch": "node scripts/render-pitch-guide.mjs",
     "verify:pitch-data": "node scripts/pitch-data-check.mjs",
     "verify:pitch": "node scripts/pitch-guide-check.mjs",
-    "verify:pages": "node scripts/pages-check.mjs"
+    "verify:pages": "node scripts/pages-check.mjs",
+    "prepare:wordpress": "node scripts/wordpress-fixture.mjs prepare",
+    "dev:wordpress": "node scripts/wordpress-fixture.mjs serve",
+    "verify:wordpress": "node scripts/wordpress-theme-check.mjs",
+    "build:wordpress": "node scripts/build-wordpress-theme.mjs"
   }
 }
