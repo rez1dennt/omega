@@ -116,5 +116,6 @@
   --selection-copy-width: 38rem;
   --brand-letter-width: .9em;
   --production-photo-height: 40rem;
-  --magnetic-photo-height: 20rem;
+  --production-badge-width: 23rem;
+  --production-badge-icon: 1.5rem;
 }

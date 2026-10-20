@@ -17,6 +17,7 @@
     "verify:request-data": "node scripts/request-data-check.mjs",
     "verify:validation": "node scripts/validation-check.mjs",
     "verify:equipment": "node scripts/equipment-check.mjs",
+    "verify:equipment-layout": "node scripts/equipment-layout-check.mjs",
     "verify:benefits": "node scripts/benefits-check.mjs",
     "verify:contacts": "node scripts/contacts-check.mjs",
     "verify:map-live": "node scripts/contacts-check.mjs --live-map",

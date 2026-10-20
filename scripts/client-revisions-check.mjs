@@ -67,7 +67,10 @@ try {
  assert.equal(await magnetic.count(),1,'one magnetic machine product');
  await magnetic.scrollIntoViewIfNeeded();
  await page.waitForFunction(()=>{const image=document.querySelector('.equipment-magnetic img');return image.complete&&image.naturalWidth>0;});
- assert.ok((await page.locator('.equipment-magnetic').boundingBox()).height<500,'portrait product photo keeps compact card height');
+ assert.equal(await page.locator('.equipment-types > .equipment-card').count(),4,'magnetic machine shares the four-card grid');
+ const magneticPhoto=await page.locator('.equipment-magnetic .equipment-photo-frame').boundingBox();
+ const sawPhoto=await page.locator('.equipment-types > .equipment-card .equipment-photo-frame').first().boundingBox();
+ assert.ok(Math.abs(magneticPhoto.height-sawPhoto.height)<=1,'magnetic photograph uses the shared card frame');
  await magnetic.click();
  assert.equal(await page.locator('#request-dialog').evaluate(el=>el.open),true);
  const requestBrandSnapshot=await page.locator('.request-brand').ariaSnapshot();
