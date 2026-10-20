@@ -37,6 +37,7 @@ try {
     const caption=await page.locator('.production-media figcaption').evaluate(el=>({box:el.getBoundingClientRect().toJSON(),parent:el.parentElement.getBoundingClientRect().toJSON(),icon:el.querySelector('svg').getBoundingClientRect().toJSON(),font:parseFloat(getComputedStyle(el).fontSize)}));
     assert.ok(caption.box.width<=369 && caption.box.height<=110,'IDEAL caption is a compact badge');
     assert.ok(caption.box.left>=caption.parent.left && caption.box.right<=caption.parent.right,'Caption stays inside photo');
+    assert.ok(caption.parent.right-caption.box.right>=8 && caption.parent.right-caption.box.right<=24,'IDEAL badge is aligned to the right edge of its photo');
     assert.ok(caption.icon.width<=28 && caption.font>=13,'Compact icon and readable caption');
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'No page overflow');
     if([1440,768,320].includes(width)){
