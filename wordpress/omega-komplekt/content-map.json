@@ -4,16 +4,17 @@
     "heading_1": "Ленточные",
     "heading_2": "полотна",
     "label_1": "под ваш станок.",
-    "paragraph_1": "Профессиональные полотна для обработки металла, алюминия и других материалов. Гарантия качества и стабильная работа оборудования.",
+    "paragraph_1": "Профессиональные полотна для резки металла. Гарантия качества и стабильная работа оборудования.",
     "label_2": "Подобрать полотно",
     "label_3": "Узнать больше",
     "label_4": "1 день",
     "label_5": "на изготовление",
     "label_6": "1 час",
     "label_7": "на сварку",
-    "label_8": "Основной поставщик",
-    "label_9": "Металл. Дерево.",
-    "label_10": "Пластик. Композиты.",
+    "label_8": "ДЛЯ ВАШЕГО ПРОИЗВОДСТВА",
+    "label_9": "Пилы и станки.",
+    "label_10": "Ленточные полотна",
+    "request_label": "Оставить заявку",
     "image_1": "assets/images/bandsaw.webp"
   },
   "advantages": {
@@ -88,8 +89,8 @@
     "image_8": "assets/images/benefits/shipping-800.webp"
   },
   "production": {
-    "label_1": "От замысла —",
-    "label_2": "к готовому результату.",
+    "label_1": "Сварка полотен на",
+    "label_2": "профессиональном оборудовании IDEAL",
     "eyebrow_1": "НАШЕ ПРОИЗВОДСТВО",
     "heading_1": "Точность —",
     "heading_2": "на каждом этапе.",
@@ -98,7 +99,7 @@
     "label_4": "Строгий контроль качества",
     "label_5": "Индивидуальный подход",
     "label_6": "Узнать о производстве",
-    "image_1": "assets/images/production.webp"
+    "image_1": "assets/images/production-ideal.webp"
   },
   "pitch-guide": {
     "eyebrow_1": "ПОДБОР ШАГА ЗУБА",
@@ -218,7 +219,17 @@
     "image_1": "assets/images/equipment/hydraulic.webp",
     "image_2": "assets/images/equipment/semiautomatic.webp",
     "image_3": "assets/images/equipment/automatic.webp",
-    "image_4": "assets/images/equipment/roller.webp"
+    "image_4": "assets/images/equipment/roller.webp",
+    "magnetic_heading": "Магнитные сверлильные станки",
+    "magnetic_note": "Для отверстий в металле",
+    "magnetic_index": "04",
+    "magnetic_eyebrow": "СВЕРЛЕНИЕ МЕТАЛЛА",
+    "magnetic_model": "LENZ Steyr-35",
+    "magnetic_description": "Для сверления отверстий в металлических заготовках и конструкциях. Поможем подобрать станок и оснастку под вашу задачу.",
+    "magnetic_type_label": "Тип оборудования",
+    "magnetic_type": "Магнитный сверлильный станок",
+    "magnetic_cta": "Оставить заявку",
+    "magnetic_image": "assets/images/equipment/magnetic-lenz-steyr-35.webp"
   },
   "delivery": {
     "label_1": "САРАТОВ",
@@ -267,5 +278,31 @@
     "label_15": "Проложить маршрут",
     "label_16": "Большая Садовая, 141 · офис 314",
     "label_17": "Открыть в Яндекс Картах"
+  },
+  "company": {
+    "name": "ООО «Омега Комплект»",
+    "brand": "ОМЕГА КОМПЛЕКТ",
+    "phone": "+7 (917) 206-21-00",
+    "phone_uri": "+79172062100",
+    "office_phone": "+7 (8452) 75-93-50",
+    "office_phone_uri": "+78452759350",
+    "email": "omegakomplekt@mail.ru",
+    "inn": "6455054459",
+    "kpp": "645501001",
+    "ogrn": "1116455002916",
+    "address": "410054, РФ, Саратовская область, г. Саратов, ул. Б. Садовая, д. 141, офис 314",
+    "city_line": "г. Саратов,",
+    "street_line": "ул. Б. Садовая, дом № 141,",
+    "office_line": "офис 314",
+    "hours": "9:00–17:00 (МСК)",
+    "site_title": "Омега Комплект — ленточные полотна под ваш станок",
+    "description": "Ленточные полотна, ленточнопильные станки и рольганги ООО «Омега Комплект». Подбор оборудования, изготовление полотен и доставка по России."
+  },
+  "selection": {
+    "eyebrow": "ПОД ВАШ СТАНОК",
+    "title": "Подобрать полотно",
+    "intro": "Укажите параметры и контакты. Если не знаете шаг зуба, воспользуйтесь таблицей.",
+    "table_label": "Таблица подбора шага зуба",
+    "table_hint": "Пруток и труба · значения TPI"
   }
 }

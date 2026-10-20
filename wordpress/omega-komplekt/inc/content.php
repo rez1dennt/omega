@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 /** Stable view-model boundary for a future content plugin; no options/CPT/storage here. */
 function omega_theme_content( string $section ): array {
     static $defaults = array();
-    $allowed = array( 'company', 'hero', 'advantages', 'production', 'pitch-guide', 'order', 'machines', 'equipment', 'delivery', 'contacts' );
+    $allowed = array( 'company', 'hero', 'advantages', 'production', 'pitch-guide', 'order', 'machines', 'equipment', 'delivery', 'contacts', 'selection' );
     if ( ! in_array( $section, $allowed, true ) ) {
         return array();
     }

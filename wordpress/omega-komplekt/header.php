@@ -14,7 +14,7 @@
     <?php get_template_part( 'template-parts/shared/header' ); ?>
 <?php else : ?>
 <header class="site-header"><div class="container header-inner">
-    <a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( omega_theme_contact( 'name' ) . ' — на главную' ); ?>"><span class="brand-mark" aria-hidden="true"></span><strong><?php echo esc_html( omega_theme_contact( 'brand' ) ); ?></strong></a>
+    <a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( omega_theme_contact( 'name' ) . ' — на главную' ); ?>"><span class="brand-mark" aria-hidden="true"></span><strong aria-label="<?php echo esc_attr( omega_theme_contact( 'brand' ) ); ?>"><?php echo omega_theme_wordmark(); ?></strong></a>
     <a class="legal-return" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'На сайт', 'omega-komplekt' ); ?> <span aria-hidden="true">→</span></a>
 </div></header>
 <?php endif; ?>

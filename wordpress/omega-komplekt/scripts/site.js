@@ -75,6 +75,7 @@ function selectOption(index) {
 
 document.addEventListener('site:pitch-select',event=>{
   const {tpi,parameters}=event.detail;
+  const inSelection=Boolean(orderForm.closest('#selection-dialog')?.open);
   const index=options.findIndex(option=>option.dataset.value===tpi);
   if(index<0){event.preventDefault();return;}
   const original=comment.value.split('\n').filter(line=>!line.startsWith('Подбор шага:')).join('\n').trim();
@@ -83,12 +84,12 @@ document.addEventListener('site:pitch-select',event=>{
     event.preventDefault();
     status.textContent='Подбор не добавлен: сократите комментарий, чтобы в нём поместились размеры заготовки. Ваш текст и прежний шаг сохранены.';status.hidden=false;
     comment.focus({preventScroll:true});
-    document.querySelector('#order').scrollIntoView({behavior:'instant',block:'start'});return;
+    if(!inSelection)document.querySelector('#order').scrollIntoView({behavior:'instant',block:'start'});return;
   }
   selectOption(index);
   comment.value=next;
   orderForm.dispatchEvent(new Event('input',{bubbles:true}));
-  document.querySelector('#order').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+  if(!inSelection)document.querySelector('#order').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
 });
 
 trigger.addEventListener('click', () => listbox.hidden ? openDropdown() : closeDropdown());
@@ -208,6 +209,5 @@ orderForm.addEventListener('reset', () => {
   if (activeRequestContext === 'blades') lastOrderSummary = '';
   requestDrafts.delete('blades');
 });
-
 
 })();

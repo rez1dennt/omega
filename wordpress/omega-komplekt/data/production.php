@@ -2,8 +2,8 @@
 defined( 'ABSPATH' ) || exit;
 
 return array(
-    'label_1' => 'От замысла —',
-    'label_2' => 'к готовому результату.',
+    'label_1' => 'Сварка полотен на',
+    'label_2' => 'профессиональном оборудовании IDEAL',
     'eyebrow_1' => 'НАШЕ ПРОИЗВОДСТВО',
     'heading_1' => 'Точность —',
     'heading_2' => 'на каждом этапе.',
@@ -12,5 +12,5 @@ return array(
     'label_4' => 'Строгий контроль качества',
     'label_5' => 'Индивидуальный подход',
     'label_6' => 'Узнать о производстве',
-    'image_1' => 'assets/images/production.webp',
+    'image_1' => 'assets/images/production-ideal.webp',
 );

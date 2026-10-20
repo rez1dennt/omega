@@ -24,9 +24,9 @@ try {
   await page.evaluate(()=>document.fonts.ready);
   await page.locator('#equipment').scrollIntoViewIfNeeded();
   await page.evaluate(()=>document.querySelectorAll('#equipment .motion-reveal').forEach(el=>el.classList.add('is-visible')));
-  assert.equal(await page.locator('#equipment .equipment-card').count(),3);
+  assert.equal(await page.locator('#equipment .equipment-card').count(),4);
   assert.equal(await page.locator('#equipment .equipment-rollers').count(),1);
-  assert.equal(await page.locator('#equipment .equipment-photo').count(),4,'all four equipment categories have real product photographs');
+  assert.equal(await page.locator('#equipment .equipment-photo').count(),5,'bandsaws, magnetic drill and rollers have real product photographs');
   await page.locator('#equipment .equipment-photo').evaluateAll(images=>Promise.all(images.map(image=>image.decode())));
   const photos=await page.locator('#equipment .equipment-photo').evaluateAll(images=>images.map(image=>({
    src:image.getAttribute('src'),alt:image.alt,naturalWidth:image.naturalWidth,
@@ -41,7 +41,7 @@ try {
    assert.ok(Math.abs(photo.height-photo.frameHeight)<=1,`photograph fills its intentional frame: ${JSON.stringify(photo)}`);
   }
   assert.equal(await page.locator('#equipment .equipment-sketch,.equipment-roller-visual svg').count(),0,'schematic illustrations are replaced');
-  assert.equal(await page.locator('#equipment [data-request-equipment]').count(),5);
+  assert.equal(await page.locator('#equipment [data-request-equipment]').count(),6);
   assert.equal(await page.locator('.main-nav a[href="#equipment"],.footer-nav a[href="#equipment"]').count(),2);
   const geometry=await page.locator('#equipment').evaluate(el=>({
    width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
@@ -96,5 +96,5 @@ try {
  assert.doesNotMatch(await readFile('php/private/request-handler.php','utf8'),/Subject\s*=\s*'Заявка на изготовление полотна/,'email subject must cover blades and equipment');
  assert.equal(requests,0);assert.deepEqual(errors,[]);
  await writeFile('qa/equipment.json',JSON.stringify({evidence,errors,requests},null,2));
- console.log('PASS: 4 equipment categories, 8 widths, navigation, category-specific modal copy, separate drafts and shared contacts. No submissions/API requests/mail.');
+ console.log('PASS: 5 equipment categories, 8 widths, navigation, category-specific modal copy, separate drafts and shared contacts. No submissions/API requests/mail.');
 } finally {await browser.close();}

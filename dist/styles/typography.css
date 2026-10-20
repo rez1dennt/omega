@@ -279,3 +279,27 @@ h2 { font-size: var(--text-heading); line-height: var(--leading-heading); letter
   .order-extra > summary { gap: 4px 8px; }
   .order-form .request-error-summary, .request-dialog .request-error-summary { padding: 13px 14px; }
 }
+
+/* Approved wordmark, two conversion paths and the client's actual IDEAL machine. */
+.brand-omega { display: inline-block; width: var(--brand-letter-width); height: .88em; margin-right: .025em; vertical-align: -.035em; fill: currentColor; }
+.hero-actions { flex-direction: row; flex-wrap: wrap; align-items: stretch; gap: var(--pitch-gap); }
+.hero-actions .button { min-width: 0; }
+.hero-actions .button-outline { border-color: var(--color-muted-light); background: transparent; }
+.hero-actions .button-outline:hover { background: var(--brand-gray); }
+.hero-learn { display: inline-flex; margin-block-start: var(--pitch-gap); }
+.production-media { display: flex; align-items: center; justify-content: center; width: 48%; padding: var(--pitch-gap); background: var(--color-surface-alt); border-radius: 0 var(--pitch-radius) var(--pitch-radius) 0; }
+.production-media > img { width: 100%; height: 100%; max-height: var(--production-photo-height); object-fit: contain; object-position: center; clip-path: none; filter: none; }
+.production-media figcaption { left: var(--pitch-gap); right: var(--pitch-gap); bottom: var(--pitch-gap); min-width: 0; max-width: none; padding: var(--pitch-gap); gap: var(--pitch-gap); font-size: var(--text-small); line-height: var(--leading-body); }
+.production-media figcaption .icon { width: var(--text-stat); height: var(--text-stat); }
+.production-media figcaption br { display: none; }
+@media (max-width: 767px) {
+  .production { padding-top: var(--production-photo-height); --production-photo-height: 27rem; }
+  .production-media { width: 100%; height: var(--production-photo-height); border-radius: 0; }
+  .production-media > img { padding-bottom: var(--space-section); }
+}
+@media (max-width: 599px) {
+  .hero-actions { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: var(--pitch-half); width: 100%; max-width: var(--selection-copy-width); }
+  .hero-actions .button { gap: var(--pitch-half); padding-inline: var(--pitch-half); min-height: var(--control-height); white-space: normal; font-size: var(--text-control); }
+  .hero-actions .button .icon { width: var(--pitch-gap); height: var(--pitch-gap); }
+  .production { --production-photo-height: 25rem; }
+}

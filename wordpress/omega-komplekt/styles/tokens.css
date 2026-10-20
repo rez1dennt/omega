@@ -111,4 +111,10 @@
   --pitch-half: .5rem;
   --pitch-quarter: .25rem;
   --pitch-motion: 220ms;
+  --selection-width: 52rem;
+  --selection-space: 1.5rem;
+  --selection-copy-width: 38rem;
+  --brand-letter-width: .9em;
+  --production-photo-height: 40rem;
+  --magnetic-photo-height: 20rem;
 }

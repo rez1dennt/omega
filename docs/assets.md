@@ -54,3 +54,10 @@ Use case: photorealistic-natural. Asset type: industrial website wide delivery b
 Текущий шрифт с 15 октября 2026 года: **Golos Text**. Один локальный вариативный TTF с кириллицей, диапазон 400–900; обычный текст 400, кнопки 600, заголовки 650. Источник: [официальный репозиторий Google Fonts](https://github.com/google/fonts/tree/main/ofl/golostext), разработка — Paratype. SIL Open Font License 1.1 сохранена рядом с файлом в `dist/assets/fonts/GolosText-OFL.txt`. Сайт не запрашивает шрифты у внешних сервисов.
 
 Roboto, Roboto Condensed и Oswald относятся к предыдущим вариантам; их файлы сохранены, но больше не подключаются.
+
+## Клиентские материалы и магнитный станок — 20 октября 2026
+
+- `dist/assets/images/production-ideal.webp` — фактическое фото сварочного станка IDEAL, предоставлено клиентом: `IMG_20261020_125304_1.jpg`. WebP 1197 × 1600, 147564 байта. ImageMagick: `-auto-orient -resize 1200x1600> -strip -quality 84 -define webp:method=6`. Исходник сохранён без изменений; фото в производстве показывается целиком через `object-fit: contain`.
+- `dist/assets/images/equipment/magnetic-lenz-steyr-35.webp` — LENZ Steyr-35, [карточка товара](https://rezpil.ru/product/oborudovanie-dlya-metalloobrabotki/sverlilnye-stanki/magnitnye-sverlilnye-stanki1/magnitnyy-sverlilnyy-stanok-lenz-steyr-35/), [фотография](https://rezpil.ru/upload/iblock/eb3/3v3jx0yz0pl0hnkvl3h23m0wkmdexn08/35-1.jpg). WebP 430 × 800, 25186 байт. ImageMagick: `-auto-orient -trim +repage -resize 800x800> -strip -quality 86 -define webp:method=6`. Локальное размещение, монохромный стиль существующих карточек, `object-fit: contain`. Цена и наличие поставщика не перенесены.
+- Начальная буква Ω в слове «Омега» повторяет форму в предоставленном `IMG_20261016_091328_630.jpg`; выполнена локальным SVG с `currentColor`. Существующий малиновый наклонный знак и палитра сайта сохранены. Цветной верхний символ исходного логотипа не используется.
+- Прежняя фотоиллюстрация `production.webp` сохранена в исходниках, но заменена фактической фотографией клиента в блоке производства.

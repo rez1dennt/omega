@@ -74,7 +74,7 @@ try {
   await close();
   assert.equal(await page.locator('.header-cta').evaluate(el => el === document.activeElement), true);
 
-  await page.locator('.hero-actions .button').click();
+  await page.locator('.hero-actions [data-dialog="request-dialog"]').click();
   assert.equal(await fields.locator('[name="parameters"]').inputValue(), 'Нужна помощь с подбором полотна');
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
@@ -117,9 +117,10 @@ try {
   await page.locator('.production-copy [data-dialog]').click();
   const locked = await geometry();
   await page.locator('#production-details .button').click();
-  assert.equal(await modal.evaluate(dialog => dialog.open), true);
+  assert.equal(await page.locator('#selection-dialog').evaluate(dialog => dialog.open), true);
   stable(locked, await geometry());
-  await close();
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
   assert.equal(await page.locator('.production-copy [data-dialog]').evaluate(el => el === document.activeElement), true);
 
   for (const width of [1280, 768, 390, 360, 320]) {
@@ -153,7 +154,7 @@ try {
   await page.screenshot({ path: 'qa/modal-1440.png', animations: 'disabled' });
   await close();
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.locator('.hero-actions .button').click();
+  await page.locator('.hero-actions [data-dialog="request-dialog"]').click();
   await close();
   assert.deepEqual(errors, []);
   assert.equal(submissions, 0);

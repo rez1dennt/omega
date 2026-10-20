@@ -104,6 +104,97 @@ async function dismissCookies() {
   }
 }
 
+async function checkClientRevisions() {
+  await page.setViewportSize({width:1280,height:900});
+  await page.goto(base.href, { waitUntil: 'networkidle' });
+  await dismissCookies();
+  assert.match(await page.locator('.hero-description').textContent(), /для резки металла\./);
+  assert.doesNotMatch(await page.locator('.hero-description').textContent(), /алюмини|других материалов/);
+  assert.equal(await page.locator('.hero-actions [data-dialog="request-dialog"]').count(), 1);
+  assert.equal(await page.locator('.hero-actions [data-dialog="selection-dialog"]').count(), 1);
+  assert.equal(await page.locator('.learn-link').getAttribute('href'), '#order');
+  assert.match(await page.locator('.material-label').textContent(), /Пилы и станки/);
+  assert.match(await page.locator('.production-media img').getAttribute('alt'), /IDEAL/);
+  const magnetic = page.locator('[data-request-equipment*="LENZ Steyr-35"]');
+  assert.equal(await magnetic.count(), 1, 'One magnetic drilling product with its own request context');
+  await magnetic.click();
+  assert.match(await page.locator('.request-brand').ariaSnapshot(), /О\s*МЕГА\s+КОМПЛЕКТ/, 'Request wordmark retains the first letter for screen readers');
+  assert.match(await page.locator('#request-parameters').inputValue(), /LENZ Steyr-35/);
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
+  for (const [width,height] of [[1280,900],[768,900],[360,740],[320,568],[844,390]]) {
+    await page.setViewportSize({width,height});
+    const opener = page.locator('.hero-actions [data-dialog="selection-dialog"]');
+    await opener.scrollIntoViewIfNeeded();
+    const before = await page.evaluate(() => scrollY);
+    await opener.click();
+    const dialog = page.locator('#selection-dialog');
+    await page.waitForFunction(() => document.querySelector('#selection-dialog').open);
+    assert.match(await dialog.locator('#selection-title').textContent(), /Подобрать полотно/, 'Selection view model renders its heading');
+    assert.match(await dialog.locator('.selection-guide > summary').textContent(), /Таблица подбора шага зуба/, 'Selection guide has its visible label');
+    assert.equal(await dialog.locator('#order-form').count(), 1, 'Shared blade form lives inside selection');
+    assert.equal(await page.locator('#order-form').count(), 1, 'No duplicate form identifiers');
+    assert.equal(await dialog.locator('#order-email').isVisible(), true);
+    await dialog.locator('#order-comment').fill('QA preserved selection comment');
+    const tableDetails = dialog.locator('details').filter({has: page.locator('#pitch-tab-rod')}).first();
+    await tableDetails.evaluate(element => { element.open = true; });
+    await dialog.locator('#pitch-tab-rod').click();
+    await dialog.locator('#pitch-rod-diameter').fill('60');
+    await dialog.locator('#pitch-panel-rod .pitch-find').click();
+    await dialog.locator('#pitch-panel-rod .pitch-choice').filter({hasText:'5/8'}).click();
+    assert.equal(await dialog.locator('[name="tpi"]').inputValue(), '5/8 TPI');
+    assert.match(await dialog.locator('#order-comment').inputValue(), /QA preserved selection comment/);
+    assert.match(await dialog.locator('#order-comment').inputValue(), /Пруток.*60.*5\/8/);
+    assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).overflow), 'hidden');
+    const geometry = await dialog.boundingBox();
+    assert.ok(geometry.y >= -1 && geometry.y + geometry.height <= height + 1, `${width}x${height}: selection fits viewport`);
+    assert.equal(await dialog.evaluate(el => el.scrollWidth > el.clientWidth + 1), false, 'Selection has no horizontal overflow');
+    await page.screenshot({path:resolve(qaRoot,`selection-${width}-${height}.png`),animations:'disabled'});
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.documentElement.classList.contains('scroll-locked'));
+    assert.equal(await page.locator('#order #order-form').count(), 1, 'Form returns to inline section');
+    assert.equal(await page.locator('#pitch-guide .pitch-card').count(), 1, 'Guide returns to standalone section');
+    assert.ok(Math.abs(await page.evaluate(() => scrollY)-before) <= 1, 'Selection restores page position');
+    assert.equal(await opener.evaluate(el => document.activeElement === el), true, 'Selection returns focus to opener');
+  }
+  console.log('PASS client revisions: hero, IDEAL, magnetic request, shared selection guide/TPI, drafts, scroll/focus at five viewport sizes; no submissions');
+}
+
+async function checkDelayedPitchModule() {
+  let releaseModule;
+  const gate = new Promise(resolve => { releaseModule = resolve; });
+  const handler = async route => { await gate; await route.continue(); };
+  await page.route('**/scripts/pitch-guide.js*', handler);
+  try {
+    await page.goto(base.href, {waitUntil:'commit'});
+    // Core may queue footer classic scripts behind a deferred module. Exercise early
+    // selection when available, otherwise release the module before the queued UI.
+    const early = await page.waitForFunction(() => document.querySelectorAll('.selection-placeholder').length === 3, null, {timeout:1500}).then(() => true, () => false);
+    if (early) {
+      await page.locator('.hero-actions [data-dialog="selection-dialog"]').click();
+      assert.equal(await page.locator('#selection-dialog .pitch-card').count(), 1);
+    }
+    releaseModule();
+    await page.waitForLoadState('domcontentloaded');
+    if (!early) await page.locator('.hero-actions [data-dialog="selection-dialog"]').click();
+    await page.waitForFunction(() => document.querySelector('#pitch-guide').classList.contains('is-ready'));
+    const dialog = page.locator('#selection-dialog');
+    await dialog.locator('.selection-guide').evaluate(el => {el.open=true;});
+    await dialog.locator('#pitch-tab-pipe').click();
+    await dialog.locator('#pitch-pipe-diameter').fill('100');
+    await dialog.locator('#pitch-pipe-wall').fill('4');
+    await dialog.locator('#pitch-panel-pipe .pitch-find').click();
+    await dialog.locator('#pitch-panel-pipe .pitch-choice').click();
+    assert.equal(await dialog.locator('[name="tpi"]').inputValue(), '8/12 TPI', 'Delayed module initializes guide moved into selection');
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.documentElement.classList.contains('scroll-locked'));
+    console.log(`PASS delayed WordPress pitch module (${early ? 'early selection' : 'core deferred queue'}): pipe lookup and TPI transfer; no submissions`);
+  } finally {
+    releaseModule();
+    await page.unroute('**/scripts/pitch-guide.js*', handler);
+  }
+}
+
 async function checkNoJSForms() {
   const noJSContext = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 320, height: 900 } });
   await noJSContext.route('**/*', guardRequest);
@@ -112,6 +203,18 @@ async function checkNoJSForms() {
     await noJS.goto(base.href, { waitUntil: 'networkidle' });
     for (const id of ['order-form', 'request-form']) assert.equal(await noJS.locator(`#${id} button[type="submit"]`).isDisabled(), true, `${id}: submit must start disabled without JavaScript to prevent native GET/history leakage`);
   } finally { await noJSContext.close(); }
+}
+
+if (process.argv.includes('--client-regression')) {
+  try { await checkClientRevisions(); }
+  finally { await browser.close(); }
+  process.exit(0);
+}
+
+if (process.argv.includes('--delayed-pitch-regression')) {
+  try { await checkDelayedPitchModule(); }
+  finally { await browser.close(); }
+  process.exit(0);
 }
 
 if (process.argv.includes('--nojs-regression')) {
@@ -163,6 +266,9 @@ try {
   for (const [route, kind] of [['qa-entry/', 'single'], ['?cat=1', 'archive'], ['?s=WordPress', 'search']]) {
     for (const width of [1280, 320]) await renderRoute(route, width, 200, kind);
   }
+
+  await checkClientRevisions();
+  await checkDelayedPitchModule();
 
   // Only local field validation: no submit event and no final valid form.
   await page.goto(base.href, { waitUntil: 'networkidle' });

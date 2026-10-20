@@ -1,7 +1,9 @@
 import {rodRanges,lookupRod,lookupPipe,parseDimension} from './pitch-data.js';
 const pitchSection=document.querySelector('#pitch-guide');
-const pitchTabs=[...pitchSection.querySelectorAll('[role="tab"]')];
-const pitchPanels=[...pitchSection.querySelectorAll('.pitch-panel')];
+// The live card can already be inside the selection dialog on a slow connection.
+const pitchCard=document.querySelector('.pitch-card');
+const pitchTabs=[...pitchCard.querySelectorAll('[role="tab"]')];
+const pitchPanels=[...pitchCard.querySelectorAll('.pitch-panel')];
 const numberLabel=value=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:8}).format(value);
 function activatePitchTab(index,focus=false) {
   pitchTabs.forEach((tab,item)=>{
@@ -91,6 +93,6 @@ pitchPanels.forEach((panel,index)=>{
     input.addEventListener('keydown',event=>{if(event.key==='Enter'&&input.type!=='checkbox'){event.preventDefault();findPitch();}});
   });
 });
-pitchSection.querySelector('.pitch-tabs').hidden=false;
+pitchCard.querySelector('.pitch-tabs').hidden=false;
 activatePitchTab(0);
 pitchSection.classList.add('is-ready');

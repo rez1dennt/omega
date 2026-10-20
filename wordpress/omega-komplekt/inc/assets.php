@@ -9,7 +9,7 @@ function omega_theme_asset_version( string $path ): string {
 function omega_theme_assets(): void {
     $previous = '';
     $styles = omega_theme_is_front()
-        ? array( 'tokens', 'site', 'typography', 'equipment', 'benefits', 'contacts', 'overlays', 'pitch-guide', 'wordpress' )
+        ? array( 'tokens', 'site', 'typography', 'equipment', 'benefits', 'contacts', 'overlays', 'pitch-guide', 'selection', 'wordpress' )
         : array( 'tokens', 'site', 'typography', 'overlays', 'wordpress' );
     foreach ( $styles as $name ) {
         $path = 'styles/' . $name . '.css';
@@ -19,7 +19,7 @@ function omega_theme_assets(): void {
     }
 
     $scripts = omega_theme_is_front()
-        ? array( 'phone-mask', 'dialogs', 'navigation', 'request-client', 'site', 'preferences', 'motion', 'benefits' )
+        ? array( 'phone-mask', 'dialogs', 'navigation', 'request-client', 'site', 'selection', 'preferences', 'motion', 'benefits' )
         : array( 'dialogs', 'preferences' );
     $previous = '';
     foreach ( $scripts as $name ) {

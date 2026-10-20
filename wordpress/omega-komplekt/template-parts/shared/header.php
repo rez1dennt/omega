@@ -2,7 +2,7 @@
 <header class="site-header">
     <div class="nav-backdrop" aria-hidden="true"></div>
     <div class="container header-inner">
-      <a class="brand" href="#main" aria-label="Омега Комплект — на главную"><span class="brand-mark" aria-hidden="true"></span><span><strong><?php echo esc_html( omega_theme_contact( 'brand' ) ); ?></strong></span></a>
+      <a class="brand" href="#main" aria-label="Омега Комплект — на главную"><span class="brand-mark" aria-hidden="true"></span><span><strong aria-label="<?php echo esc_attr( omega_theme_contact( 'brand' ) ); ?>"><?php echo omega_theme_wordmark(); ?></strong></span></a>
       <nav class="main-nav" id="main-nav" aria-label="Основная навигация">
         <p class="mobile-nav-label">Навигация по сайту</p>
         <a href="#production"><span>О компании</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>

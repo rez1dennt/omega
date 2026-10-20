@@ -31,7 +31,11 @@ try {
     await page.evaluate(()=>scrollTo({top:500,behavior:'instant'}));
     const before=await geometry();
     await page.locator('.menu-toggle').click();
-    await page.waitForFunction(()=>document.querySelector('#main-nav').contains(document.activeElement));
+    try { await page.waitForFunction(()=>document.querySelector('#main-nav').contains(document.activeElement)); }
+    catch (error) {
+      console.error('Menu focus diagnostic', {width,height,...await page.evaluate(()=>({active:document.activeElement?.outerHTML,header:document.querySelector('.site-header').className,expanded:document.querySelector('.menu-toggle').getAttribute('aria-expanded'),inert:document.querySelector('#main-nav').inert,navState}))});
+      throw error;
+    }
     await page.locator('#main-nav').evaluate(el=>Promise.all(el.getAnimations().map(animation=>animation.finished.catch(()=>{}))));
     stable(before,await geometry());
     const menu=await page.locator('#main-nav').evaluate(el=>({rect:el.getBoundingClientRect().toJSON(),scroll:el.scrollWidth,client:el.clientWidth}));
@@ -90,7 +94,7 @@ try {
     assert.ok(close.y>=0&&close.y+close.height<=844,`${id}: sticky close remains visible`);
     await info.locator('[data-close-dialog]').click();await page.waitForFunction(()=>!document.body.classList.contains('dialog-open'));
   }
-  await page.locator('.hero-actions .button').click();
+  await page.locator('.hero-actions [data-dialog="request-dialog"]').click();
   await page.setViewportSize({width:390,height:420});
   await page.locator('#request-email').focus();
   const shortBounds=await page.locator('#request-dialog').boundingBox();
