@@ -13,6 +13,11 @@ h2 { font-size: var(--text-heading); line-height: var(--leading-heading); letter
 .header-inner { gap: 20px; }
 .main-nav { font-size: var(--text-label); gap: 24px; }
 .header-phone, .footer-phone { font-size: var(--text-control); }
+.header-phones { display: grid; flex-shrink: 0; }
+.header-phones .header-phone { min-height: 1.75rem; line-height: 1.4; }
+.header-phones .icon { flex: none; }
+.footer-phones { display: grid; gap: .375rem; }
+.footer-phones .footer-phone { margin: 0; width: auto; min-height: 1.75rem; line-height: 1.4; }
 .site-header { --header-height: 80px; }
 :root { --header-height: 80px; }
 .hero { height: auto; }
@@ -124,7 +129,9 @@ h2 { font-size: var(--text-heading); line-height: var(--leading-heading); letter
 .legal-meta, .legal-footer { font-size: var(--text-small); }
 
 @media (max-width: 1199px) {
-  .header-phone { margin-left: auto; }
+  .header-phones { margin-left: auto; }
+  .header-phones .header-phone { margin-left: 0; }
+  .footer-phones { margin-left: auto; }
   .header-cta { display: none; }
   .main-nav { position: absolute; inset: var(--header-height) 0 auto; display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 18px var(--gutter) 24px; background: var(--brand-graphite); border-bottom: 1px solid var(--brand-gray); visibility: hidden; opacity: 0; transform: translateY(-8px); max-height: calc(100dvh - var(--header-height)); overflow: auto; }
   .main-nav.is-open { visibility: visible; opacity: 1; transform: translateY(0); }
@@ -186,6 +193,8 @@ h2 { font-size: var(--text-heading); line-height: var(--leading-heading); letter
   .header-inner { gap: 14px; }
   .brand { gap: 10px; }
   .header-phone { font-size: 0; }
+  .header-phones .header-phone { min-width: var(--control-height-small); min-height: var(--control-height-small); justify-content: center; gap: 0; }
+  .header-phones .header-phone-office { display: none; }
   .hero-copy { width: 100%; padding-top: 124px; padding-bottom: 0; }
   .hero h1 { letter-spacing: -.04em; line-height: 1.04; }
   .hero .eyebrow { letter-spacing: .2em; }
@@ -210,7 +219,8 @@ h2 { font-size: var(--text-heading); line-height: var(--leading-heading); letter
   .machine-description { padding: 24px; }
   .machine-description > p { font-size: var(--text-copy); }
   .footer-nav { flex-wrap: wrap; gap: 16px 22px; }
-  .footer-phone { width: 100%; margin: 0; font-size: var(--text-body); }
+  .footer-phones { width: 100%; margin: 0; order: 3; }
+  .footer-phone { font-size: var(--text-body); }
   .footer-top .button { margin-left: 0; }
   .footer-bottom > div { flex-direction: column; align-items: start; }
   .info-dialog { font-size: var(--text-control); }

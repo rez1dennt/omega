@@ -11,9 +11,8 @@
 .contact-card p { font-size: var(--text-copy); line-height: var(--leading-body); color: var(--brand-gray); }
 .contacts-main-phone { align-self: start; font-size: clamp(1.25rem,1.75vw,1.5rem); font-weight: 600; line-height: 1.3; white-space: nowrap; }
 .contacts-email { align-self: start; font-size: clamp(1rem,1.5vw,1.25rem); font-weight: 600; line-height: 1.4; color: var(--brand-wine); overflow-wrap: anywhere; }
-.contact-card .contacts-extra-label { font-size: var(--text-small); margin-top: auto; }
-.contacts-extra-phones { display: flex; flex-direction: column; gap: .5rem; font-size: var(--text-control); line-height: 1.5; }
-.contacts-extra-phones a { align-self: start; }
+.contacts-phone-list { display: flex; flex-direction: column; gap: .5rem; }
+.contact-card .contacts-phone-hours { font-size: var(--text-small); margin-top: auto; }
 .contacts-details { display: grid; gap: .5rem; font-size: var(--text-control); line-height: 1.5; }
 .contacts-details > div { display: flex; flex-wrap: wrap; gap: .5rem; }
 .contacts-details dt { color: var(--brand-gray); }

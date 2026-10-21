@@ -25,6 +25,13 @@ try{
   assert.equal(await contacts.locator('h2').textContent(),'Контакты');
   for(const text of ['141','314','6455054459','1116455002916','omegakomplekt@mail.ru','9:00–17:00'])assert.ok((await contacts.textContent()).includes(text),`contact details include ${text}`);
   assert.equal(await contacts.locator('a[href="tel:+79172012100"]').count(),1);
+  assert.equal(await contacts.locator('a[href="tel:+78452529350"]').count(),1);
+  for(const phone of ['+79172012100','+78452529350']){
+   assert.equal(await page.locator(`.site-footer a[href="tel:${phone}"]`).count(),1,'both phone numbers belong in the footer');
+   if(width>=1200)assert.equal(await page.locator(`.header-phones a[href="tel:${phone}"]`).isVisible(),true,'both phone numbers are visible in the desktop header');
+  }
+  const phoneSizes=await contacts.locator('a[href^="tel:"]').evaluateAll(links=>links.map(link=>getComputedStyle(link).fontSize));
+  assert.equal(phoneSizes[0],phoneSizes[1],'both contact phone numbers have equal prominence');
   assert.equal(await contacts.locator('a[href="mailto:omegakomplekt@mail.ru"]').count(),1);
   const map=contacts.locator('iframe');
   assert.equal(await map.count(),1);
@@ -37,7 +44,10 @@ try{
   const route=new URL(await contacts.locator('[data-map-route]').getAttribute('href'));
   assert.equal(route.searchParams.get('rtext'),'~51.535232,45.985011');
   if(await page.locator('#cookie-banner').isVisible())await page.locator('#cookie-banner [data-cookie-save]').click();
-  if(await page.locator('.menu-toggle').isVisible())await page.locator('.menu-toggle').click();
+  if(await page.locator('.menu-toggle').isVisible()){
+   await page.locator('.menu-toggle').click();
+   for(const phone of ['+79172012100','+78452529350'])assert.equal(await page.locator(`.mobile-nav-footer a[href="tel:${phone}"]`).isVisible(),true,'both phone numbers are available in mobile navigation');
+  }
   await page.locator('#main-nav a[href="#contacts"]').click();
   await page.waitForFunction(()=>location.hash==='#contacts');
   await page.waitForFunction(()=>{
