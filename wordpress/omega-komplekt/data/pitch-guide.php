@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 return array(
     'eyebrow_1' => 'ПОДБОР ШАГА ЗУБА',
-    'heading_1' => 'Точный шаг.',
+    'heading_1' => 'Шаг зуба.',
     'heading_2' => 'Под вашу заготовку.',
     'paragraph_1' => 'Укажите размер прутка или трубы.',
     'paragraph_2' => 'TPI — количество зубьев на дюйм.',

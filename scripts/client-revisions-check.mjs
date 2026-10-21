@@ -39,7 +39,7 @@ async function checkDelayedPitchModule() {
   await delayed.locator('#pitch-tab-pipe').click();
   await delayed.locator('#pitch-pipe-diameter').fill('40');await delayed.locator('#pitch-pipe-wall').fill('3');
   await delayed.locator('#pitch-panel-pipe .pitch-find').click();
-  assert.equal(await delayed.locator('#pitch-panel-pipe .pitch-choice strong').textContent(),'14','restored guide keeps pipe interaction');
+  assert.equal(await delayed.locator('#pitch-panel-pipe .pitch-choice strong').textContent(),'8/12','restored guide keeps pipe interaction');
   assert.deepEqual(errors,[]);assert.equal(api,0,'delayed-load regression never sends requests');
   console.log('PASS: delayed pitch module initializes inside an already-open selection, rod/TPI transfer and restored pipe table work. No requests.');
  } finally {release();await delayed.close();}

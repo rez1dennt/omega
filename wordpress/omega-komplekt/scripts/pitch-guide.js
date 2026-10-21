@@ -1,4 +1,4 @@
-import {rodRanges,lookupRod,lookupPipe,parseDimension,bahcoSource,bahcoDiameters,bahcoWalls,bahcoPitches} from 'omega-pitch-data';
+import {rodRanges,lookupRod,recommendPipe,parseDimension,bahcoSource,bahcoDiameters,bahcoWalls,bahcoPitches,lenoxSource,commonPipeDiameters} from 'omega-pitch-data';
 const pitchSection=document.querySelector('#pitch-guide');
 // The live card can already be inside the selection dialog on a slow connection.
 const pitchCard=document.querySelector('.pitch-card');
@@ -22,8 +22,8 @@ pitchTabs.forEach((tab,index)=>{
 });
 function clearPitchResult(panel) {
   panel.querySelector('.pitch-choices').replaceChildren();
-  panel.querySelector('.pitch-status').textContent='Укажите размеры — покажем значения из таблицы.';
-  panel.querySelector('.pitch-result-note').textContent='Выбранный шаг можно добавить в форму ниже.';
+  panel.querySelector('.pitch-status').textContent=panel.id==='pitch-panel-pipe'?'Укажите диаметр и стенку — покажем рекомендуемый шаг.':'Укажите размеры — покажем значения из таблицы.';
+  panel.querySelector('.pitch-result-note').textContent=panel.id==='pitch-panel-pipe'?'Биметаллическое полотно · стенка от 1,25 до 50 мм. Шаг по диаграмме LENOX.':'Выбранный шаг можно добавить в форму ниже.';
   panel.querySelectorAll('.is-match').forEach(cell=>cell.classList.remove('is-match'));
   panel.querySelectorAll('input[aria-invalid]').forEach(input=>input.removeAttribute('aria-invalid'));
   panel.querySelectorAll('.pitch-field-error').forEach(error=>{error.hidden=true;error.textContent='';});
@@ -31,8 +31,16 @@ function clearPitchResult(panel) {
 function readPitchField(input) {
   const value=parseDimension(input.value);
   if(Number.isNaN(value)) {
+    const fields={
+      'pitch-pipe-wall':['толщину стенки','4 или 2,5'],
+      'pitch-pipe-diameter':['наружный диаметр','89 или 108'],
+      'pitch-rod-diameter':['диаметр прутка','60']
+    };
+    const [dimension,example]=fields[input.id];
     input.setAttribute('aria-invalid','true');
-    const error=document.getElementById(`${input.id}-error`);error.textContent='Укажите размер больше нуля, например 40 или 2,5.';error.hidden=false;
+    const error=document.getElementById(`${input.id}-error`);
+    error.textContent=input.value.trim()?`Введите ${dimension} больше нуля, например ${example} мм.`:`Укажите ${dimension} в миллиметрах.`;
+    error.hidden=false;
   }
   return value;
 }
@@ -74,25 +82,23 @@ pitchPanels.forEach((panel,index)=>{
       panel.querySelector('.pitch-result-note').textContent=matches.length>1?'Выберите вариант для заявки — уточним подбор по материалу и станку.':'Добавьте шаг и размеры в форму заявки.';
     } else {
       const adjacent=inputs[2].checked;
-      const result=lookupPipe(diameter,wall,adjacent);
+      const result=recommendPipe(diameter,wall,adjacent);
       const description=`Труба Ø ${numberLabel(diameter)} мм, стенка ${numberLabel(wall)} мм`;
-      if(result.state==='match') {
-        panel.querySelector('.pitch-status').textContent=adjacent?`Для труб, лежащих рядом, используем строку стенки ${numberLabel(result.effectiveWall)} мм (${numberLabel(wall)} × 2).`:`${description}: шаг по таблице.`;
-        panel.querySelector(`[data-pipe-row="${result.row}"][data-pipe-column="${result.column}"]`).classList.add('is-match');
-        addPitchChoice(panel,result.pitch,`Ø ${numberLabel(diameter)} мм · стенка ${numberLabel(wall)} мм`,description+(adjacent?`; трубы рядом, строка ${numberLabel(result.effectiveWall)} мм`:''));
-        panel.querySelector('.pitch-result-note').textContent='Добавьте шаг и размеры в форму заявки.';
+      if(result.state==='recommendation') {
+        const status=panel.querySelector('.pitch-status');status.textContent=`${description}. ${adjacent?'Для пакета — на одну группу крупнее. ':''}`;
+        const link=document.createElement('a');link.href=lenoxSource.url+'#page=10';link.target='_blank';link.rel='noopener noreferrer';link.textContent='Диаграмма LENOX, стр. 10';status.append(link);
+        result.pitches.forEach(pitch=>addPitchChoice(panel,pitch,`Стенка ${numberLabel(wall)} мм · ${adjacent?'пакет':'одна труба'}`,`${description}; диаграмма LENOX, стр. 10${adjacent?'; пакет, на одну группу крупнее':''}`));
+        panel.querySelector('.pitch-result-note').textContent=result.nearBoundary?'При чтении печатной диаграммы толщина попадает в зону перехода. Показаны соседние варианты для уточнения по материалу, станку и серии полотна.':result.pitches.length>1?'Диаграмма допускает оба варианта шага. Добавьте нужный в заявку — уточним по материалу и станку.':'Рекомендация для биметаллического полотна. Добавьте шаг в заявку — проверим по вашему материалу и станку.';
       } else {
-        if(result.state==='reference') {
-          panel.querySelector(`[data-bahco-row="${result.row}"][data-bahco-column="${result.column}"]`).classList.add('is-match');
-          const provenance=`По справочнику BAHCO · Ø ${numberLabel(diameter)} × ${numberLabel(result.effectiveWall)} мм`;
-          const status=panel.querySelector('.pitch-status');status.textContent=provenance+(adjacent?` (стенка ${numberLabel(wall)} × 2 для труб рядом). `:'. ');
-          const link=document.createElement('a');link.href=bahcoSource.url+'#page=35';link.target='_blank';link.rel='noopener noreferrer';link.textContent='Каталог, стр. 35';status.append(link);
-          addPitchChoice(panel,result.pitch,`BAHCO · Ø ${numberLabel(diameter)} × ${numberLabel(result.effectiveWall)} мм`,`${description}; справочник BAHCO, стр. 35${adjacent?`; трубы рядом, строка стенки ${numberLabel(result.effectiveWall)} мм`:''}`);
-          panel.querySelector('.pitch-result-note').textContent='Рекомендация производителя BAHCO. Уточним выбор полотна по материалу и станку.';
+        if(result.reason==='geometry'||result.reason==='wall-range') {
+          const error=document.getElementById(`${inputs[1].id}-error`);
+          error.textContent=result.reason==='geometry'?'Толщина стенки должна быть меньше половины наружного диаметра. Иначе это сплошной пруток.':'Для этой диаграммы укажите толщину стенки от 1,25 до 50 мм.';
+          error.hidden=false;inputs[1].setAttribute('aria-invalid','true');inputs[1].focus();
+          panel.querySelector('.pitch-status').textContent='Проверьте толщину стенки — подсказка под полем.';
         } else {
-          panel.querySelector('.pitch-status').textContent='Для этих размеров нет подтверждённого значения.';
-          panel.querySelector('.pitch-result-note').textContent='Уточните подбор у специалиста: укажите размеры, материал и станок в заявке. Шаг между ячейками не рассчитываем.';
+          panel.querySelector('.pitch-status').textContent='Для такого пакета диаграмма не задаёт следующий более крупный шаг.';
         }
+        panel.querySelector('.pitch-result-note').textContent='Укажите параметры в заявке — специалист подберёт полотно для этой задачи.';
       }
     }
   }
@@ -105,7 +111,13 @@ pitchPanels.forEach((panel,index)=>{
     const common=document.createElement('details');common.className='pitch-common-diameters';
     const summary=document.createElement('summary');summary.textContent='Частые диаметры';
     const buttons=document.createElement('div');buttons.className='pitch-diameter-buttons';
-    bahcoDiameters.forEach(diameter=>{
+    panel.querySelector('.pitch-result-label').textContent='РЕКОМЕНДУЕМЫЙ ШАГ';
+    panel.querySelector('.pitch-adjacent span').textContent='Несколько труб в пакете';
+    const method=document.createElement('p');method.className='pitch-method';method.textContent='Ориентировочный подбор для биметаллических полотен по печатной диаграмме LENOX. Шаг зависит от толщины стенки; наружный диаметр нужен для проверки размеров трубы. Стенка — от 1,25 до 50 мм.';
+    panel.querySelector('.pitch-workbench').before(method);
+    panel.querySelector('.pitch-overlap').textContent='Для пакета LENOX рекомендует шаг на одну группу крупнее. Справочные таблицы ниже относятся к другим методикам и могут давать другие рекомендации.';
+    panel.querySelector('.pitch-reference summary').firstChild.textContent='Справочная таблица «Омега Комплект»';
+    commonPipeDiameters.forEach(diameter=>{
       const button=document.createElement('button');button.type='button';button.textContent=`${numberLabel(diameter)} мм`;
       button.addEventListener('click',()=>{inputs[0].value=String(diameter);clearPitchResult(panel);inputs[0].focus({preventScroll:true});});
       buttons.append(button);
@@ -114,12 +126,13 @@ pitchPanels.forEach((panel,index)=>{
     common.append(summary,buttons,note);inputs[0].closest('.pitch-field').append(common);
     const reference=document.createElement('details');reference.className='pitch-reference pitch-bahco-reference';
     const referenceSummary=document.createElement('summary');referenceSummary.textContent='Дополнительная таблица BAHCO';
-    const referenceNote=document.createElement('p');referenceNote.className='pitch-scroll-hint';referenceNote.textContent='Рекомендации для полотен BAHCO. Для размеров из таблицы «Омега Комплект» используем её значения. Диаметры и стенки — в мм, шаг — в TPI. ';
+    const referenceNote=document.createElement('p');referenceNote.className='pitch-scroll-hint';referenceNote.textContent='Отдельный справочник BAHCO. Автоматический подбор выше использует диаграмму LENOX; рекомендации разных производителей могут отличаться. Диаметры и стенки — в мм, шаг — в TPI. ';
     const sourceLink=document.createElement('a');sourceLink.href=bahcoSource.url+'#page=35';sourceLink.target='_blank';sourceLink.rel='noopener noreferrer';sourceLink.textContent='Источник: каталог BAHCO, стр. 35';referenceNote.append(sourceLink);
     const scroll=document.createElement('div');scroll.className='pitch-table-wrap pitch-pipe-scroll';scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label','Справочник BAHCO, горизонтальная прокрутка');
     const table=document.createElement('table');table.className='pitch-pipe-table pitch-bahco-table';
     table.innerHTML=`<caption class="visually-hidden">Рекомендации BAHCO для труб, каталог стр. 35</caption><thead><tr><th scope="col">Стенка,<br>мм</th>${bahcoDiameters.map(value=>`<th scope="col">${numberLabel(value)}</th>`).join('')}</tr></thead><tbody>${bahcoWalls.map((wall,row)=>`<tr><th scope="row">${wall}</th>${bahcoPitches[row].map((pitch,column)=>`<td data-bahco-row="${row}" data-bahco-column="${column}"${pitch?'':' aria-label="Нет данных"'}>${pitch||'—'}</td>`).join('')}</tr>`).join('')}</tbody>`;
     scroll.append(table);reference.append(referenceSummary,referenceNote,scroll);panel.append(reference);
+    clearPitchResult(panel);
   }
 });
 pitchCard.querySelector('.pitch-tabs').hidden=false;

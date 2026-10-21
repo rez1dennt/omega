@@ -1,12 +1,12 @@
 import {readFile,writeFile} from 'node:fs/promises';
-import {rodRanges,pipeDiameters,pipeWalls,pipePitches,bahcoPitches} from '../dist/scripts/pitch-data.js';
+import {rodRanges,pipeDiameters,pipeWalls,pipePitches,bahcoPitches,lenoxPitchBands} from '../dist/scripts/pitch-data.js';
 const arrow='<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>';
 const chevron='<svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>';
 const field=(id,label,placeholder)=>`<div class="pitch-field"><label for="${id}">${label}</label><input id="${id}" type="text" inputmode="decimal" maxlength="9" autocomplete="off" placeholder="${placeholder}" aria-describedby="${id}-error"><p id="${id}-error" class="pitch-field-error" hidden></p></div>`;
 const workbench=(kind,fields)=>`<div class="pitch-workbench" hidden><div class="pitch-controls" role="group" aria-label="Размеры ${kind==='rod'?'прутка':'трубы'}">${fields}<button class="button pitch-find" type="button">Найти шаг зуба${arrow}</button></div><div class="pitch-result"><p class="pitch-result-label">ВАШ ШАГ ЗУБА</p><p class="pitch-status" role="status" aria-live="polite">Укажите размеры — покажем значения из таблицы.</p><div class="pitch-choices"></div><p class="pitch-result-note">Выбранный шаг можно добавить в форму ниже.</p></div></div>`;
 const guide=`<!-- PITCH_GUIDE_START -->
     <section class="pitch-section" id="pitch-guide" aria-labelledby="pitch-title" tabindex="-1"><div class="container">
-      <div class="section-heading pitch-heading"><div><p class="eyebrow">ПОДБОР ШАГА ЗУБА</p><h2 id="pitch-title">Точный шаг.<br>Под вашу заготовку.</h2></div><p>Укажите размер прутка или трубы.<br>TPI — количество зубьев на дюйм.</p></div>
+      <div class="section-heading pitch-heading"><div><p class="eyebrow">ПОДБОР ШАГА ЗУБА</p><h2 id="pitch-title">Шаг зуба.<br>Под вашу заготовку.</h2></div><p>Укажите размер прутка или трубы.<br>TPI — количество зубьев на дюйм.</p></div>
       <div class="pitch-card"><div class="pitch-tabs" role="tablist" aria-label="Тип заготовки" hidden><button id="pitch-tab-rod" type="button" role="tab" aria-controls="pitch-panel-rod" aria-selected="true">Пруток</button><button id="pitch-tab-pipe" type="button" role="tab" aria-controls="pitch-panel-pipe" aria-selected="false" tabindex="-1">Труба</button></div>
       <div id="pitch-panel-rod" class="pitch-panel" aria-labelledby="pitch-rod-heading"><h3 id="pitch-rod-heading" class="pitch-panel-heading">Пруток</h3>
         ${workbench('rod',field('pitch-rod-diameter','Диаметр прутка, мм','Например, 60'))}
@@ -25,7 +25,7 @@ let html=await readFile('dist/index.html','utf8');
 if(html.includes('<!-- PITCH_GUIDE_START -->'))html=html.replace(/<!-- PITCH_GUIDE_START -->[\s\S]*?<!-- PITCH_GUIDE_END -->/,guide);
 else html=html.replace('    <section class="order-section dark-section"',`${guide}\n\n    <section class="order-section dark-section"`);
 if(!html.includes('id="pitch-guide"'))throw new Error('Pitch guide insertion point not found');
-const pitches=[...new Set(['3/4','4/6','6/10',...rodRanges.map(row=>row.pitch),...pipePitches.flat().filter(Boolean),...bahcoPitches.flat().filter(Boolean)])];
+const pitches=[...new Set(['3/4','4/6','6/10',...rodRanges.map(row=>row.pitch),...pipePitches.flat().filter(Boolean),...bahcoPitches.flat().filter(Boolean),...lenoxPitchBands.flatMap(band=>band.pitches)])];
 const options=['',...pitches.map(value=>`${value} TPI`),'Нужна помощь с подбором'];
 html=html.replace(/(<ul class="tpi-options"[^>]*>)[\s\S]*?(<\/ul>)/,(_,start,end)=>start+options.map((value,index)=>`<li id="tpi-${index}" role="option" aria-selected="${index===0}" data-value="${value}">${value||'Шаг зуба / TPI'}</li>`).join('')+end);
 await writeFile('dist/index.html',html);

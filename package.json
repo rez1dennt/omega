@@ -30,6 +30,8 @@
     "prepare:wordpress": "node scripts/wordpress-fixture.mjs prepare",
     "dev:wordpress": "node scripts/wordpress-fixture.mjs serve",
     "verify:wordpress": "node scripts/wordpress-theme-check.mjs",
-    "build:wordpress": "node scripts/build-wordpress-theme.mjs"
+    "build:wordpress": "node scripts/build-wordpress-theme.mjs",
+    "verify:pipe-continuous": "node scripts/pipe-continuous-check.mjs",
+    "verify:pitch-validation": "node scripts/pitch-validation-check.mjs"
   }
 }

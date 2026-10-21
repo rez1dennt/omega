@@ -69,3 +69,40 @@ export function lookupPipe(diameter, wall, adjacent = false) {
   if(referencePitch) return {state:'reference',pitch:referencePitch,effectiveWall,row:referenceRow,column:referenceColumn,source:bahcoSource};
   return {state:'missing',pitch:null,effectiveWall,row,column};
 }
+
+// LENOX 2026 industrial catalogue, p.10, "TUBING/PIPE/STRUCTURALS".
+// Published diagram coordinates in PDF points, not invented numeric TPI interpolation.
+// The drawing's metric labels/ticks are not perfectly aligned. A 5 pt transition
+// zone retains both adjacent published pitch groups instead of false precision.
+export const lenoxSource={name:'LENOX',page:10,url:'https://bynder.sbdinc.com/m/4a09882bef67f9e0/original/LXBSBR_HR.pdf',minWall:1.25,maxWall:50};
+export const lenoxWallAxis=[
+  [1.25,115.7934],[2.5,143.2521],[3.75,170.7108],[5,189.0166],
+  [6.25,216.4753],[7.5,234.7811],[10,253.0869],[12.5,271.3927],
+  [15,289.6985],[17.5,308.0043],[20,326.3101],[22.5,344.6158],
+  [25,362.9216],[37.5,381.2274],[50,399.5332],
+];
+export const lenoxPitchBands=[
+  {from:97.066,to:120.489,pitches:['14/18']},
+  {from:120.489,to:144.323,pitches:['10/14']},
+  {from:144.323,to:166.044,pitches:['8/12']},
+  {from:166.044,to:187.651,pitches:['6/10']},
+  {from:187.651,to:219.742,pitches:['6/8','5/8']},
+  {from:219.742,to:286.282,pitches:['4/6']},
+  {from:286.282,to:368.281,pitches:['3/4']},
+  {from:368.281,to:408.510,pitches:['2/3']},
+];
+export const commonPipeDiameters=[20,21.3,25,26.8,32,33.5,40,42.3,48,57,60,76,89,90,108,114,133,159,219,273,325,377,426,500];
+export function recommendPipe(diameter,wall,adjacent=false) {
+  const base={diameter,wall,adjacent,source:lenoxSource,pitches:[]};
+  if(![diameter,wall].every(n=>Number.isFinite(n)&&n>0))return {...base,state:'invalid',reason:'dimension'};
+  if(wall>=diameter/2)return {...base,state:'invalid',reason:'geometry'};
+  if(wall<lenoxSource.minWall||wall>lenoxSource.maxWall)return {...base,state:'outside',reason:'wall-range'};
+  const upper=lenoxWallAxis.findIndex(([value])=>value>=wall);
+  const [a,b]=upper===0?[lenoxWallAxis[0],lenoxWallAxis[0]]:[lenoxWallAxis[upper-1],lenoxWallAxis[upper]];
+  const x=a[0]===b[0]?a[1]:a[1]+(wall-a[0])/(b[0]-a[0])*(b[1]-a[1]);
+  const groups=lenoxPitchBands.flatMap((band,index)=>x>=band.from-5&&x<=band.to+5?[index]:[]);
+  // The same page directs bundled material to one coarser pitch group.
+  if(adjacent&&groups.some(index=>index===lenoxPitchBands.length-1))return {...base,state:'outside',reason:'bundle-range'};
+  const selected=[...new Set(groups.map(index=>index+(adjacent?1:0)))];
+  return {...base,state:'recommendation',nearBoundary:groups.length>1,bandIndexes:selected,pitches:[...new Set(selected.flatMap(index=>lenoxPitchBands[index].pitches))]};
+}

@@ -41,36 +41,33 @@ try {
  await page.locator('#pitch-tab-rod').focus();await page.keyboard.press('ArrowRight');
  assert.equal(await page.locator('#pitch-tab-pipe').getAttribute('aria-selected'),'true');
  await page.locator('#pitch-pipe-diameter').fill('40');await page.locator('#pitch-pipe-wall').fill('3');
- await page.locator('#pitch-panel-pipe .pitch-find').click();assert.equal(await page.locator('#pitch-panel-pipe .pitch-choice strong').textContent(),'14');
+ await page.locator('#pitch-panel-pipe .pitch-find').click();assert.equal(await page.locator('#pitch-panel-pipe .pitch-choice strong').textContent(),'8/12');
  await page.locator('#pitch-pipe-adjacent').check();await page.locator('#pitch-panel-pipe .pitch-find').click();
- assert.equal(await page.locator('#pitch-panel-pipe .pitch-choice strong').textContent(),'8/12');
- assert.match(await page.locator('#pitch-panel-pipe .pitch-status').textContent(),/6 мм/);
+ assert.equal(await page.locator('#pitch-panel-pipe .pitch-choice strong').textContent(),'6/10');
+ assert.match(await page.locator('#pitch-panel-pipe .pitch-status').textContent(),/одну группу крупнее/);
  await page.locator('#pitch-panel-pipe .pitch-choice').click();
- assert.equal(await page.locator('#order-form [name="tpi"]').inputValue(),'8/12 TPI');
+ assert.equal(await page.locator('#order-form [name="tpi"]').inputValue(),'6/10 TPI');
  assert.equal((await page.locator('#order-comment').inputValue()).split('\n').filter(line=>line.startsWith('Подбор шага:')).length,1,'previous lookup line is replaced');
  await page.locator('#pitch-pipe-adjacent').uncheck();await page.locator('#pitch-pipe-diameter').fill('20');await page.locator('#pitch-pipe-wall').fill('10');await page.locator('#pitch-panel-pipe .pitch-find').click();
- assert.equal(await section.locator('.pitch-choice:visible').count(),0);assert.match(await page.locator('#pitch-panel-pipe .pitch-status').textContent(),/нет подтверждённого значения/);
- await page.locator('#pitch-pipe-diameter').fill('90');await page.locator('#pitch-pipe-wall').fill('4');await page.locator('#pitch-panel-pipe .pitch-find').click();
- assert.deepEqual(await page.locator('#pitch-panel-pipe .pitch-choice strong').allTextContents(),['8/12'],'exact BAHCO reference supplies90mm');
- assert.equal(await page.locator('#pitch-panel-pipe [data-bahco-row].is-match').count(),1);
- assert.match(await page.locator('#pitch-panel-pipe .pitch-status').textContent(),/BAHCO/);
- assert.equal(await page.locator('.pitch-bahco-table tbody td').count(),350);
- await page.locator('#pitch-panel-pipe .pitch-choice').first().click();
- assert.match(await page.locator('#order-comment').inputValue(),/90.*4.*BAHCO.*35/);
- for(const [diameter,wall,pitch] of [['90','2','14/18'],['600','65','1,4/2'],['600','100','0,7/1']]) {
+ assert.equal(await section.locator('.pitch-choice:visible').count(),0);assert.match(await page.locator('#pitch-pipe-wall-error').textContent(),/половины наружного диаметра/);
+ assert.equal(await page.locator('.pitch-bahco-table tbody td').count(),350,'manufacturer reference remains literal');
+ for(const [diameter,wall,pitch] of [['89','3','8/12'],['90','3','8/12'],['108','3','8/12'],['90','5','6/10'],['108','5','6/8'],['89','5','5/8'],['108,5','3,1','8/12']]) {
   await page.locator('#pitch-pipe-diameter').fill(diameter);await page.locator('#pitch-pipe-wall').fill(wall);await page.locator('#pitch-panel-pipe .pitch-find').click();
-  assert.equal(await page.locator('#pitch-panel-pipe .pitch-choice strong').textContent(),pitch);
-  await page.locator('#pitch-panel-pipe .pitch-choice').click();
-  assert.equal(await page.locator('#order-form [name="tpi"]').inputValue(),`${pitch} TPI`,'every manufacturer pitch transfers to the available form option');
+  assert.ok((await page.locator('#pitch-panel-pipe .pitch-choice strong').allTextContents()).includes(pitch),`${diameter}x${wall} covered`);
+  assert.match(await page.locator('#pitch-panel-pipe .pitch-status').textContent(),/LENOX/);
+  await page.getByRole('button',{name:`Добавить ${pitch} TPI в заявку`,exact:true}).click();
+  assert.equal(await page.locator('#order-form [name="tpi"]').inputValue(),`${pitch} TPI`,'all recommended pitches transfer');
+  assert.match(await page.locator('#order-comment').inputValue(),/диаграмма LENOX, стр. 10/);
  }
- await page.locator('#pitch-pipe-diameter').fill('90');
- for(const wall of ['3','5']) {
+ await page.locator('#pitch-pipe-diameter').fill('500');
+ for(const wall of ['1','50,1']) {
   await page.locator('#pitch-pipe-wall').fill(wall);await page.locator('#pitch-panel-pipe .pitch-find').click();
-  assert.equal(await section.locator('.pitch-choice:visible').count(),0,'unsupported wall must not infer pitch');
+  assert.equal(await section.locator('.pitch-choice:visible').count(),0,'no extrapolation past the published range');
+  assert.match(await page.locator('#pitch-pipe-wall-error').textContent(),/1,25 до 50/);
  }
  const common=page.locator('.pitch-common-diameters');assert.equal(await common.getAttribute('open'),null);
- await common.locator('summary').click();await common.getByRole('button',{name:'110 мм',exact:true}).click();
- assert.equal(await page.locator('#pitch-pipe-diameter').inputValue(),'110');assert.equal(await section.locator('.pitch-choice:visible').count(),0);
+ await common.locator('summary').click();await common.getByRole('button',{name:'108 мм',exact:true}).click();
+ assert.equal(await page.locator('#pitch-pipe-diameter').inputValue(),'108');assert.equal(await section.locator('.pitch-choice:visible').count(),0);
  await page.locator('#pitch-pipe-diameter').fill('-1');await page.locator('#pitch-panel-pipe .pitch-find').click();assert.equal(await page.locator('#pitch-pipe-diameter').getAttribute('aria-invalid'),'true');
  for(const width of [1440,1280,1024,768,480,390,360,320]) {
   await page.setViewportSize({width,height:900});
@@ -93,5 +90,5 @@ try {
  await fallback.goto('http://127.0.0.1:4173');assert.equal(await fallback.locator('#pitch-guide table').count(),2);
  assert.equal(await fallback.locator('.pitch-tabs').isVisible(),false);assert.equal(await fallback.locator('#pitch-panel-pipe').isVisible(),true);await fallback.close();
  assert.deepEqual(errors,[]);assert.equal(api,0);
- console.log('PASS: pitch tabs, overlapping rod ranges, original cells, sourced BAHCO exact diameter90, unsupported walls, doubling, blanks/errors, form transfer, 8 widths, sticky tables and no-JS. No requests/submissions/mail.');
+ console.log('PASS: pitch tabs, overlapping rod ranges, original cells, continuous sourced LENOX OD89/90/108, fractional sizes, bundle rule, geometry, blanks/errors, form transfer, 8 widths, sticky tables and no-JS. No requests/submissions/mail.');
 } finally {await browser.close();}

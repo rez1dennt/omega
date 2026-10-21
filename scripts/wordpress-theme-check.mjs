@@ -185,7 +185,7 @@ async function checkDelayedPitchModule() {
     await dialog.locator('#pitch-pipe-wall').fill('4');
     await dialog.locator('#pitch-panel-pipe .pitch-find').click();
     await dialog.locator('#pitch-panel-pipe .pitch-choice').click();
-    assert.equal(await dialog.locator('[name="tpi"]').inputValue(), '8/12 TPI', 'Delayed module initializes guide moved into selection');
+    assert.equal(await dialog.locator('[name="tpi"]').inputValue(), '6/10 TPI', 'Delayed module initializes guide moved into selection');
     await page.keyboard.press('Escape');
     await page.waitForFunction(() => !document.documentElement.classList.contains('scroll-locked'));
     console.log(`PASS delayed WordPress pitch module (${early ? 'early selection' : 'core deferred queue'}): pipe lookup and TPI transfer; no submissions`);
@@ -324,13 +324,13 @@ try {
   await page.locator('#pitch-pipe-diameter').fill('90');
   await page.locator('#pitch-pipe-wall').fill('4');
   await page.locator('#pitch-panel-pipe .pitch-find').click();
-  assert.match(await page.locator('#pitch-panel-pipe .pitch-status').innerText(), /BAHCO/);
-  assert.equal(await page.locator('#pitch-panel-pipe .pitch-choice strong').innerText(), '8/12');
+  assert.match(await page.locator('#pitch-panel-pipe .pitch-status').innerText(), /LENOX/);
+  assert.equal(await page.locator('#pitch-panel-pipe .pitch-choice strong').innerText(), '6/10');
   await page.locator('#pitch-pipe-wall').fill('2');
   await page.locator('#pitch-panel-pipe .pitch-find').click();
   await page.locator('#pitch-panel-pipe .pitch-choice').click();
-  assert.equal(await page.locator('#order-form [name="tpi"]').inputValue(), '14/18 TPI');
-  assert.match(await page.locator('#order-comment').inputValue(), /Труба Ø 90 мм, стенка 2 мм; справочник BAHCO/);
+  assert.equal(await page.locator('#order-form [name="tpi"]').inputValue(), '10/14 TPI');
+  assert.match(await page.locator('#order-comment').inputValue(), /Труба Ø 90 мм, стенка 2 мм; диаграмма LENOX/);
   assert.equal(await page.locator('.pitch-bahco-table tbody td').count(), 350);
 
   const legalPages = runPHP('legal-pages');

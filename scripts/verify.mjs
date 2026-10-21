@@ -60,6 +60,7 @@ try {
   assert.equal(await menu.getAttribute('aria-expanded'), 'true');
   await page.keyboard.press('Escape');
   assert.equal(await menu.getAttribute('aria-expanded'), 'false');
+  await page.waitForFunction(() => document.querySelector('#main-nav').inert && !document.documentElement.classList.contains('scroll-locked'));
   assert.equal(await menu.evaluate(element => element === document.activeElement), true);
   await menu.click();
   const headerBefore = await page.locator('.site-header').boundingBox();
