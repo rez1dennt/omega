@@ -20,8 +20,8 @@ try {
   await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle' });
   await page.locator('.header-cta').click();
   const phone = page.locator('#request-phone');
-  await phone.fill('8 (917) 206-21-00');
-  assert.equal(await phone.inputValue(), '+7 (917) 206-21-00', 'first paste into an empty focused mask must not duplicate the country code');
+  await phone.fill('8 (917) 201-21-00');
+  assert.equal(await phone.inputValue(), '+7 (917) 201-21-00', 'first paste into an empty focused mask must not duplicate the country code');
   await page.keyboard.press('Control+A');
   await page.keyboard.press('Backspace');
   await phone.focus();
@@ -34,11 +34,11 @@ try {
   await phone.evaluate(el => el.setSelectionRange(13, 13)); // immediately after first hyphen
   await page.keyboard.press('Backspace');
   assert.equal(await phone.inputValue(), '+7 (999) 124-56-7', 'Backspace crosses a hyphen');
-  await phone.fill('8 (917) 206-21-00');
-  assert.equal(await phone.inputValue(), '+7 (917) 206-21-00', 'paste and autofill normalize Russian prefix');
+  await phone.fill('8 (917) 201-21-00');
+  assert.equal(await phone.inputValue(), '+7 (917) 201-21-00', 'paste and autofill normalize Russian prefix');
   await phone.evaluate(el => el.setSelectionRange(7, 7));
   await page.keyboard.press('Delete');
-  assert.equal(await phone.inputValue(), '+7 (917) 062-10-0', 'Delete crosses closing formatting to the next digit');
+  assert.equal(await phone.inputValue(), '+7 (917) 012-10-0', 'Delete crosses closing formatting to the next digit');
   await phone.fill('+7 (999) 123-45-67');
   await phone.evaluate(el => el.setSelectionRange(4, 7));
   await page.keyboard.type('845');

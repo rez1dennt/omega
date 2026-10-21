@@ -41,13 +41,17 @@ try {
    assert.ok(Math.abs(photo.height-photo.frameHeight)<=1,`photograph fills its intentional frame: ${JSON.stringify(photo)}`);
   }
   assert.equal(await page.locator('#equipment .equipment-sketch,.equipment-roller-visual svg').count(),0,'schematic illustrations are replaced');
-  assert.equal(await page.locator('#equipment [data-request-equipment]').count(),6);
+  assert.equal(await page.locator('#equipment [data-request-equipment]').count(),5);
+  assert.equal(await page.locator('.equipment-rollers [data-request-equipment]').count(),0,'rollers have no selection CTA');
+  assert.match(await page.locator('#rollers-title').innerText(),/Неприводные рольганги/);
+  assert.match(await page.locator('.equipment-rollers').innerText(),/Производство — Россия/);
+  assert.doesNotMatch(await page.locator('.equipment-rollers').innerText(),/Подбер[её]м|Подобрать/);
   assert.equal(await page.locator('.main-nav a[href="#equipment"],.footer-nav a[href="#equipment"]').count(),2);
   const geometry=await page.locator('#equipment').evaluate(el=>({
    width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
    clipped:[...el.querySelectorAll('h2,h3,h4,p,a,button')].filter(e=>e.scrollWidth>e.clientWidth+2).map(e=>e.textContent),
    headerOverflow:document.querySelector('.header-inner').scrollWidth>document.querySelector('.header-inner').clientWidth+1,
-   actionOverflow:[...el.querySelectorAll('.equipment-card,.equipment-rollers')].filter(card=>{
+   actionOverflow:[...el.querySelectorAll('.equipment-card')].filter(card=>{
     const action=card.querySelector('a[data-request-equipment]').getBoundingClientRect();
     const bounds=card.getBoundingClientRect();const css=getComputedStyle(card);
     return action.right>bounds.right-parseFloat(css.paddingRight)+1;
@@ -62,7 +66,7 @@ try {
  await page.locator('#order-width').fill('27');
  await page.locator('#order-comment').fill('Материал: сталь');
  const automatic=page.locator('[data-request-equipment="Автоматический ленточнопильный станок"]');
- const rollers=page.locator('[data-request-equipment="Рольганг"]');
+ const magnetic=page.locator('[data-request-equipment="Магнитный сверлильный станок LENZ Steyr-35"]');
  const close=async()=>{await page.keyboard.press('Escape');await page.waitForFunction(()=>!document.body.classList.contains('dialog-open'));};
  await automatic.click();
  assert.match(await page.locator('#request-title').textContent(),/Подбор станка/);
@@ -72,9 +76,9 @@ try {
  await page.locator('#request-email').fill('person@example.test');
  await page.locator('#request-phone').fill('8 (999) 123-45-67');
  await close();
- await rollers.click();
- assert.match(await page.locator('#request-title').textContent(),/Подбор рольганга/);
- await page.locator('#request-parameters').fill('Рольганг для заготовок длиной 3 м.');
+ await magnetic.click();
+ assert.match(await page.locator('#request-title').textContent(),/Подбор станка/);
+ await page.locator('#request-parameters').fill('Магнитный станок LENZ для отверстий в металле.');
  await close();
  await automatic.click();
  assert.equal(await page.locator('#request-parameters').inputValue(),'Автоматический станок. Заготовка 100 × 100 мм.');
@@ -84,8 +88,8 @@ try {
  assert.match(await page.locator('#request-title').textContent(),/Заявка на изготовление/);
  assert.match(await page.locator('#request-parameters').inputValue(),/Ширина полотна: 27 мм/);
  await close();
- await rollers.click();
- assert.equal(await page.locator('#request-parameters').inputValue(),'Рольганг для заготовок длиной 3 м.');
+ await magnetic.click();
+ assert.equal(await page.locator('#request-parameters').inputValue(),'Магнитный станок LENZ для отверстий в металле.');
  // Completing/resetting one category must preserve another category's unsent draft.
  await page.locator('#request-form').evaluate(form=>form.reset());
  await close();

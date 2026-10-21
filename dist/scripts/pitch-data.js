@@ -28,6 +28,26 @@ export const pipePitches = [
   [null,null,null,'3/4','3/4','3/4','3/4','2/3','2/3','2/3'],
   [null,null,null,null,null,null,'2/3','2/3','2/3','2/3'],
 ];
+// Separate manufacturer reference: BAHCO Bandsaw Catalogue 2024, page 35. Literal cells; no interpolation.
+export const bahcoSource = {name:'BAHCO',page:35,url:'https://media.bahco.com/media/media-download/catalogue/Bandsaw_catalogue_UK_2024_14.pdf'};
+export const bahcoDiameters = [20,40,60,80,90,100,110,120,130,140,150,160,170,180,190,200,220,250,300,350,400,500,600,700,800];
+export const bahcoWalls = [2,4,6,8,10,15,25,35,50,65,75,100,130,150];
+export const bahcoPitches = [
+  ["14/18","14/18","14/18","14/18","14/18","14/18","14/18","14/18","10/14","10/14","10/14","10/14","10/14","10/14","10/14","10/14","10/14","8/12","8/12","8/12","8/12","8/12","8/12","8/12","8/12"],
+  ["10/14","10/14","10/14","10/14","8/12","8/12","8/12","8/12","6/10","6/10","6/10","6/10","6/10","6/10","6/10","6/10","6/10","5/8","5/8","5/8","5/8","5/8","5/8","5/8","5/8"],
+  ["10/14","8/12","8/12","8/12","6/10","6/10","6/10","6/10","5/8","5/8","5/8","5/8","5/8","5/8","5/8","5/8","5/8","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6"],
+  [null,"6/10","6/10","6/10","5/8","5/8","5/8","5/8","5/8","5/8","5/8","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6"],
+  [null,"5/8","5/8","5/8","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","3/4","3/4","3/4","3/4","3/4","3/4","3/4","3/4"],
+  [null,null,"5/8","4/6","4/6","4/6","4/6","4/6","4/6","4/6","4/6","3/4","3/4","3/4","3/4","3/4","3/4","3/4","3/4","3/4","3/4","3/4","3/4","3/4","3/4"],
+  [null,null,"4/6","4/6","4/6","4/6","4/6","3/4","3/4","3/4","3/4","3/4","3/4","3/4","3/4","3/4","3/4","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3"],
+  [null,null,null,"3/4","3/4","3/4","3/4","3/4","3/4","3/4","3/4","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3"],
+  [null,null,null,null,null,null,null,"3/4","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3","2/3"],
+  [null,null,null,null,null,null,null,null,null,"2/3","2/3","2/3","2/3","2/3","2/3","1,4/2","1,4/2","1,4/2","1,4/2","1,4/2","1,4/2","1,4/2","1,4/2","1,4/2","1,4/2"],
+  [null,null,null,null,null,null,null,null,null,null,null,"2/3","2/3","2/3","2/3","2/3","2/3","1,4/2","1,4/2","1,4/2","1,4/2","1,4/2","1,4/2","1,4/2","1,4/2"],
+  [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"1,4/2","1,4/2","1,4/2","1,4/2","0,7/1","0,7/1","0,7/1","0,7/1"],
+  [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"1,4/2","1,4/2","1,4/2","0,7/1","0,7/1","0,7/1","0,7/1"],
+  [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"1,4/2","1,4/2","0,7/1","0,7/1","0,7/1","0,7/1"]
+];
 export function parseDimension(value) {
   const text = String(value).trim();
   if (!/^\d+(?:[.,]\d+)?$/.test(text)) return NaN;
@@ -43,5 +63,9 @@ export function lookupPipe(diameter, wall, adjacent = false) {
   if (![diameter,wall,effectiveWall].every(value=>Number.isFinite(value)&&value>0)) return {state:'invalid',pitch:null,effectiveWall};
   const row = pipeWalls.indexOf(effectiveWall), column = pipeDiameters.indexOf(diameter);
   const pitch = row<0 || column<0 ? null : pipePitches[row][column];
-  return {state:pitch?'match':'missing',pitch,effectiveWall,row,column};
+  if(row>=0 && column>=0) return {state:pitch?'match':'missing',pitch,effectiveWall,row,column};
+  const referenceRow=bahcoWalls.indexOf(effectiveWall),referenceColumn=bahcoDiameters.indexOf(diameter);
+  const referencePitch=referenceRow<0 || referenceColumn<0 ? null : bahcoPitches[referenceRow][referenceColumn];
+  if(referencePitch) return {state:'reference',pitch:referencePitch,effectiveWall,row:referenceRow,column:referenceColumn,source:bahcoSource};
+  return {state:'missing',pitch:null,effectiveWall,row,column};
 }

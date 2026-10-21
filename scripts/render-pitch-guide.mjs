@@ -1,5 +1,5 @@
 import {readFile,writeFile} from 'node:fs/promises';
-import {rodRanges,pipeDiameters,pipeWalls,pipePitches} from '../dist/scripts/pitch-data.js';
+import {rodRanges,pipeDiameters,pipeWalls,pipePitches,bahcoPitches} from '../dist/scripts/pitch-data.js';
 const arrow='<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>';
 const chevron='<svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>';
 const field=(id,label,placeholder)=>`<div class="pitch-field"><label for="${id}">${label}</label><input id="${id}" type="text" inputmode="decimal" maxlength="9" autocomplete="off" placeholder="${placeholder}" aria-describedby="${id}-error"><p id="${id}-error" class="pitch-field-error" hidden></p></div>`;
@@ -25,7 +25,7 @@ let html=await readFile('dist/index.html','utf8');
 if(html.includes('<!-- PITCH_GUIDE_START -->'))html=html.replace(/<!-- PITCH_GUIDE_START -->[\s\S]*?<!-- PITCH_GUIDE_END -->/,guide);
 else html=html.replace('    <section class="order-section dark-section"',`${guide}\n\n    <section class="order-section dark-section"`);
 if(!html.includes('id="pitch-guide"'))throw new Error('Pitch guide insertion point not found');
-const pitches=[...new Set(['3/4','4/6','6/10',...rodRanges.map(row=>row.pitch),...pipePitches.flat().filter(Boolean)])];
+const pitches=[...new Set(['3/4','4/6','6/10',...rodRanges.map(row=>row.pitch),...pipePitches.flat().filter(Boolean),...bahcoPitches.flat().filter(Boolean)])];
 const options=['',...pitches.map(value=>`${value} TPI`),'Нужна помощь с подбором'];
 html=html.replace(/(<ul class="tpi-options"[^>]*>)[\s\S]*?(<\/ul>)/,(_,start,end)=>start+options.map((value,index)=>`<li id="tpi-${index}" role="option" aria-selected="${index===0}" data-value="${value}">${value||'Шаг зуба / TPI'}</li>`).join('')+end);
 await writeFile('dist/index.html',html);

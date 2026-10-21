@@ -24,7 +24,7 @@ try{
   assert.equal(await page.locator('dialog#contacts,[data-dialog="contacts"]').count(),0,'contacts must never open as a modal');
   assert.equal(await contacts.locator('h2').textContent(),'Контакты');
   for(const text of ['141','314','6455054459','1116455002916','omegakomplekt@mail.ru','9:00–17:00'])assert.ok((await contacts.textContent()).includes(text),`contact details include ${text}`);
-  assert.equal(await contacts.locator('a[href="tel:+79172062100"]').count(),1);
+  assert.equal(await contacts.locator('a[href="tel:+79172012100"]').count(),1);
   assert.equal(await contacts.locator('a[href="mailto:omegakomplekt@mail.ru"]').count(),1);
   const map=contacts.locator('iframe');
   assert.equal(await map.count(),1);

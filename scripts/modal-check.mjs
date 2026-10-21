@@ -148,6 +148,7 @@ try {
   await page.locator('.menu-toggle').click();
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => document.querySelector('.menu-toggle').getAttribute('aria-expanded') === 'false');
+  await page.waitForFunction(() => document.querySelector('#main-nav').inert && !document.documentElement.classList.contains('scroll-locked'));
   assert.equal(await page.locator('.menu-toggle').evaluate(element => element === document.activeElement), true, 'closed tablet navigation must return focus to the visible menu button');
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.locator('.header-cta').click();

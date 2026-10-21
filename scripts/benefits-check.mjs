@@ -56,7 +56,7 @@ try {
    assert.deepEqual(geometry.clipped,[],`${width}: readable copy`);
    assert.ok(geometry.action.bottom<=geometry.panel.bottom&&geometry.action.right<=geometry.panel.right,`${width}: action stays in panel`);
    if(width===1440){
-    const target=i===3?'delivery-details':'request-dialog';
+    const target=['request-dialog','request-dialog','selection-dialog','delivery-details'][i];
     await page.evaluate(()=>document.addEventListener('site:dialog-open',()=>{window.__benefitOpenY=scrollY;},{once:true}));
     await active.locator('[data-dialog]').click();
     assert.equal(await page.locator(`#${target}`).evaluate(el=>el.open),true);

@@ -1,4 +1,4 @@
-import {rodRanges,lookupRod,lookupPipe,parseDimension} from 'omega-pitch-data';
+import {rodRanges,lookupRod,lookupPipe,parseDimension,bahcoSource,bahcoDiameters,bahcoWalls,bahcoPitches} from 'omega-pitch-data';
 const pitchSection=document.querySelector('#pitch-guide');
 // The live card can already be inside the selection dialog on a slow connection.
 const pitchCard=document.querySelector('.pitch-card');
@@ -82,8 +82,17 @@ pitchPanels.forEach((panel,index)=>{
         addPitchChoice(panel,result.pitch,`Ø ${numberLabel(diameter)} мм · стенка ${numberLabel(wall)} мм`,description+(adjacent?`; трубы рядом, строка ${numberLabel(result.effectiveWall)} мм`:''));
         panel.querySelector('.pitch-result-note').textContent='Добавьте шаг и размеры в форму заявки.';
       } else {
-        panel.querySelector('.pitch-status').textContent='Для этих размеров в таблице нет значения.';
-        panel.querySelector('.pitch-result-note').textContent='Откройте полную таблицу или опишите размеры в заявке — поможем с подбором. Ближайшие размеры автоматически не подставляем.';
+        if(result.state==='reference') {
+          panel.querySelector(`[data-bahco-row="${result.row}"][data-bahco-column="${result.column}"]`).classList.add('is-match');
+          const provenance=`По справочнику BAHCO · Ø ${numberLabel(diameter)} × ${numberLabel(result.effectiveWall)} мм`;
+          const status=panel.querySelector('.pitch-status');status.textContent=provenance+(adjacent?` (стенка ${numberLabel(wall)} × 2 для труб рядом). `:'. ');
+          const link=document.createElement('a');link.href=bahcoSource.url+'#page=35';link.target='_blank';link.rel='noopener noreferrer';link.textContent='Каталог, стр. 35';status.append(link);
+          addPitchChoice(panel,result.pitch,`BAHCO · Ø ${numberLabel(diameter)} × ${numberLabel(result.effectiveWall)} мм`,`${description}; справочник BAHCO, стр. 35${adjacent?`; трубы рядом, строка стенки ${numberLabel(result.effectiveWall)} мм`:''}`);
+          panel.querySelector('.pitch-result-note').textContent='Рекомендация производителя BAHCO. Уточним выбор полотна по материалу и станку.';
+        } else {
+          panel.querySelector('.pitch-status').textContent='Для этих размеров нет подтверждённого значения.';
+          panel.querySelector('.pitch-result-note').textContent='Уточните подбор у специалиста: укажите размеры, материал и станок в заявке. Шаг между ячейками не рассчитываем.';
+        }
       }
     }
   }
@@ -92,6 +101,26 @@ pitchPanels.forEach((panel,index)=>{
     input.addEventListener('input',()=>clearPitchResult(panel));
     input.addEventListener('keydown',event=>{if(event.key==='Enter'&&input.type!=='checkbox'){event.preventDefault();findPitch();}});
   });
+  if(index===1) {
+    const common=document.createElement('details');common.className='pitch-common-diameters';
+    const summary=document.createElement('summary');summary.textContent='Частые диаметры';
+    const buttons=document.createElement('div');buttons.className='pitch-diameter-buttons';
+    bahcoDiameters.forEach(diameter=>{
+      const button=document.createElement('button');button.type='button';button.textContent=`${numberLabel(diameter)} мм`;
+      button.addEventListener('click',()=>{inputs[0].value=String(diameter);clearPitchResult(panel);inputs[0].focus({preventScroll:true});});
+      buttons.append(button);
+    });
+    const note=document.createElement('p');note.textContent='Наружный диаметр, не условный проход. После выбора укажите стенку и нажмите «Найти шаг зуба».';
+    common.append(summary,buttons,note);inputs[0].closest('.pitch-field').append(common);
+    const reference=document.createElement('details');reference.className='pitch-reference pitch-bahco-reference';
+    const referenceSummary=document.createElement('summary');referenceSummary.textContent='Дополнительная таблица BAHCO';
+    const referenceNote=document.createElement('p');referenceNote.className='pitch-scroll-hint';referenceNote.textContent='Рекомендации для полотен BAHCO. Для размеров из таблицы «Омега Комплект» используем её значения. Диаметры и стенки — в мм, шаг — в TPI. ';
+    const sourceLink=document.createElement('a');sourceLink.href=bahcoSource.url+'#page=35';sourceLink.target='_blank';sourceLink.rel='noopener noreferrer';sourceLink.textContent='Источник: каталог BAHCO, стр. 35';referenceNote.append(sourceLink);
+    const scroll=document.createElement('div');scroll.className='pitch-table-wrap pitch-pipe-scroll';scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label','Справочник BAHCO, горизонтальная прокрутка');
+    const table=document.createElement('table');table.className='pitch-pipe-table pitch-bahco-table';
+    table.innerHTML=`<caption class="visually-hidden">Рекомендации BAHCO для труб, каталог стр. 35</caption><thead><tr><th scope="col">Стенка,<br>мм</th>${bahcoDiameters.map(value=>`<th scope="col">${numberLabel(value)}</th>`).join('')}</tr></thead><tbody>${bahcoWalls.map((wall,row)=>`<tr><th scope="row">${wall}</th>${bahcoPitches[row].map((pitch,column)=>`<td data-bahco-row="${row}" data-bahco-column="${column}"${pitch?'':' aria-label="Нет данных"'}>${pitch||'—'}</td>`).join('')}</tr>`).join('')}</tbody>`;
+    scroll.append(table);reference.append(referenceSummary,referenceNote,scroll);panel.append(reference);
+  }
 });
 pitchCard.querySelector('.pitch-tabs').hidden=false;
 activatePitchTab(0);

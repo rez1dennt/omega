@@ -33,7 +33,7 @@ try {
     await page.locator('.menu-toggle').click();
     try { await page.waitForFunction(()=>document.querySelector('#main-nav').contains(document.activeElement)); }
     catch (error) {
-      console.error('Menu focus diagnostic', {width,height,...await page.evaluate(()=>({active:document.activeElement?.outerHTML,header:document.querySelector('.site-header').className,expanded:document.querySelector('.menu-toggle').getAttribute('aria-expanded'),inert:document.querySelector('#main-nav').inert,navState}))});
+      console.error('Menu focus diagnostic', {width,height,...await page.evaluate(()=>({active:document.activeElement?.outerHTML,header:document.querySelector('.site-header').className,expanded:document.querySelector('.menu-toggle').getAttribute('aria-expanded'),inert:document.querySelector('#main-nav').inert,navClass:document.querySelector('#main-nav').className,visibility:getComputedStyle(document.querySelector('#main-nav')).visibility,navState}))});
       throw error;
     }
     await page.locator('#main-nav').evaluate(el=>Promise.all(el.getAnimations().map(animation=>animation.finished.catch(()=>{}))));

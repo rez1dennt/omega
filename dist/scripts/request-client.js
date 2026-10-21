@@ -220,7 +220,7 @@ function attachRequestWorkflow(form, parameters) {
       status.dataset.state = 'error';
       status.textContent = error.message === 'rate_limited'
         ? 'Слишком много попыток. Попробуйте через несколько минут или позвоните нам.'
-        : 'Не удалось подтвердить отправку. Данные сохранены в форме. Свяжитесь с нами: +7 (917) 206-21-00.';
+        : 'Не удалось подтвердить отправку. Данные сохранены в форме. Свяжитесь с нами: +7 (917) 201-21-00.';
     } finally {
       submitting = false;
       form.removeAttribute('aria-busy');

@@ -21,6 +21,12 @@
 .pitch-field input::placeholder { color: var(--brand-gray); opacity: 1; }
 .pitch-field input[aria-invalid=true] { border-color: var(--color-primary); }
 .pitch-field-error { margin-block-start: var(--pitch-half); color: var(--brand-wine); font-size: var(--text-small); line-height: 1.45; }
+.pitch-common-diameters { margin-block-start: var(--pitch-half); font-size: var(--text-small); }
+.pitch-common-diameters > summary { padding-block: var(--pitch-half); color: var(--brand-wine); cursor: pointer; font-weight: 500; }
+.pitch-diameter-buttons { display: flex; flex-wrap: wrap; gap: var(--pitch-half); margin-block: var(--pitch-half); }
+.pitch-diameter-buttons button { min-height: var(--pitch-control-height); padding: var(--pitch-quarter) var(--pitch-half); border: var(--pitch-border) solid var(--color-border); border-radius: var(--pitch-half); background: var(--color-surface); color: var(--color-text); font: inherit; cursor: pointer; }
+.pitch-diameter-buttons button:hover, .pitch-diameter-buttons button:active { background: var(--brand-wine); color: var(--color-white); border-color: var(--brand-wine); }
+.pitch-common-diameters > p { color: var(--color-text-secondary); line-height: var(--leading-body); }
 .pitch-adjacent { display: flex; align-items: center; gap: var(--pitch-half); min-height: var(--pitch-control-height); font-size: var(--text-small); line-height: 1.5; cursor: pointer; }
 .pitch-adjacent input { appearance: none; display: grid; place-content: center; flex: none; width: var(--pitch-gap); height: var(--pitch-gap); margin: 0; border: var(--pitch-border) solid var(--brand-gray); border-radius: var(--pitch-quarter); background: var(--color-white); }
 .pitch-adjacent input:checked { background: var(--brand-wine); border-color: var(--brand-wine); }
@@ -29,6 +35,7 @@
 .pitch-result { padding: var(--pitch-padding); border-radius: var(--pitch-radius); background: var(--brand-graphite); color: var(--color-white); }
 .pitch-result-label { font-size: var(--text-overline); color: var(--color-muted-light); font-weight: 600; letter-spacing: .14em; }
 .pitch-status { margin-block-start: var(--pitch-half); font-size: var(--text-control); line-height: var(--leading-body); }
+.pitch-status a { color: inherit; text-decoration: underline; text-underline-offset: var(--pitch-quarter); }
 .pitch-choices { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,10rem),1fr)); gap: var(--pitch-half); }
 .pitch-choice { min-width: 0; margin-block-start: var(--pitch-gap); padding: var(--pitch-gap); border: var(--pitch-border) solid var(--color-muted-light); border-radius: var(--pitch-half); text-align: left; color: var(--color-white); background: transparent; transition: background var(--transition),border-color var(--transition); }
 .pitch-choice:hover, .pitch-choice:active { background: var(--brand-wine); border-color: var(--brand-wine); }
@@ -55,6 +62,7 @@
 .pitch-table-wrap tr:nth-child(even) td { background: var(--color-surface); }
 .pitch-table-wrap .is-match td, .pitch-table-wrap td.is-match { background: var(--brand-wine) !important; color: var(--color-white); font-weight: 600; }
 .pitch-pipe-table { min-width: var(--pitch-table-width); table-layout: fixed; }
+.pitch-bahco-table { min-width: max-content; table-layout: auto; }
 .pitch-pipe-table tr > :first-child { position: sticky; left: 0; z-index: 1; width: var(--pitch-first-column); }
 .pitch-pipe-table thead th:first-child { background: var(--brand-graphite); }
 .pitch-break-in { margin-block-start: var(--pitch-gap); border-block: var(--pitch-border) solid var(--color-border); }

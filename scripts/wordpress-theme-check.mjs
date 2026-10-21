@@ -251,7 +251,7 @@ async function renderRoute(route, width, expectedStatus, kind) {
     assert.equal(await page.locator('#products').count(), 1, 'Migrated home sections are rendered');
     await page.waitForFunction(() => document.querySelector('#pitch-guide')?.classList.contains('is-ready'));
     assert.match(await page.locator('body').innerText(), /Омега Комплект/);
-    assert.ok(await page.locator('a[href="tel:+79172062100"]').count() > 0, 'Public primary telephone preserved');
+    assert.ok(await page.locator('a[href="tel:+79172012100"]').count() > 0, 'Public primary telephone preserved');
   }
   if (kind === 'page') assert.match(await page.locator('main').innerText(), /Штатный контент страницы WordPress/);
   if (width === 360 || (width === 1280 && kind === 'home')) await page.screenshot({ path: resolve(qaRoot, `${kind}-${width}.png`), animations: 'disabled' });
@@ -306,9 +306,11 @@ try {
   assert.doesNotMatch(await page.locator('#request-parameters').inputValue(), /Ширина полотна/);
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
-  await page.locator('[data-request-equipment="Рольганг"]').click();
+  assert.equal(await page.locator('.equipment-rollers [data-request-equipment]').count(), 0);
+  assert.match(await page.locator('.equipment-rollers').innerText(), /Неприводные рольганги[\s\S]*Производство — Россия/);
+  await page.locator('[data-request-equipment="Магнитный сверлильный станок LENZ Steyr-35"]').click();
   await page.waitForFunction(() => document.querySelector('#request-dialog').open);
-  assert.match(await page.locator('#request-title').textContent(), /Подбор рольганга/);
+  assert.match(await page.locator('#request-title').textContent(), /Подбор станка/);
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
   await page.locator('.cookie-reopen').click();
@@ -318,6 +320,18 @@ try {
   await page.locator('#pitch-rod-diameter').fill('60');
   await page.locator('#pitch-panel-rod .pitch-find').click();
   assert.equal(await page.locator('#pitch-panel-rod .pitch-choice').count(), 3, 'Imported TPI data works through WordPress module URLs');
+  await page.locator('#pitch-tab-pipe').click();
+  await page.locator('#pitch-pipe-diameter').fill('90');
+  await page.locator('#pitch-pipe-wall').fill('4');
+  await page.locator('#pitch-panel-pipe .pitch-find').click();
+  assert.match(await page.locator('#pitch-panel-pipe .pitch-status').innerText(), /BAHCO/);
+  assert.equal(await page.locator('#pitch-panel-pipe .pitch-choice strong').innerText(), '8/12');
+  await page.locator('#pitch-pipe-wall').fill('2');
+  await page.locator('#pitch-panel-pipe .pitch-find').click();
+  await page.locator('#pitch-panel-pipe .pitch-choice').click();
+  assert.equal(await page.locator('#order-form [name="tpi"]').inputValue(), '14/18 TPI');
+  assert.match(await page.locator('#order-comment').inputValue(), /Труба Ø 90 мм, стенка 2 мм; справочник BAHCO/);
+  assert.equal(await page.locator('.pitch-bahco-table tbody td').count(), 350);
 
   const legalPages = runPHP('legal-pages');
   runPHP('contracts');
