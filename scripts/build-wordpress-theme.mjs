@@ -4,13 +4,20 @@ import {fileURLToPath} from 'node:url';
 import {relative, resolve, sep} from 'node:path';
 import {deflateRawSync} from 'node:zlib';
 
-const root = fileURLToPath(new URL('../wordpress/omega-komplekt/', import.meta.url));
-const destination = fileURLToPath(new URL('../../omega-komplekt-wordpress-theme.zip', import.meta.url));
-const required = ['style.css','functions.php','index.php','front-page.php','header.php','footer.php','theme.json','screenshot.jpg','readme.txt','inc/assets.php','inc/integrations.php'];
+const isPlugin = process.argv.includes('--plugin');
+const slug = isPlugin ? 'omega-site-settings' : 'omega-komplekt';
+const root = fileURLToPath(new URL(isPlugin ? '../wordpress/plugins/omega-site-settings/' : '../wordpress/omega-komplekt/', import.meta.url));
+const destination = fileURLToPath(new URL(isPlugin ? '../../omega-site-settings-wordpress-plugin.zip' : '../../omega-komplekt-wordpress-theme.zip', import.meta.url));
+const required = isPlugin ? ['omega-site-settings.php','inc/schema.php','inc/storage.php','inc/media.php','inc/admin.php','inc/class-matrix-field.php','config/content.json','config/runtime.php','config/pitch.php','assets/admin.js','assets/matrix.js','README.md'] : ['style.css','functions.php','index.php','front-page.php','header.php','footer.php','theme.json','screenshot.jpg','readme.txt','inc/assets.php','inc/integrations.php'];
 for (const file of required) await readFile(resolve(root,file));
-const manifest = await readFile(resolve(root,'style.css'),'utf8');
-assert.match(manifest,/Theme Name:\s*Омега Комплект/);
-JSON.parse(await readFile(resolve(root,'theme.json'),'utf8'));
+if (isPlugin) {
+  assert.match(await readFile(resolve(root,'omega-site-settings.php'),'utf8'),/Plugin Name:\s*Омега — Настройка сайта/);
+  JSON.parse(await readFile(resolve(root,'config/content.json'),'utf8'));
+} else {
+  const manifest = await readFile(resolve(root,'style.css'),'utf8');
+  assert.match(manifest,/Theme Name:\s*Омега Комплект/);
+  JSON.parse(await readFile(resolve(root,'theme.json'),'utf8'));
+}
 
 const files = [];
 async function collect(directory) {
@@ -22,7 +29,7 @@ async function collect(directory) {
     assert.equal(info.isSymbolicLink(),false,`Symlink is not permitted: ${local}`);
     assert.doesNotMatch(local,/(^|[\\/])(?:\.git|\.env[^\\/]*|qa|node_modules|private|sessions|wp-config\.php|mail\.local\.php)([\\/]|$)|\.(?:zip|tar|gz|log|sqlite|db)$/i,`Forbidden package file: ${local}`);
     if (info.isDirectory()) await collect(path);
-    else if (info.isFile()) files.push({path,name:`omega-komplekt/${local.split(sep).join('/')}`});
+    else if (info.isFile()) files.push({path,name:`${slug}/${local.split(sep).join('/')}`});
   }
 }
 await collect(root);
@@ -60,4 +67,4 @@ const central=Buffer.concat(centralParts),end=Buffer.alloc(22);
 end.writeUInt32LE(0x06054b50,0);end.writeUInt16LE(files.length,8);end.writeUInt16LE(files.length,10);end.writeUInt32LE(central.length,12);end.writeUInt32LE(offset,16);
 const archive=Buffer.concat([...localParts,central,end]);
 await writeFile(destination,archive);
-console.log(JSON.stringify({archive:destination,files:files.length,bytes:archive.length,root:'omega-komplekt/',mailCodeScan:'PASS: no SMTP implementation or password fields in PHP/JS'}));
+console.log(JSON.stringify({archive:destination,files:files.length,bytes:archive.length,root:slug+'/',mailCodeScan:'PASS: no SMTP implementation or password fields in PHP/JS'}));

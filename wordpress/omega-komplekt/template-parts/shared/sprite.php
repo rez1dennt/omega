@@ -10,4 +10,5 @@
     <symbol id="i-lock" viewBox="0 0 24 28"><path d="M7 12V7a5 5 0 0 1 10 0v5M4 12h16v13H4Z"/><path d="M12 17v4"/></symbol>
     <symbol id="i-pin" viewBox="0 0 24 32"><path d="M12 1C6 1 2 5 2 11c0 7 10 19 10 19s10-12 10-19C22 5 18 1 12 1Z" fill="currentColor" stroke="none"/><circle cx="12" cy="11" r="4" fill="white" stroke="none"/></symbol>
     <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
   </svg>

@@ -1,6 +1,11 @@
 (() => {
 'use strict';
 const {collectOrderParameters,setRequestFieldError,checkRequestForm,attachRequestWorkflow} = window.OmegaUI;
+function siteText(key, fallback, values = {}) {
+  const configured = window.OmegaTheme?.ui?.site?.[key];
+  const text = typeof configured === 'string' ? configured : fallback;
+  return text.replace(/\{(\w+)\}/g, (token, name) => Object.prototype.hasOwnProperty.call(values, name) ? String(values[name]) : token);
+}
 /* Landing-page interactions and the PHP request workflow. */
 const header = document.querySelector('.site-header');
 function updateHeader() { header.classList.toggle('is-scrolled', window.scrollY > 24); }
@@ -65,21 +70,28 @@ function selectOption(index) {
   orderForm.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
+// Track the inserted line itself; editable labels are never identifiers.
+let pitchCommentLine = '';
 document.addEventListener('site:pitch-select',event=>{
   const {tpi,parameters}=event.detail;
   const inSelection=Boolean(orderForm.closest('#selection-dialog')?.open);
   const index=options.findIndex(option=>option.dataset.value===tpi);
   if(index<0){event.preventDefault();return;}
-  const original=comment.value.split('\n').filter(line=>!line.startsWith('Подбор шага:')).join('\n').trim();
-  const next=[original,`Подбор шага: ${parameters}`].filter(Boolean).join('\n');
+  const lines=comment.value.split('\n');
+  const previousIndex=pitchCommentLine ? lines.findLastIndex(line=>line===pitchCommentLine) : -1;
+  if(previousIndex>=0)lines.splice(previousIndex,1);
+  const original=lines.join('\n').trim();
+  const nextPitchLine=[siteText('pitch_prefix','Подбор шага:'),parameters].filter(Boolean).join(' ');
+  const next=[original,nextPitchLine].filter(Boolean).join('\n');
   if(next.length>comment.maxLength) {
     event.preventDefault();
-    status.textContent='Подбор не добавлен: сократите комментарий, чтобы в нём поместились размеры заготовки. Ваш текст и прежний шаг сохранены.';status.hidden=false;
+    status.textContent=siteText('pitch_overflow','Подбор не добавлен: сократите комментарий, чтобы в нём поместились размеры заготовки. Ваш текст и прежний шаг сохранены.');status.hidden=false;
     comment.focus({preventScroll:true});
     if(!inSelection)document.querySelector('#order').scrollIntoView({behavior:'instant',block:'start'});return;
   }
   selectOption(index);
   comment.value=next;
+  pitchCommentLine=nextPitchLine;
   orderForm.dispatchEvent(new Event('input',{bubbles:true}));
   if(!inSelection)document.querySelector('#order').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
 });
@@ -140,17 +152,17 @@ function prepareRequest(opener, forceTransfer = false) {
   }
   const kind = opener?.dataset.requestKind;
   document.querySelector('#request-title').firstChild.textContent = equipment
-    ? kind === 'roller' ? 'Подбор рольганга' : kind === 'machine' ? 'Подбор станка' : 'Подбор оборудования'
+    ? kind === 'roller' ? siteText('equipment_title_roller', 'Подбор рольганга') : kind === 'machine' ? siteText('equipment_title_machine', 'Подбор станка') : siteText('equipment_title_default', 'Подбор оборудования')
     : requestCopy.title;
   document.querySelector('#request-intro').textContent = equipment
-    ? 'Расскажите о задаче и оставьте контакты — обсудим подходящее оборудование.' : requestCopy.intro;
+    ? siteText('equipment_intro', 'Расскажите о задаче и оставьте контакты — обсудим подходящее оборудование.') : requestCopy.intro;
   document.querySelector('#request-parameters-help').textContent = equipment
-    ? kind === 'roller' ? 'Укажите длину и вес заготовок, нужную длину рольганга и модель станка, если он уже есть.' : 'Укажите материал, сечение заготовки и объём работ. Модель, комплектацию и стоимость уточним при подборе.'
+    ? kind === 'roller' ? siteText('equipment_help_roller', 'Укажите длину и вес заготовок, нужную длину рольганга и модель станка, если он уже есть.') : siteText('equipment_help_default', 'Укажите материал, сечение заготовки и объём работ. Модель, комплектацию и стоимость уточним при подборе.')
     : requestCopy.help;
   requestForm.elements.parameters.placeholder = equipment
-    ? 'Опишите заготовку и задачу для оборудования' : requestCopy.placeholder;
+    ? siteText('equipment_placeholder', 'Опишите заготовку и задачу для оборудования') : requestCopy.placeholder;
   const lines = [];
-  if (equipment) lines.push(`Оборудование: ${equipment}`);
+  if (equipment) lines.push(siteText('equipment_line_template', 'Оборудование: {equipment}', { equipment }));
   const orderSummary = equipment ? '' : collectOrderParameters(orderForm);
   if (orderSummary) lines.push(orderSummary);
   const summary = lines.join('\n');
@@ -172,6 +184,7 @@ attachRequestWorkflow(requestForm, () => requestForm.elements.parameters.value.t
 attachRequestWorkflow(orderForm, () => collectOrderParameters(orderForm));
 requestForm.addEventListener('reset', () => { requestDrafts.delete(activeRequestContext); lastOrderSummary = ''; });
 orderForm.addEventListener('reset', () => {
+  pitchCommentLine = '';
   selectedIndex = 0; activeIndex = 0;
   caption.textContent = options[0].textContent;
   options.forEach((option,index) => option.setAttribute('aria-selected', String(index === 0)));

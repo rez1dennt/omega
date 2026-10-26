@@ -1,6 +1,10 @@
 (() => {
 'use strict';
 const {lockPageScroll,releasePageScroll} = window.OmegaUI;
+function navigationText(key, fallback) {
+  const configured = window.OmegaTheme?.ui?.navigation?.[key];
+  return typeof configured === 'string' ? configured : fallback;
+}
 /* Compact navigation shares the dialog scroll lock during menu → form transitions. */
 const navHeader = document.querySelector('.site-header');
 const menuToggle = document.querySelector('.menu-toggle');
@@ -48,7 +52,7 @@ function setMenu(open, returnFocus = false, afterClose = null) {
     navPanel.classList.remove('is-closing');
     navHeader.classList.remove('navigation-closing');
     navHeader.classList.add('navigation-open'); document.body.classList.add('navigation-open');
-    menuToggle.setAttribute('aria-expanded','true'); menuToggle.setAttribute('aria-label','Закрыть меню');
+    menuToggle.setAttribute('aria-expanded','true'); menuToggle.setAttribute('aria-label',navigationText('close_label','Закрыть меню'));
     requestAnimationFrame(() => {
       if (navState !== 'open') return;
       navPanel.classList.add('is-open'); navPanel.querySelector('a')?.focus({preventScroll:true});
@@ -61,7 +65,7 @@ function setMenu(open, returnFocus = false, afterClose = null) {
   navState = 'closing';
   navCloseReturnFocus = returnFocus;
   navHeader.classList.add('navigation-closing');
-  menuToggle.setAttribute('aria-expanded','false'); menuToggle.setAttribute('aria-label','Открыть меню');
+  menuToggle.setAttribute('aria-expanded','false'); menuToggle.setAttribute('aria-label',navigationText('open_label','Открыть меню'));
   navPanel.classList.remove('is-open'); navPanel.classList.add('is-closing');
   if (matchMedia('(prefers-reduced-motion: reduce)').matches || !mobileNavigation.matches) finishNavigationClose(returnFocus);
   else navTimer = setTimeout(()=>finishNavigationClose(returnFocus),parseFloat(getComputedStyle(navPanel).transitionDuration) * 1000 + 50);

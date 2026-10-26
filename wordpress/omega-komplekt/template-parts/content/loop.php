@@ -9,7 +9,7 @@
     </article>
     <?php endwhile; ?>
 </div>
-<?php the_posts_pagination(); ?>
+<?php the_posts_pagination( array( 'prev_text' => omega_theme_setting( 'system', 'pagination_previous', 'Назад' ), 'next_text' => omega_theme_setting( 'system', 'pagination_next', 'Далее' ), 'screen_reader_text' => omega_theme_setting( 'system', 'pagination_label', 'Навигация записей' ) ) ); ?>
 <?php else : ?>
     <p><?php esc_html_e( 'Материалы пока не опубликованы.', 'omega-komplekt' ); ?></p>
     <a class="text-link" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'На главную', 'omega-komplekt' ); ?> <span aria-hidden="true">→</span></a>

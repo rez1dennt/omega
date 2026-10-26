@@ -1,0 +1,1005 @@
+{
+  "advantages": {
+    "eyebrow_1": "ОТ ПОДБОРА ДО ГОТОВОГО ЗАКАЗА",
+    "heading_1": "Все, что нужно",
+    "heading_2": "для точного реза.",
+    "paragraph_1": "Полотна под ваши параметры.",
+    "paragraph_2": "Поддержка на каждом этапе покупки.",
+    "paragraph_3": "Доставка удобным для вас способом.",
+    "paragraph_4": "Выберите преимущество — узнайте, как мы работаем.",
+    "label_1": "01",
+    "label_2": "Изготовление за 1 день",
+    "label_3": "Полотно под параметры вашего станка.",
+    "label_4": "02",
+    "label_5": "Сварка за 1 час",
+    "label_6": "Соединяем полотно в готовое кольцо.",
+    "label_7": "03",
+    "label_8": "Технический подбор",
+    "label_9": "Учитываем материал и задачу.",
+    "label_10": "04",
+    "label_11": "Доставка по России",
+    "label_12": "Передаём заказ удобным вам способом.",
+    "eyebrow_2": "ИЗГОТОВЛЕНИЕ ПОЛОТЕН",
+    "heading_3": "Под размеры",
+    "heading_4": "вашего станка.",
+    "paragraph_5": "Изготовим ленточное полотно под ваши параметры. Укажите размеры и материал — подготовим решение под задачу.",
+    "label_13": "Длина",
+    "label_14": "Ширина",
+    "label_15": "Шаг зуба",
+    "label_16": "Обсудить изготовление",
+    "label_17": "1 день",
+    "label_18": "на изготовление",
+    "label_19": "01 / 04",
+    "eyebrow_3": "СВАРКА В КОЛЬЦО",
+    "heading_5": "Точный стык.",
+    "heading_6": "Надёжное соединение.",
+    "paragraph_6": "Сварим полотно в кольцо на профессиональном оборудовании. Подготовим инструмент к работе на вашем станке.",
+    "label_20": "Профессиональное оборудование",
+    "label_21": "Контроль качества",
+    "label_22": "Заказать сварку",
+    "label_23": "1 час",
+    "label_24": "на сварку",
+    "label_25": "02 / 04",
+    "eyebrow_4": "ТЕХНИЧЕСКИЙ ПОДБОР",
+    "heading_7": "Станок. Материал.",
+    "heading_8": "Правильное полотно.",
+    "paragraph_7": "Подберём полотно и шаг зуба под ваш станок, материал и сечение заготовки. Поможем разобраться с параметрами.",
+    "label_26": "Металл",
+    "label_27": "Дерево",
+    "label_28": "Пластик",
+    "label_29": "Подобрать полотно",
+    "label_30": "TPI",
+    "label_31": "шаг зуба под материал",
+    "label_32": "03 / 04",
+    "eyebrow_5": "ДОСТАВКА ПО РОССИИ",
+    "heading_9": "Готовое полотно —",
+    "heading_10": "в ваш регион.",
+    "paragraph_8": "Упакуем заказ, оформим документы и передадим выбранному перевозчику. Можно забрать заказ со склада в Саратове.",
+    "label_33": "Самовывоз",
+    "label_34": "Транспортные компании",
+    "label_35": "Условия доставки",
+    "label_36": "РФ",
+    "label_37": "из Саратова в ваш регион",
+    "label_38": "04 / 04",
+    "image_1": "assets/images/benefits/manufacture.webp",
+    "image_3": "assets/images/benefits/welding.webp",
+    "image_5": "assets/images/benefits/selection.webp",
+    "image_7": "assets/images/benefits/shipping.webp",
+    "advantages_5ba160_attribute_013": "Преимущества Омега Комплект",
+    "image_1_alt": "Размотка стальной зубчатой ленты с катушки и подача через направляющие ролики",
+    "image_3_alt": "Крупный план сварного стыка ленточного полотна между стальными зажимами",
+    "image_5_alt": "Специалист измеряет ширину образца ленточного полотна штангенциркулем",
+    "image_7_alt": "Упаковка свёрнутого ленточного полотна в защитную коробку перед отправкой"
+  },
+  "company": {
+    "name": "ООО «Омега Комплект»",
+    "brand": "ОМЕГА КОМПЛЕКТ",
+    "phone": "+7 (917) 201-21-00",
+    "office_phone": "+7 (8452) 52-93-50",
+    "email": "omegakomplekt@mail.ru",
+    "inn": "6455054459",
+    "kpp": "645501001",
+    "ogrn": "1116455002916",
+    "address": "410054, РФ, Саратовская область, г. Саратов, ул. Б. Садовая, д. 141, офис 314",
+    "city_line": "г. Саратов,",
+    "street_line": "ул. Б. Садовая, дом № 141,",
+    "office_line": "офис 314",
+    "hours": "9:00–17:00 (МСК)",
+    "site_title": "Омега Комплект — ленточные полотна под ваш станок",
+    "description": "Ленточные полотна, ленточнопильные станки и рольганги ООО «Омега Комплект». Подбор оборудования, изготовление полотен и доставка по России.",
+    "checking_account": "40702810132100020736",
+    "bank": "ПАО АКБ «Авангард»",
+    "correspondent_account": "30101810000000000201",
+    "bik": "044525201",
+    "director": "Кашина Ирина Борисовна",
+    "chief_accountant": "Кашина Ирина Борисовна",
+    "requisites_mode": "generated",
+    "requisites_file": "assets/rekvizity.txt",
+    "download_label_name": "",
+    "download_label_inn": "ИНН",
+    "download_label_kpp": "КПП",
+    "download_label_ogrn": "ОГРН",
+    "download_label_address": "Адрес",
+    "download_label_phone": "Телефон",
+    "download_label_office_phone": "Телефон офиса",
+    "download_label_email": "E-mail",
+    "download_label_checking_account": "Расчётный счёт",
+    "download_label_bank": "Банк",
+    "download_label_correspondent_account": "Корреспондентский счёт",
+    "download_label_bik": "БИК",
+    "download_label_director": "Директор",
+    "download_label_chief_accountant": "Главный бухгалтер",
+    "requisites_filename": "omega-komplekt-rekvizity.txt"
+  },
+  "contacts": {
+    "eyebrow_1": "ВСЕГДА НА СВЯЗИ",
+    "heading_1": "Контакты",
+    "paragraph_1": "Обсудим вашу задачу, подберём полотно или оборудование. Позвоните, напишите или приезжайте в офис.",
+    "label_1": "01",
+    "heading_2": "Позвоните нам",
+    "paragraph_2": "Пн–Пт, 9:00–17:00 (МСК)",
+    "label_2": "02",
+    "heading_3": "Напишите нам",
+    "paragraph_3": "Для вопросов, подбора и оформления заказа.",
+    "label_5": "Оставить заявку",
+    "label_6": "03",
+    "heading_4": "Реквизиты компании",
+    "label_7": "ИНН",
+    "label_8": "ОГРН",
+    "label_9": "Скачать реквизиты",
+    "eyebrow_2": "ЖДЁМ ВАС В ОФИСЕ",
+    "heading_5": "Наш адрес",
+    "label_13": "Режим работы",
+    "label_15": "Проложить маршрут",
+    "label_16": "Большая Садовая, 141 · офис 314",
+    "label_17": "Открыть в Яндекс Картах",
+    "contacts_e884e0_attribute_010": "Яндекс Карта: Саратов, Большая Садовая улица, 141, офис 314",
+    "map_embed_url": "https://yandex.ru/map-widget/v1/?ll=45.985011%2C51.535232&z=17&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DIgoNp_A3QhUUJE5C"
+  },
+  "delivery": {
+    "label_1": "САРАТОВ",
+    "label_2": "ВСЯ РОССИЯ",
+    "eyebrow_1": "ДОСТАВКА БЕЗ ЛИШНИХ ЗАБОТ",
+    "heading_1": "Доставим в любой",
+    "heading_2": "регион России.",
+    "paragraph_1": "Упакуем полотно, оформим документы",
+    "paragraph_2": "и передадим выбранному перевозчику.",
+    "label_3": "Самовывоз со склада в Саратове",
+    "label_4": "Энгельс — бесплатно каждую среду",
+    "label_5": "Все условия доставки",
+    "label_6": "БЕСПЛАТНАЯ ДОСТАВКА",
+    "label_7": "50 000 ₽",
+    "paragraph_3": "При заказе от этой суммы —",
+    "paragraph_4": "по всей России.",
+    "label_8": "До терминала ТК по будням",
+    "label_9": "доставляем бесплатно.",
+    "image_1": "assets/images/delivery.webp",
+    "image_1_alt": "Грузовой автомобиль на дороге — доставка по России"
+  },
+  "equipment": {
+    "eyebrow_1": "ПОСТАВКА ОБОРУДОВАНИЯ",
+    "heading_1": "Станки и рольганги",
+    "label_1": "под ваши задачи.",
+    "paragraph_1": "Помимо ленточных полотен, поставляем оборудование для распила и работы с заготовками. Поможем выбрать решение под ваше производство.",
+    "heading_2": "Оборудование для производства",
+    "paragraph_2": "Резка, сверление и подача заготовок",
+    "label_2": "01",
+    "label_3": "С гидро­разгрузкой",
+    "paragraph_3": "Гидравлика регулирует опускание пильной рамы. Заготовку подаёт оператор.",
+    "label_4": "Подача заготовки",
+    "label_5": "Вручную",
+    "label_6": "Подобрать станок",
+    "label_7": "02",
+    "label_8": "Полуавто­матические",
+    "paragraph_4": "Цикл резания и возврат рамы выполняет станок. Заготовку подаёт оператор.",
+    "label_9": "Подача заготовки",
+    "label_10": "Вручную",
+    "label_11": "Подобрать станок",
+    "label_12": "03",
+    "label_13": "Авто­матические",
+    "paragraph_5": "Автоматическая подача заготовки и повторение цикла резания по заданным параметрам.",
+    "label_14": "Подача заготовки",
+    "label_15": "Автоматически",
+    "label_16": "Подобрать станок",
+    "heading_3": "Неприводные рольганги",
+    "paragraph_6": "Роликовые опоры для перемещения и поддержки длинных заготовок до и после реза.",
+    "label_21": "Перемещение заготовок вручную",
+    "roller_index": "05",
+    "roller_country_label": "Производство",
+    "roller_country": "Россия",
+    "label_23": "Нужна помощь с выбором?",
+    "paragraph_7": "Расскажите, что режете, укажите сечение заготовки и объём работ.",
+    "label_24": "Обсудить задачу",
+    "image_1": "assets/images/equipment/hydraulic.webp",
+    "image_2": "assets/images/equipment/semiautomatic.webp",
+    "image_3": "assets/images/equipment/automatic.webp",
+    "image_4": "assets/images/equipment/roller.webp",
+    "magnetic_card_title": "Магнитный сверлильный",
+    "magnetic_index": "04",
+    "magnetic_purpose": "Сверление металла",
+    "magnetic_description": "Для сверления отверстий в металлических заготовках и конструкциях. Поможем подобрать станок и оснастку под вашу задачу.",
+    "magnetic_type_label": "Назначение",
+    "magnetic_type": "Магнитный сверлильный станок",
+    "magnetic_cta": "Оставить заявку",
+    "magnetic_image": "assets/images/equipment/magnetic-lenz-steyr-35.webp",
+    "image_1_alt": "Ленточнопильный станок PILOUS ARG 235 с гидроразгрузкой пильной рамы",
+    "equipment_a55f48_attribute_011": "Ленточнопильный станок с гидроразгрузкой",
+    "image_2_alt": "Полуавтоматический ленточнопильный станок PILOUS ARG 300 plus S.A.F.",
+    "equipment_a55f48_attribute_012": "Полуавтоматический ленточнопильный станок",
+    "image_3_alt": "Автоматический ленточнопильный станок PILOUS ARG 300 CF-NC с подачей заготовки",
+    "equipment_a55f48_attribute_013": "Автоматический ленточнопильный станок",
+    "magnetic_image_alt": "Магнитный сверлильный станок с магнитным основанием",
+    "image_4_alt": "Неприводной рольганг с роликовыми опорами для поддержки заготовки",
+    "equipment_a55f48_attribute_014": "Помощь с подбором станка"
+  },
+  "hero": {
+    "eyebrow_1": "ЛЕНТОЧНЫЕ ПИЛЫ",
+    "heading_1": "Ленточные",
+    "heading_2": "полотна",
+    "label_1": "под ваш станок.",
+    "paragraph_1": "Профессиональные полотна для резки металла. Гарантия качества и стабильная работа оборудования.",
+    "label_2": "Подобрать полотно",
+    "label_3": "Узнать больше",
+    "label_4": "1 день",
+    "label_5": "на изготовление",
+    "label_6": "1 час",
+    "label_7": "на сварку",
+    "label_8": "ДЛЯ ВАШЕГО ПРОИЗВОДСТВА",
+    "label_9": "Пилы и станки.",
+    "label_10": "Ленточные полотна",
+    "request_label": "Оставить заявку",
+    "image_1": "assets/images/bandsaw.webp",
+    "image_1_alt": "Стальные ленточные полотна крупным планом"
+  },
+  "order": {
+    "eyebrow_1": "ПОДБОР ПОД ВАШЕ ОБОРУДОВАНИЕ",
+    "heading_1": "Какое полотно",
+    "heading_2": "нужно вашему",
+    "heading_3": "станку?",
+    "label_1": "—",
+    "paragraph_1": "Укажите параметры полотна и контакты — подберем решение, рассчитаем стоимость и свяжемся с вами.",
+    "label_2": "Таблица подбора шага зуба",
+    "label_3": "Ширина, мм",
+    "label_4": "Длина, мм",
+    "label_5": "Шаг зуба / TPI",
+    "label_6": "Шаг зуба / TPI",
+    "label_7": "Материал / сплав",
+    "label_8": "Параметры оборудования / задача",
+    "label_9": "E-mail",
+    "label_10": "*",
+    "label_11": "Телефон",
+    "label_12": "*",
+    "label_13": "Добавить имя или компанию",
+    "label_14": "необязательно",
+    "label_15": "Имя / Компания",
+    "label_16": "необязательно",
+    "label_17": "Даю",
+    "label_18": "согласие на обработку персональных данных",
+    "label_19": "*",
+    "label_20": "Политика обработки данных",
+    "label_21": "Не заполняйте это поле",
+    "label_22": "Отправить заявку",
+    "image_1": "assets/images/bandsaw.webp",
+    "order_32c5d8_attribute_003": "27",
+    "order_32c5d8_attribute_004": "2450",
+    "order_32c5d8_attribute_005": "Шаг зуба / TPI",
+    "order_32c5d8_attribute_024": "Например, сталь",
+    "order_32c5d8_attribute_025": "Станок, количество полотен, ваша задача",
+    "order_32c5d8_attribute_026": "name@example.ru",
+    "order_32c5d8_attribute_027": "+7 (___) ___-__-__",
+    "order_32c5d8_attribute_028": "Как к вам обращаться",
+    "order_32c5d8_text_029": "Для оформления заказа позвоните",
+    "order_32c5d8_text_030": "или напишите",
+    "image_1_alt": "",
+    "tpi_help": "Нужна помощь с подбором"
+  },
+  "production": {
+    "label_1": "Сварка полотен на",
+    "label_2": "профессиональном оборудовании IDEAL",
+    "eyebrow_1": "НАШЕ ПРОИЗВОДСТВО",
+    "heading_1": "Точность —",
+    "heading_2": "на каждом этапе.",
+    "paragraph_1": "Мы производим ленточные пилы на современном автоматизированном высокоточном оборудовании. Контролируем качество на каждом этапе, обеспечиваем максимальный ресурс и надёжность.",
+    "label_3": "Современное оборудование",
+    "label_4": "Строгий контроль качества",
+    "label_5": "Индивидуальный подход",
+    "label_6": "Узнать о производстве",
+    "image_1": "assets/images/production-ideal.webp",
+    "image_1_alt": "Наш сварочный станок IDEAL для соединения ленточных полотен"
+  },
+  "selection": {
+    "eyebrow": "ПОД ВАШ СТАНОК",
+    "title": "Подобрать полотно",
+    "intro": "Укажите параметры полотна. Не знаете шаг зуба — откройте таблицу.",
+    "table_label": "Подобрать шаг зуба",
+    "table_hint": "Таблица для прутка и трубы",
+    "selection_8a00f6_attribute_003": "Закрыть подбор полотна"
+  },
+  "icons": {
+    "order_32c5d8_icon_001": {
+      "mode": "builtin",
+      "symbol": "chevron",
+      "image": 0
+    },
+    "order_32c5d8_icon_002": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "request_65e22b_icon_001": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "request_65e22b_icon_002": {
+      "mode": "builtin",
+      "symbol": "lock",
+      "image": 0
+    },
+    "cookies_c35c9a_icon_001": {
+      "mode": "builtin",
+      "symbol": "close",
+      "image": 0
+    },
+    "overlays_29512b_icon_001": {
+      "mode": "builtin",
+      "symbol": "close",
+      "image": 0
+    },
+    "overlays_29512b_icon_002": {
+      "mode": "builtin",
+      "symbol": "close",
+      "image": 0
+    },
+    "overlays_29512b_icon_003": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "overlays_29512b_icon_004": {
+      "mode": "builtin",
+      "symbol": "close",
+      "image": 0
+    },
+    "overlays_29512b_icon_005": {
+      "mode": "builtin",
+      "symbol": "close",
+      "image": 0
+    },
+    "selection_8a00f6_icon_001": {
+      "mode": "builtin",
+      "symbol": "close",
+      "image": 0
+    },
+    "selection_8a00f6_icon_002": {
+      "mode": "builtin",
+      "symbol": "chevron",
+      "image": 0
+    },
+    "advantages_5ba160_icon_001": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "advantages_5ba160_icon_002": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "advantages_5ba160_icon_003": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "advantages_5ba160_icon_004": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "advantages_5ba160_icon_005": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "advantages_5ba160_icon_006": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "advantages_5ba160_icon_007": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "advantages_5ba160_icon_008": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "contacts_e884e0_icon_001": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "contacts_e884e0_icon_002": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "contacts_e884e0_icon_003": {
+      "mode": "builtin",
+      "symbol": "pin",
+      "image": 0
+    },
+    "contacts_e884e0_icon_004": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "contacts_e884e0_icon_005": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "delivery_2ef7b2_icon_001": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "equipment_a55f48_icon_001": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "equipment_a55f48_icon_002": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "equipment_a55f48_icon_003": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "equipment_a55f48_icon_004": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "equipment_a55f48_icon_005": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "hero_d4bd32_icon_001": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "hero_d4bd32_icon_002": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "hero_d4bd32_icon_003": {
+      "mode": "builtin",
+      "symbol": "play",
+      "image": 0
+    },
+    "order_c79a08_icon_001": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "production_3ae01a_icon_001": {
+      "mode": "builtin",
+      "symbol": "shield",
+      "image": 0
+    },
+    "production_3ae01a_icon_002": {
+      "mode": "builtin",
+      "symbol": "check",
+      "image": 0
+    },
+    "production_3ae01a_icon_003": {
+      "mode": "builtin",
+      "symbol": "check",
+      "image": 0
+    },
+    "production_3ae01a_icon_004": {
+      "mode": "builtin",
+      "symbol": "check",
+      "image": 0
+    },
+    "production_3ae01a_icon_005": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "layout_header_8cc6bb_icon_001": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "layout_header_8cc6bb_icon_002": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "layout_header_8cc6bb_icon_003": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "layout_header_8cc6bb_icon_004": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "layout_header_8cc6bb_icon_005": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "layout_header_8cc6bb_icon_006": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "layout_header_8cc6bb_icon_007": {
+      "mode": "builtin",
+      "symbol": "phone",
+      "image": 0
+    },
+    "layout_header_8cc6bb_icon_008": {
+      "mode": "builtin",
+      "symbol": "phone",
+      "image": 0
+    },
+    "menu_open": {
+      "mode": "builtin",
+      "symbol": "menu",
+      "image": 0
+    },
+    "menu_close": {
+      "mode": "builtin",
+      "symbol": "close",
+      "image": 0
+    },
+    "pitch_arrow": {
+      "mode": "builtin",
+      "symbol": "arrow",
+      "image": 0
+    },
+    "pitch_chevron": {
+      "mode": "builtin",
+      "symbol": "chevron",
+      "image": 0
+    }
+  },
+  "links": {
+    "cookies_c35c9a_link_002": {
+      "target": "url",
+      "url": "https://yandex.ru/legal/confidential/",
+      "new_tab": true
+    },
+    "overlays_29512b_link_006": {
+      "target": "#selection-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "advantages_5ba160_link_009": {
+      "target": "#request-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "advantages_5ba160_link_010": {
+      "target": "#request-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "advantages_5ba160_link_011": {
+      "target": "#selection-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "advantages_5ba160_link_012": {
+      "target": "#delivery-details",
+      "url": "",
+      "new_tab": false
+    },
+    "contacts_e884e0_link_006": {
+      "target": "#request-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "contacts_e884e0_link_007": {
+      "target": "url",
+      "url": "https://yandex.ru/maps/?rtext=~51.535232%2C45.985011&rtt=auto&z=17",
+      "new_tab": true
+    },
+    "contacts_e884e0_link_008": {
+      "target": "url",
+      "url": "https://yandex.ru/maps/194/saratov/house/bolshaya_sadovaya_ulitsa_141/YEwYfw9lSUQGQFtrfXlydH5gZg==/",
+      "new_tab": true
+    },
+    "delivery_2ef7b2_link_002": {
+      "target": "#delivery-details",
+      "url": "",
+      "new_tab": false
+    },
+    "equipment_a55f48_link_006": {
+      "target": "#request-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "equipment_a55f48_link_007": {
+      "target": "#request-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "equipment_a55f48_link_008": {
+      "target": "#request-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "equipment_a55f48_link_009": {
+      "target": "#request-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "equipment_a55f48_link_010": {
+      "target": "#request-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "hero_d4bd32_link_004": {
+      "target": "#request-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "hero_d4bd32_link_005": {
+      "target": "#selection-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "hero_d4bd32_link_006": {
+      "target": "#order",
+      "url": "",
+      "new_tab": false
+    },
+    "order_c79a08_link_002": {
+      "target": "#pitch-guide",
+      "url": "",
+      "new_tab": false
+    },
+    "production_3ae01a_link_006": {
+      "target": "#production-details",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_footer_0e84c0_link_001": {
+      "target": "#production",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_footer_0e84c0_link_002": {
+      "target": "#order",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_footer_0e84c0_link_003": {
+      "target": "#equipment",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_footer_0e84c0_link_004": {
+      "target": "#delivery",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_footer_0e84c0_link_005": {
+      "target": "#contacts",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_footer_0e84c0_link_006": {
+      "target": "#request-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_header_8cc6bb_link_009": {
+      "target": "#production",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_header_8cc6bb_link_010": {
+      "target": "#order",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_header_8cc6bb_link_011": {
+      "target": "#equipment",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_header_8cc6bb_link_012": {
+      "target": "#delivery",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_header_8cc6bb_link_013": {
+      "target": "#contacts",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_header_8cc6bb_link_014": {
+      "target": "#request-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_header_8cc6bb_link_015": {
+      "target": "#request-dialog",
+      "url": "",
+      "new_tab": false
+    },
+    "layout_header_e7f789_link_001": {
+      "target": "#main",
+      "url": "",
+      "new_tab": false
+    },
+    "brand_light": {
+      "target": "#main",
+      "url": "",
+      "new_tab": false
+    },
+    "brand_dark": {
+      "target": "#main",
+      "url": "",
+      "new_tab": false
+    }
+  },
+  "decor": {
+    "section-lines": {
+      "visible": true,
+      "image": "plugin:assets/defaults/decor-section-lines.png"
+    },
+    "delivery-lines": {
+      "visible": true,
+      "image": "plugin:assets/defaults/decor-delivery-lines.png"
+    },
+    "delivery-wave": {
+      "visible": true,
+      "image": "plugin:assets/defaults/decor-delivery-wave.png"
+    },
+    "hero-lines": {
+      "visible": true,
+      "image": "plugin:assets/defaults/decor-hero-lines.png"
+    },
+    "hero-wave": {
+      "visible": true,
+      "image": "plugin:assets/defaults/decor-hero-wave.png"
+    },
+    "order-lines": {
+      "visible": true,
+      "image": "plugin:assets/defaults/decor-order-lines.png"
+    },
+    "order-wave": {
+      "visible": true,
+      "image": "plugin:assets/defaults/decor-order-wave.png"
+    },
+    "production-lines": {
+      "visible": true,
+      "image": "plugin:assets/defaults/decor-production-lines.png"
+    },
+    "footer-line": {
+      "visible": true,
+      "image": "plugin:assets/defaults/decor-footer-line.png"
+    },
+    "delivery-route-graphic": {
+      "visible": true,
+      "image": "plugin:assets/defaults/decor-delivery-route.png"
+    }
+  },
+  "request": {
+    "request_65e22b_text_003": "Поля со",
+    "request_65e22b_text_004": "обязательны",
+    "request_65e22b_text_005": "Параметры заказа",
+    "request_65e22b_attribute_006": "Например: полотно 27 × 2450 мм, 4/6 TPI, сталь, 2 шт.",
+    "request_65e22b_text_007": "Укажите размеры и количество или опишите задачу — поможем подобрать полотно.",
+    "request_65e22b_text_008": "E-mail",
+    "request_65e22b_attribute_009": "Ваш e-mail",
+    "request_65e22b_text_010": "Телефон",
+    "request_65e22b_attribute_011": "+7 (___) ___-__-__",
+    "request_65e22b_text_012": "Добавить имя / компанию",
+    "request_65e22b_text_013": "необязательно",
+    "request_65e22b_text_014": "Имя / Компания",
+    "request_65e22b_text_015": "необязательно",
+    "request_65e22b_attribute_016": "Как к вам обращаться",
+    "request_65e22b_text_017": "Даю согласие на обработку персональных данных",
+    "request_65e22b_text_018": "Условия обработки данных",
+    "request_65e22b_text_019": "Контакты и параметры заказа передаются ООО «Омега Комплект» для подбора полотен или оборудования и ответа на заявку.",
+    "request_65e22b_text_020": "Отдельное согласие",
+    "request_65e22b_text_021": "Политика обработки данных",
+    "request_65e22b_text_022": "Не заполняйте это поле",
+    "request_65e22b_text_023": "Отправить заявку",
+    "request_65e22b_text_024": "Контакты используем только для ответа по заявке.",
+    "request_65e22b_text_025": "Для оформления заказа позвоните",
+    "request_65e22b_text_026": "или напишите"
+  },
+  "cookies": {
+    "cookies_c35c9a_text_003": "Cookie и сервисы сайта",
+    "cookies_c35c9a_text_004": "Сохраняем ваши настройки. В контактах встроены Яндекс Карты.",
+    "cookies_c35c9a_text_005": "Подробнее",
+    "cookies_c35c9a_text_006": "Понятно",
+    "cookies_c35c9a_text_007": "Настройки",
+    "cookies_c35c9a_attribute_008": "Закрыть настройки cookie",
+    "cookies_c35c9a_text_009": "ВАШИ НАСТРОЙКИ",
+    "cookies_c35c9a_text_010": "Cookie и данные браузера",
+    "cookies_c35c9a_text_011": "Необходимые",
+    "cookies_c35c9a_text_012": "Всегда включены",
+    "cookies_c35c9a_text_013": "Одна запись с вашим выбором хранится только в этом браузере до 180 дней. Она не содержит имени, телефона, e-mail или рекламного идентификатора.",
+    "cookies_c35c9a_text_014": "Аналитика сайта",
+    "cookies_c35c9a_text_015": "Не подключена",
+    "cookies_c35c9a_text_016": "В коде сайта нет собственных счётчиков посещений и рекламных пикселей.",
+    "cookies_c35c9a_text_017": "Яндекс Карты",
+    "cookies_c35c9a_text_018": "Внешний сервис",
+    "cookies_c35c9a_text_019": "Карта в контактах загружается с сервиса Яндекса. Обработка технических данных и cookie виджета регулируется",
+    "cookies_c35c9a_text_020": "политикой Яндекса",
+    "cookies_c35c9a_text_021": ". Данные из форм заявки в карту не передаются.",
+    "cookies_c35c9a_text_022": "Эти настройки относятся к коду сайта. Cookie платформы размещения и авторизации управляются её собственными настройками.",
+    "cookies_c35c9a_text_023": "О cookie в политике",
+    "cookies_c35c9a_text_024": "Сохранить настройки",
+    "cookies_c35c9a_text_025": "Удалить сохранённый выбор"
+  },
+  "overlays": {
+    "overlays_29512b_attribute_007": "Закрыть условия доставки",
+    "overlays_29512b_text_008": "Доставка",
+    "overlays_29512b_text_009": "Мы упакуем, оформим документы и передадим ваш заказ любым удобным для вас способом в любой регион РФ. Способ доставки выбираете вы сами:",
+    "overlays_29512b_text_010": "Самовывоз с нашего склада в г. Саратов.",
+    "overlays_29512b_text_011": "Доставка до предприятий г. Энгельс бесплатно — каждую среду.",
+    "overlays_29512b_text_012": "Доставка по России осуществляется бесплатно до терминала ТК по будням.",
+    "overlays_29512b_text_013": "Транспортные компании",
+    "overlays_29512b_text_014": "Деловые Линии · ПЭК · СДЭК · Кит · Байкал-Сервис",
+    "overlays_29512b_text_015": "При заказе на сумму от 50 000 руб. — бесплатная доставка по всей России!",
+    "overlays_29512b_attribute_016": "Закрыть информацию о производстве",
+    "overlays_29512b_text_017": "Наше производство",
+    "overlays_29512b_text_018": "Мы производим ленточные пилы на современном автоматизированном высокоточном оборудовании. Контролируем качество на каждом этапе, обеспечиваем максимальный ресурс и надёжность. Сварим полотно в кольцо и поможем подобрать параметры под ваш станок, материал и задачу.",
+    "overlays_29512b_text_019": "Подобрать полотно",
+    "overlays_29512b_attribute_020": "Закрыть документ",
+    "overlays_29512b_text_021": "Документы",
+    "overlays_29512b_text_022": "Информация на сайте носит справочный характер. Стоимость, сроки изготовления и условия заказа согласуются с менеджером. Условия обработки данных указаны в политике и отдельном согласии.",
+    "overlays_29512b_attribute_023": "Закрыть заявку",
+    "overlays_29512b_text_024": "ПОД ВАШ СТАНОК И ЗАДАЧУ",
+    "overlays_29512b_text_025": "Заявка на изготовление",
+    "overlays_29512b_text_026": "Укажите параметры полотна и контакты для уточнения заказа."
+  },
+  "layout_footer": {
+    "layout_footer_b1eac5_text_001": "Политика обработки данных",
+    "layout_footer_b1eac5_text_002": "Отдельное согласие",
+    "layout_footer_b1eac5_text_003": "Настройки cookie",
+    "layout_footer_0e84c0_attribute_007": "Навигация в подвале",
+    "layout_footer_0e84c0_text_008": "О компании",
+    "layout_footer_0e84c0_text_009": "Полотна",
+    "layout_footer_0e84c0_text_010": "Оборудование",
+    "layout_footer_0e84c0_text_011": "Доставка",
+    "layout_footer_0e84c0_text_012": "Контакты",
+    "layout_footer_0e84c0_text_013": "Оставить заявку",
+    "layout_footer_0e84c0_text_014": "Все права защищены.",
+    "layout_footer_0e84c0_text_015": "Политика обработки персональных данных",
+    "layout_footer_0e84c0_text_016": "Настройки cookie",
+    "layout_footer_0e84c0_attribute_017": "Пользовательское соглашение",
+    "layout_footer_0e84c0_text_018": "Пользовательское соглашение"
+  },
+  "layout_header": {
+    "layout_header_8cc6bb_attribute_016": "Основная навигация",
+    "layout_header_8cc6bb_text_017": "Навигация по сайту",
+    "layout_header_8cc6bb_text_018": "О компании",
+    "layout_header_8cc6bb_text_019": "Полотна",
+    "layout_header_8cc6bb_text_020": "Оборудование",
+    "layout_header_8cc6bb_text_021": "Доставка",
+    "layout_header_8cc6bb_text_022": "Контакты",
+    "layout_header_8cc6bb_text_023": "Оставить заявку",
+    "layout_header_8cc6bb_text_024": "Оставить заявку"
+  },
+  "branding": {
+    "logo_light": "plugin:assets/defaults/logo-light.png",
+    "logo_dark": "plugin:assets/defaults/logo-dark.png",
+    "logo_alt": "ОМЕГА КОМПЛЕКТ",
+    "favicon": "assets/favicon.svg",
+    "tagline": "Ленточные пилы и комплектующие"
+  },
+  "document_privacy": {
+    "eyebrow": "ОМЕГА КОМПЛЕКТ · ДОКУМЕНТЫ",
+    "title": "Политика обработки персональных данных",
+    "revision": "Редакция от 15 октября 2026 года",
+    "lead": "Как работает сайт с вашими данными, кто является оператором и как воспользоваться своими правами.",
+    "toc_title": "В этом документе",
+    "sections": [
+      {
+        "heading": "1. Оператор и область действия",
+        "body": "<dl class=\"legal-facts\"><dt>Оператор</dt><dd>ООО «Омега Комплект»</dd><dt>ИНН / КПП</dt><dd>6455054459 / 645501001</dd><dt>ОГРН</dt><dd>1116455002916</dd><dt>Адрес</dt><dd>410054, РФ, Саратовская область, г. Саратов, ул. Б. Садовая, д. 141, офис 314</dd><dt>E-mail</dt><dd><a href=\"mailto:omegakomplekt@mail.ru\">omegakomplekt@mail.ru</a></dd><dt>Телефон</dt><dd><a href=\"tel:+79172012100\">+7 (917) 201-21-00</a></dd></dl><p>Политика относится к посетителям сайта ООО «Омега Комплект» и их обращениям. Реквизиты предоставлены компанией. Документ подготовлен с учётом № 152-ФЗ «О персональных данных» и требования публикации политики по <a href=\"https://www.consultant.ru/document/cons_doc_LAW_61801/eeeebe22bf738fd65bb66b95cc278911ae2525ee/\" target=\"_blank\" rel=\"noopener\">статье 18.1</a>.</p>",
+        "anchor": "operator"
+      },
+      {
+        "heading": "2. Данные и цели обработки",
+        "body": "<p>Для подбора полотен и оборудования, расчёта стоимости, согласования параметров и ответа на обращение обрабатываются параметры заказа и комментарий, e-mail, телефон, имя или компания, если указаны. Технические сведения: номер обращения, время отправки и редакция подтверждённого согласия.</p><p>Не указывайте паспортные, медицинские, платёжные или другие избыточные сведения. Мы не запрашиваем биометрические или специальные категории данных, не публикуем данные заявок и не используем их для автоматизированных решений о правах посетителя.</p>",
+        "anchor": "form"
+      },
+      {
+        "heading": "3. Основания и согласие",
+        "body": "<p>Обработка обращения осуществляется на основании добровольного отдельного <a href=\"/?omega_document=consent\">согласия</a> — пункт 1 части 1 статьи 6 № 152-ФЗ. При заключении и исполнении договора применяются соответствующие основания статьи 6 и обязательные требования закона.</p><p>Отметка в форме не включает рекламу, рассылки или принятие иных документов. Отдельное оформление предусмотрено <a href=\"https://www.consultant.ru/document/cons_doc_LAW_61801/6c94959bc017ac80140621762d2ac59f6006b08c/\" target=\"_blank\" rel=\"noopener\">статьёй 9 № 152-ФЗ</a>. Просмотр сайта не означает согласия на рекламу.</p>",
+        "anchor": "purpose"
+      },
+      {
+        "heading": "4. Способы, сроки и удаление",
+        "body": "<p>При отправке данные передаются по HTTPS серверному обработчику сайта и затем в служебный почтовый ящик компании. Обработка включает получение, проверку, запись, хранение, уточнение, использование для ответа и удаление. Рабочий сервер приёма заявок размещается на хостинге в РФ с учётом <a href=\"https://www.consultant.ru/document/cons_doc_LAW_61801/cbf4e15b7c330f9372e876cdf2bc928bad7950ef/\" target=\"_blank\" rel=\"noopener\">части 5 статьи 18 № 152-ФЗ</a>.</p><p>Заявка обрабатывается до завершения обращения; сведения, необходимые только для ответа, подлежат удалению не позднее 30 дней после достижения цели либо отзыва согласия при отсутствии иных законных оснований. Данные заключённого договора хранятся в течение обязательных сроков, установленных законом. Из почты и рабочих копий данные удаляются оператором.</p><p>Форма не сохраняет контакты в localStorage или cookie браузера. Сессионные технические метаданные обработчика без текста заявки используются до одного часа для защиты от повторной отправки и злоупотреблений. Для обращений и хранения действуют установленные законом случаи уточнения, блокирования и прекращения обработки.</p>",
+        "anchor": "storage"
+      },
+      {
+        "heading": "5. Доступ и почтовая доставка",
+        "body": "<p>Получатель заявки — ООО «Омега Комплект», служебный ящик omegakomplekt@mail.ru. Доступ предоставляется уполномоченным сотрудникам для ответа по заказу. Для доставки используется SMTP почтового сервиса Mail. Хостинг и почтовая инфраструктура обрабатывают данные в объёме, необходимом для предоставления услуг, на соответствующих договорных и правовых основаниях.</p><p>Данные заявок не передаются рекламным и аналитическим системам. Распространение данных и трансграничная передача через обработчик формы не предусмотрены. Для предоставления информации третьим лицам требуется предусмотренное законом основание.</p><p>В контактах встроен виджет Яндекс Карт; его работа и обработка технических данных описаны в разделе 8. Кнопка маршрута, ссылки на законодательство и почтовое приложение ведут к внешним сервисам с собственными правилами. Плашка cookie не управляет авторизацией платформы, через которую вы открыли сайт.</p>",
+        "anchor": "recipients"
+      },
+      {
+        "heading": "6. Защита",
+        "body": "<p>Обработчик использует HTTPS, проверку полей и согласия на сервере, защиту от поддельных запросов и повторной отправки. SMTP-доставка производится с шифрованием TLS. Пароль почты хранится на сервере вне публичных файлов и недоступен коду браузера. Ошибки доставки не раскрывают пароль или содержимое заявки.</p><p>Оператор ограничивает доступ к обращениям уполномоченными лицами и принимает организационные и технические меры защиты в соответствии с № 152-ФЗ. Вопросы безопасности устройства, расширений и автозаполнения браузера регулируются также настройками посетителя.</p>",
+        "anchor": "security"
+      },
+      {
+        "heading": "7. Права и обращения",
+        "body": "<p>Вы вправе запросить сведения об обработке, уточнение, блокирование или удаление данных, отозвать согласие и обжаловать действия оператора в Роскомнадзор или суд. Условия предусмотрены статьями 9, 14, 17, 20 и 21 <a href=\"https://www.consultant.ru/document/cons_doc_LAW_61801/\" target=\"_blank\" rel=\"noopener\">№ 152-ФЗ</a>.</p><p>Обращения: <a href=\"mailto:omegakomplekt@mail.ru\">omegakomplekt@mail.ru</a>, тема «Персональные данные», или 410054, г. Саратов, ул. Б. Садовая, д. 141, офис 314. Укажите суть и сведения, позволяющие определить, о каких данных идёт речь. Личность подтверждается в предусмотренном законом порядке.</p><p>Сведения об обработке предоставляются в течение 10 рабочих дней; продление максимум на 5 рабочих дней допускается с мотивированным уведомлением. Остальные требования исполняются в сроки для соответствующего случая. Отзыв согласия не исключает обработку, для которой сохраняется другое законное основание.</p>",
+        "anchor": "rights"
+      },
+      {
+        "heading": "8. Cookie и хранилище браузера",
+        "body": "<p>Запись omega-cookie-preferences в localStorage запоминает выбор по cookie до 180 дней. Состав: версия настроек, необходимые включены, аналитика и реклама отключены, время сохранения и истечения. Полей заявки и рекламных идентификаторов в записи нет; она не передаётся серверу кодом сайта.</p><p>При обращении к PHP-обработчику используется необходимая cookie omega_session: случайный идентификатор сессии, доступный серверу для проверки запросов. Cookie защищена HttpOnly, SameSite и Secure на HTTPS и действует в рамках браузерной сессии. Текст заявки в ней не хранится.</p><p>В коде сайта не подключены собственные счётчики аналитики и рекламные пиксели. Сохранённый выбор можно удалить; блокировка необходимых cookie может помешать отправке формы. В разделе «Контакты» встроен виджет Яндекс Карт. При его загрузке браузер соединяется с серверами Яндекса; обработка технических данных и cookie регулируется <a href=\"https://yandex.ru/legal/confidential/\" target=\"_blank\" rel=\"noopener noreferrer\">политикой Яндекса</a>. Данные из форм заявки в виджет не передаются. Cookie платформы размещения регулируются ею отдельно.</p>",
+        "anchor": "cookies"
+      },
+      {
+        "heading": "9. Редакция и контакты",
+        "body": "<p>Редакция от 15 октября 2026 года. Перед изменением целей, состава, получателей или способов обработки оператор актуализирует документы и необходимые согласия. Вопросы: <a href=\"mailto:omegakomplekt@mail.ru\">omegakomplekt@mail.ru</a>.</p>",
+        "anchor": "changes"
+      }
+    ],
+    "operator_label": "Оператор",
+    "address_label": "Адрес",
+    "email_label": "E-mail",
+    "inn_label": "ИНН",
+    "ogrn_label": "ОГРН",
+    "cookie_button": "Настройки cookie"
+  },
+  "document_consent": {
+    "eyebrow": "ОМЕГА КОМПЛЕКТ · ДОКУМЕНТЫ",
+    "title": "Согласие на обработку персональных данных",
+    "revision": "Редакция от 15 октября 2026 года",
+    "lead": "Отдельное согласие для подбора полотна и ответа на вашу заявку. Оно не включает рекламу или рассылки.",
+    "toc_title": "В этом документе",
+    "sections": [
+      {
+        "heading": "1. Оператор",
+        "body": "<dl class=\"legal-facts\"><dt>Оператор</dt><dd>ООО «Омега Комплект»</dd><dt>ИНН / КПП</dt><dd>6455054459 / 645501001</dd><dt>ОГРН</dt><dd>1116455002916</dd><dt>Адрес</dt><dd>410054, РФ, Саратовская область, г. Саратов, ул. Б. Садовая, д. 141, офис 314</dd><dt>E-mail</dt><dd><a href=\"mailto:omegakomplekt@mail.ru\">omegakomplekt@mail.ru</a></dd><dt>Телефон</dt><dd><a href=\"tel:+79172012100\">+7 (917) 201-21-00</a></dd></dl><p>Я свободно и в своём интересе даю ООО «Омега Комплект» согласие на обработку данных, которые указываю в форме заявки. Подтверждение — отдельная отметка и нажатие «Отправить заявку».</p>",
+        "anchor": "operator"
+      },
+      {
+        "heading": "2. Цели и данные",
+        "body": "<p>Цели: подбор полотен и оборудования, расчёт стоимости, уточнение заказа и ответ по указанным контактам. Данные: параметры и комментарий, e-mail, телефон, имя или компания, если указаны, номер и время обращения, сведения о подтверждении согласия.</p><p>Разрешённые действия: получение, проверка, запись, систематизация, хранение, уточнение, использование для ответа и удаление. Обработка автоматизированная и с участием уполномоченных сотрудников. Для доставки заявки используется служебный ящик omegakomplekt@mail.ru и почтовый сервис Mail; сервер обработки размещается в РФ.</p><p>Согласие не разрешает рекламу, рассылки, публикацию или передачу рекламным системам и не является согласием на распространение данных.</p>",
+        "anchor": "scope"
+      },
+      {
+        "heading": "3. Срок и отзыв",
+        "body": "<p>Согласие действует до завершения обработки обращения или отзыва. Сведения, необходимые только для ответа, удаляются не позднее 30 дней после достижения цели или отзыва при отсутствии иных законных оснований. При заключении договора действуют также обязательные сроки и основания хранения.</p><p>Отзыв: <a href=\"mailto:omegakomplekt@mail.ru\">omegakomplekt@mail.ru</a> с темой «Отзыв согласия» либо 410054, г. Саратов, ул. Б. Садовая, д. 141, офис 314. Укажите сведения для определения обращения. Обработка может продолжаться только при наличии предусмотренного законом другого основания.</p>",
+        "anchor": "term"
+      },
+      {
+        "heading": "4. Отдельность",
+        "body": "<p>Согласие размещено отдельно от <a href=\"/?omega_document=privacy\">политики</a> и иных документов по <a href=\"https://www.consultant.ru/document/cons_doc_LAW_61801/6c94959bc017ac80140621762d2ac59f6006b08c/\" target=\"_blank\" rel=\"noopener\">статье 9 № 152-ФЗ</a>. Поле не отмечено автоматически. Отказ от отметки не ограничивает просмотр сайта; отправка формы требует подтверждения. Вы можете обратиться по телефону.</p>",
+        "anchor": "separate"
+      }
+    ],
+    "operator_label": "Оператор",
+    "address_label": "Адрес",
+    "email_label": "E-mail",
+    "inn_label": "ИНН",
+    "ogrn_label": "ОГРН"
+  },
+  "system": {
+    "translations": {
+      "tr_af9d33066a": "Страница не найдена",
+      "tr_cf23b625f2": "Перейдите на главную или свяжитесь с нами — поможем подобрать полотно или оборудование.",
+      "tr_ad94907f64": "На главную",
+      "tr_f35ba214e9": "Перейти к содержимому",
+      "tr_bd2cc7e95b": "На сайт",
+      "tr_9de9ca80d4": "Материалы",
+      "tr_c230bc4e85": "Результаты поиска",
+      "tr_dbd7b965fd": "Поиск по сайту",
+      "tr_be6156b8e4": "Найти",
+      "tr_59589fe2a5": "Подробнее",
+      "tr_a1d613cea9": "Материалы пока не опубликованы."
+    },
+    "pagination_previous": "Назад",
+    "pagination_next": "Далее",
+    "pagination_label": "Навигация записей",
+    "page_numbers": "Страницы:"
+  }
+}

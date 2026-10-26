@@ -49,7 +49,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 /* Hero: full bleed photograph, thin type and flowing boundaries. */
 .hero { height: calc(688 * var(--u)); overflow: hidden; }
-.hero::before { content: ''; position: absolute; inset: 0; background: url('../assets/images/bandsaw.webp') right top/cover no-repeat; filter: blur(13px) grayscale(1) brightness(.48); }
+.hero::before { content: ''; position: absolute; inset: 0; background: var(--omega-hero-image,url('../assets/images/bandsaw.webp')) right top/cover no-repeat; filter: blur(13px) grayscale(1) brightness(.48); }
 .hero-photo { position: absolute; top: calc(65 * var(--u)); right: 0; width: 73%; height: calc(100% - 65 * var(--u)); object-fit: cover; object-position: 62% 50%; filter: grayscale(1) brightness(.88); }
 .hero-shade { position: absolute; inset: 0; background: linear-gradient(90deg,var(--brand-graphite) 5%,rgba(26,26,29,.96) 31%,rgba(26,26,29,.5) 50%,transparent 68%); }
 .hero-lines { inset: 0; height: 100%; z-index: 1; fill: none; stroke: var(--color-primary); stroke-width: .7; opacity: .78; }
@@ -542,8 +542,8 @@ body.dialog-open .site-header { right: var(--scrollbar-gap); }
 .delivery-offer-rule { display: block; width: calc(40 * var(--u)); height: 2px; margin: calc(23 * var(--u)) 0 calc(18 * var(--u)); background: var(--color-primary); }
 .delivery-offer small { display: block; font-size: calc(11 * var(--u)); line-height: 1.5; color: var(--brand-gray); }
 .delivery-route { position: absolute; z-index: 2; left: var(--gutter); bottom: calc(80 * var(--u)); width: 25%; max-width: 330px; padding: calc(17 * var(--u)); border-radius: calc(9 * var(--u)); background: rgba(26,26,29,.75); display: flex; flex-wrap: wrap; align-items: center; gap: calc(12 * var(--u)); font-size: calc(9 * var(--u)); font-weight: 500; letter-spacing: calc(1.3 * var(--u)); }
-.delivery-route svg { flex: 1; min-width: 60px; height: 18px; fill: none; stroke: var(--color-white); stroke-width: 1.3; }
-.delivery-route svg circle { fill: var(--color-primary); stroke: var(--color-primary); }
+.delivery-route :is(svg,.delivery-route-graphic) { flex: 1; min-width: 60px; height: 18px; fill: none; stroke: var(--color-white); stroke-width: 1.3; }
+.delivery-route :is(svg,.delivery-route-graphic) circle { fill: var(--color-primary); stroke: var(--color-primary); }
 .delivery-route path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 900ms var(--motion-ease); }
 .delivery-route.is-visible path { stroke-dashoffset: 0; }
 .contact-extra a { display: inline-block; margin-top: 6px; }

@@ -1,0 +1,14 @@
+.omega-matrix-scroll{max-width:100%;max-height:65vh;overflow:auto;border:1px solid #c3c4c7;background:#fff}
+.omega-matrix-table{border-collapse:separate;border-spacing:0;min-width:100%;width:max-content}
+.omega-matrix-table th,.omega-matrix-table td{min-width:90px;padding:5px;border-right:1px solid #dcdcde;border-bottom:1px solid #dcdcde;text-align:left;white-space:nowrap}
+.omega-matrix-table thead th{position:sticky;top:0;z-index:2;background:#f0f0f1}
+.omega-matrix-table tbody th{position:sticky;left:0;z-index:1;background:#f0f0f1}
+.omega-matrix-table thead th:first-child{left:0;z-index:3;max-width:160px;white-space:normal}
+.omega-matrix-table input[type=text]{width:80px;min-height:32px;margin:0;font-size:13px}
+.omega-matrix-table input:focus{position:relative;z-index:4}
+.omega-matrix-remove{min-width:28px;min-height:32px;margin-left:3px;border:0;background:transparent;color:#b32d2e;cursor:pointer;font-size:20px;vertical-align:middle}
+.omega-matrix-remove:focus-visible{outline:2px solid #2271b1;outline-offset:-2px}
+.omega-matrix-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:12px}
+.omega-matrix-count{margin-left:8px;color:#50575e}
+.omega-matrix-status{min-height:1.4em;color:#b32d2e}
+@media(max-width:782px){.omega-matrix-scroll{max-height:55vh}.omega-matrix-table th,.omega-matrix-table td{min-width:86px}.omega-matrix-actions .button{width:auto}}

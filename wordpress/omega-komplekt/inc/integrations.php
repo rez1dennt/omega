@@ -10,5 +10,6 @@ function omega_theme_request_settings(): array {
     return array(
         'endpoint' => isset( $settings['endpoint'] ) && is_string( $settings['endpoint'] ) ? esc_url_raw( $settings['endpoint'] ) : '',
         'nonce'    => isset( $settings['nonce'] ) && is_string( $settings['nonce'] ) ? sanitize_text_field( $settings['nonce'] ) : '',
+        'consentVersion' => omega_theme_consent_version(),
     );
 }

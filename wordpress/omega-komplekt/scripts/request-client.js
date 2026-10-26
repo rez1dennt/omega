@@ -1,6 +1,11 @@
 (() => {
 'use strict';
 const {attachPhoneMask} = window.OmegaUI;
+function requestText(key, fallback, values = {}) {
+  const configured = window.OmegaTheme?.ui?.request?.[key];
+  const text = typeof configured === 'string' ? configured : fallback;
+  return text.replace(/\{(\w+)\}/g, (token, name) => Object.prototype.hasOwnProperty.call(values, name) ? String(values[name]) : token);
+}
 /* Public transport boundary. A separate plugin owns delivery and server validation. */
 async function sendRequest(payload, endpointPath) {
   const config = window.OmegaTheme?.request || {};
@@ -10,7 +15,7 @@ async function sendRequest(payload, endpointPath) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 25000);
   try {
-    const data = { ...payload, consentVersion: '2026-10-15' };
+    const data = { ...payload, consentVersion: config.consentVersion || '2026-10-15' };
     let result;
     if (typeof adapter === 'function') {
       result = await adapter(data, { ...config, signal: controller.signal });
@@ -42,25 +47,25 @@ async function sendRequest(payload, endpointPath) {
 function collectOrderParameters(form) {
   const lines = [];
   const value = name => form.elements.namedItem(name).value.trim();
-  if (value('width')) lines.push(`Ширина полотна: ${value('width')} мм`);
-  if (value('length')) lines.push(`Длина полотна: ${value('length')} мм`);
-  if (value('tpi')) lines.push(`Шаг зуба: ${value('tpi')}`);
-  if (value('material')) lines.push(`Материал: ${value('material')}`);
+  if (value('width')) lines.push(requestText('order_width_template', 'Ширина полотна: {value} мм', { value: value('width') }));
+  if (value('length')) lines.push(requestText('order_length_template', 'Длина полотна: {value} мм', { value: value('length') }));
+  if (value('tpi')) lines.push(requestText('order_tpi_template', 'Шаг зуба: {value}', { value: value('tpi') }));
+  if (value('material')) lines.push(requestText('order_material_template', 'Материал: {value}', { value: value('material') }));
   if (value('comment')) lines.push(value('comment'));
   return lines.join('\n');
 }
 
 function validateRequestPayload(payload) {
   const errors = {};
-  if (!payload.parameters) errors.parameters = 'Укажите размеры или опишите задачу.';
-  else if (payload.parameters.length > 3000) errors.parameters = 'Сократите описание до 3000 символов.';
-  if (!payload.email) errors.email = 'Укажите e-mail для ответа.';
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email) || payload.email.length > 254) errors.email = 'Проверьте e-mail: например, name@example.ru.';
+  if (!payload.parameters) errors.parameters = requestText('error_parameters_required', 'Укажите размеры или опишите задачу.');
+  else if (payload.parameters.length > 3000) errors.parameters = requestText('error_parameters_length', 'Сократите описание до 3000 символов.');
+  if (!payload.email) errors.email = requestText('error_email_required', 'Укажите e-mail для ответа.');
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email) || payload.email.length > 254) errors.email = requestText('error_email_invalid', 'Проверьте e-mail: например, name@example.ru.');
   const digits = payload.phone.replace(/\D/g, '');
-  if (!digits || digits === '7') errors.phone = 'Укажите номер телефона.';
-  else if (!/^[+\d\s()-]+$/.test(payload.phone) || !/^(?:[78]\d{10}|\d{10})$/.test(digits)) errors.phone = 'Введите номер полностью: +7 и 10 цифр.';
-  if (payload.name.length > 160) errors.name = 'Имя или компания — до 160 символов.';
-  if (payload.consent !== true) errors.consent = 'Отметьте согласие на обработку данных.';
+  if (!digits || digits === '7') errors.phone = requestText('error_phone_required', 'Укажите номер телефона.');
+  else if (!/^[+\d\s()-]+$/.test(payload.phone) || !/^(?:[78]\d{10}|\d{10})$/.test(digits)) errors.phone = requestText('error_phone_invalid', 'Введите номер полностью: +7 и 10 цифр.');
+  if (payload.name.length > 160) errors.name = requestText('error_name_length', 'Имя или компания — до 160 символов.');
+  if (payload.consent !== true) errors.consent = requestText('error_consent', 'Отметьте согласие на обработку данных.');
   return errors;
 }
 
@@ -88,7 +93,7 @@ function requestErrorsForForm(form, payload) {
   const errors = validateRequestPayload(payload);
   for (const name of ['width','length']) {
     const field = form.elements.namedItem(name);
-    if (field && !field.validity.valid) errors[name] = 'Укажите число не меньше 1 мм.';
+    if (field && !field.validity.valid) errors[name] = requestText('error_dimension', 'Укажите число не меньше 1 мм.');
   }
   return errors;
 }
@@ -112,12 +117,20 @@ function renderRequestErrorSummary(form, errors) {
   summary.replaceChildren();
   if (!names.length) return;
   const title = document.createElement('strong');
-  title.textContent = 'Заявка пока не отправлена';
+  title.textContent = requestText('summary_title', 'Заявка пока не отправлена');
   const hint = document.createElement('span');
-  hint.textContent = 'Исправьте поля:';
+  hint.textContent = requestText('summary_hint', 'Исправьте поля:');
   const links = document.createElement('span');
   links.className = 'error-summary-links';
-  const labels = { parameters:'Параметры заказа', width:'Ширина полотна', length:'Длина полотна', email:'E-mail', phone:'Телефон', name:'Имя / Компания', consent:'Согласие' };
+  const labels = {
+    parameters: requestText('field_parameters', 'Параметры заказа'),
+    width: requestText('field_width', 'Ширина полотна'),
+    length: requestText('field_length', 'Длина полотна'),
+    email: requestText('field_email', 'E-mail'),
+    phone: requestText('field_phone', 'Телефон'),
+    name: requestText('field_name', 'Имя / Компания'),
+    consent: requestText('field_consent', 'Согласие'),
+  };
   for (const name of names) {
     const button = document.createElement('button');
     button.type = 'button';
@@ -210,14 +223,15 @@ function attachRequestWorkflow(form, parameters) {
     payload.requestId = submissionId;
     const controls = [...form.querySelectorAll('input,textarea,button')];
     const disabledStates = controls.map(control => control.disabled);
+    const originalSubmitLabel = label.textContent;
     submitting = true;
     form.setAttribute('aria-busy', 'true');
     controls.forEach(control => { control.disabled = true; });
-    label.textContent = 'Отправляем…';
+    label.textContent = requestText('submitting', 'Отправляем…');
     const serverErrors = {};
     try {
       await sendRequest(payload, form.dataset.endpoint);
-      status.textContent = 'Заявка отправлена. Спасибо! Свяжемся с вами по указанным контактам.';
+      status.textContent = requestText('success', 'Заявка отправлена. Спасибо! Свяжемся с вами по указанным контактам.');
       status.dataset.state = 'success';
       form.reset();
       submissionId = ''; submissionSignature = '';
@@ -231,13 +245,15 @@ function attachRequestWorkflow(form, parameters) {
       if (Object.keys(serverErrors).length) renderRequestErrorSummary(form,serverErrors);
       status.dataset.state = 'error';
       status.textContent = error.message === 'rate_limited'
-        ? 'Слишком много попыток. Попробуйте через несколько минут или позвоните нам.'
-        : `Заявка не отправлена. Данные сохранены в форме. Свяжитесь с нами: ${window.OmegaTheme?.contactPhone || '+7 (917) 201-21-00'}.`;
+        ? requestText('rate_limited', 'Слишком много попыток. Попробуйте через несколько минут или позвоните нам.')
+        : requestText('delivery_failed', 'Заявка не отправлена. Данные сохранены в форме. Свяжитесь с нами: {phone}.', {
+          phone: window.OmegaTheme?.contactPhone || requestText('fallback_phone', '+7 (917) 201-21-00'),
+        });
     } finally {
       submitting = false;
       form.removeAttribute('aria-busy');
       controls.forEach((control, index) => { control.disabled = disabledStates[index]; });
-      label.textContent = 'Отправить заявку';
+      label.textContent = originalSubmitLabel;
       status.hidden = false;
       if (Object.keys(serverErrors).length) focusRequestField(form);
       else status.scrollIntoView({ block: 'nearest', behavior: 'instant' });

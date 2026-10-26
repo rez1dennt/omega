@@ -5,7 +5,7 @@
         <p class="eyebrow"><?php echo esc_html( omega_theme_contact( 'brand' ) ); ?></p>
         <h1><?php the_title(); ?></h1>
         <div class="entry-content"><?php the_content(); ?></div>
-        <?php wp_link_pages(); ?>
+        <?php wp_link_pages( array( 'before' => '<div class="page-links">' . omega_theme_copy( 'system', 'page_numbers', 'Страницы:' ), 'after' => '</div>' ) ); ?>
     </article>
 <?php endwhile; ?>
 </main>

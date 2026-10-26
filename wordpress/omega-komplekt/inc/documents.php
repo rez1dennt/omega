@@ -35,3 +35,18 @@ function omega_theme_document_redirect( $redirect ) {
     return get_query_var( 'omega_document', '' ) ? false : $redirect;
 }
 add_filter( 'redirect_canonical', 'omega_theme_document_redirect' );
+
+/** Stable row identities survive ACF reorder/duplicate operations; headings migrate older snapshots. */
+function omega_theme_document_anchors( array $sections, array $original ): array {
+    $legacy = array_column( $original, 'anchor', 'heading' );
+    $anchors = array();
+    $used = array();
+    foreach ( $sections as $index => $section ) {
+        $anchor = (string) ( $section['anchor'] ?? $legacy[ $section['heading'] ?? '' ] ?? '' );
+        if ( ! preg_match( '/^[a-z][a-z0-9-]{0,79}$/D', $anchor ) ) { $anchor = 'section-' . ( $index + 1 ); }
+        if ( isset( $used[ $anchor ] ) ) { $anchor .= '-' . ( $index + 1 ); }
+        $used[ $anchor ] = true;
+        $anchors[ $index ] = $anchor;
+    }
+    return $anchors;
+}

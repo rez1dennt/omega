@@ -6,7 +6,7 @@ function omega_theme_asset( string $path ): string {
     return get_theme_file_uri( '/' . ltrim( $path, '/' ) );
 }
 
-/** A future media field may provide a WordPress attachment URL or a local theme path. */
+/** Presentation accepts a resolved attachment URL or a local theme asset path. */
 function omega_theme_media( string $source ): string {
     return preg_match( '~^https?://~i', $source ) ? esc_url_raw( $source ) : omega_theme_asset( $source );
 }

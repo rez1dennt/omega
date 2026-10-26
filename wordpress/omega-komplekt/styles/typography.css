@@ -151,7 +151,7 @@ h2 { font-size: var(--text-heading); line-height: var(--leading-heading); letter
   .machines-grid { grid-template-columns: minmax(0,1fr) minmax(0,2fr); gap: 32px; }
   .delivery-grid { padding-left: 24%; gap: 28px; }
   .delivery-route { width: 19%; padding: 14px; }
-  .delivery-route svg { min-width: 35px; }
+  .delivery-route :is(svg,.delivery-route-graphic) { min-width: 35px; }
   .footer-nav { order: 4; width: 100%; }
 }
 @media (max-width: 1023px) {

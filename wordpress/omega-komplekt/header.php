@@ -8,13 +8,13 @@
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
-<a class="skip-link" href="#main"><?php esc_html_e( 'Перейти к содержимому', 'omega-komplekt' ); ?></a>
+<a class="skip-link" <?php echo omega_theme_link_attrs( 'layout_header_e7f789_link_001', '#main', true ); ?>><?php esc_html_e( 'Перейти к содержимому', 'omega-komplekt' ); ?></a>
 <?php get_template_part( 'template-parts/shared/sprite' ); ?>
 <?php if ( omega_theme_is_front() ) : ?>
     <?php get_template_part( 'template-parts/shared/header' ); ?>
 <?php else : ?>
 <header class="site-header"><div class="container header-inner">
-    <a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( omega_theme_contact( 'name' ) . ' — на главную' ); ?>"><span class="brand-mark" aria-hidden="true"></span><strong aria-label="<?php echo esc_attr( omega_theme_contact( 'brand' ) ); ?>"><?php echo omega_theme_wordmark(); ?></strong></a>
+    <?php echo omega_theme_brand( 'light', '/', false ); ?>
     <a class="legal-return" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'На сайт', 'omega-komplekt' ); ?> <span aria-hidden="true">→</span></a>
 </div></header>
 <?php endif; ?>
