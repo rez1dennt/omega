@@ -75,12 +75,9 @@ try {
   await page.waitForFunction(() => document.activeElement === document.querySelector('#contacts'));
   assert.equal(await page.locator('#contacts').evaluate(element => element === document.activeElement), true);
 
-  await page.locator('[data-machine="PILOUS"]').click();
-  assert.equal(await page.locator('#order-form textarea').inputValue(), 'Станок: PILOUS');
-  await page.locator('#order-form textarea').fill('Станок: PILOUS\nМатериал: сталь');
-  await page.locator('[data-machine="JET"]').click();
-  assert.equal(await page.locator('#order-form textarea').inputValue(), 'Станок: JET\nМатериал: сталь');
-  assert.equal(await page.locator('.selected-machine-name').textContent(), 'JET');
+  assert.equal(await page.locator('#machines,[data-machine]').count(), 0, 'Brand section is removed');
+  assert.equal(await page.locator('a[href="#machines"]').count(), 0, 'No navigation points to the removed section');
+  await page.locator('#order-form textarea').fill('Материал: сталь');
   await page.locator('.delivery-terms').click();
   assert.equal(await page.locator('#delivery-details').evaluate(dialog => dialog.open), true);
   assert.match(await page.locator('#delivery-details').textContent(), /каждую среду/);
@@ -89,9 +86,9 @@ try {
   assert.equal(await page.locator('#delivery-details').evaluate(dialog => dialog.open), false);
   let outgoingSubmissions = 0;
   page.on('request', request => { if (request.method() !== 'GET') outgoingSubmissions++; });
-  await page.locator('.machine-description .text-link').click();
+  await page.locator('.hero-actions [data-dialog="request-dialog"]').click();
   assert.equal(await page.locator('#request-dialog').evaluate(dialog => dialog.open), true);
-  assert.equal(await page.locator('#request-parameters').inputValue(), 'Станок: JET\nМатериал: сталь');
+  assert.match(await page.locator('#request-parameters').inputValue(), /Материал: сталь/);
   await page.locator('#request-email').fill('test@example.com');
   await page.locator('#request-phone').fill('+7 (999) 123-45-67');
   await page.locator('#request-consent').check();
@@ -106,9 +103,9 @@ try {
   const linkChecks = await page.evaluate(() => [...document.querySelectorAll('a[href^="#"]')].filter(link => !document.querySelector(link.getAttribute('href'))).map(link => link.getAttribute('href')));
   assert.deepEqual(linkChecks, []);
   assert.deepEqual(errors, []);
-  await writeFile('qa/verification.json', JSON.stringify({ viewports: evidence, errors, failures, interactions: 'menu, Escape, permanent contacts anchor, delivery dialog, stable header, machine selection, parameter preservation, request UI without submission, correct company identity: PASS; external map isolated and verified separately live' }, null, 2));
+  await writeFile('qa/verification.json', JSON.stringify({ viewports: evidence, errors, failures, interactions: 'menu, Escape, permanent contacts anchor, delivery dialog, stable header, equipment cards, parameter preservation, request UI without submission, correct company identity: PASS; external map isolated and verified separately live' }, null, 2));
   assert.deepEqual(failures, []);
-  console.log(`PASS: ${evidence.length} viewports; local assets, overflow, header, navigation, dialogs, machine selection and request UI. No console errors or outgoing submissions. Delivery not tested.`);
+  console.log(`PASS: ${evidence.length} viewports; local assets, overflow, header, navigation, dialogs, equipment cards and request UI. No console errors or outgoing submissions. Delivery not tested.`);
 } finally {
   await browser.close();
 }

@@ -63,11 +63,11 @@ try {
  assert.equal(await page.locator('.brand .brand-omega').count(),2,'header and footer use supplied omega letter');
  assert.match(await page.locator('.production-media img').getAttribute('src'),/production-ideal\.webp/);
  assert.match(await page.locator('.production-media figcaption').textContent(),/IDEAL/);
- const magnetic=page.locator('[data-request-equipment*="Steyr-35"]');
+ const magnetic=page.locator('[data-request-equipment="Магнитный сверлильный станок"]');
  assert.equal(await magnetic.count(),1,'one magnetic machine product');
  await magnetic.scrollIntoViewIfNeeded();
  await page.waitForFunction(()=>{const image=document.querySelector('.equipment-magnetic img');return image.complete&&image.naturalWidth>0;});
- assert.equal(await page.locator('.equipment-types > .equipment-card').count(),4,'magnetic machine shares the four-card grid');
+ assert.equal(await page.locator('.equipment-types > .equipment-card').count(),5,'all five products share one grid');
  const magneticPhoto=await page.locator('.equipment-magnetic .equipment-photo-frame').boundingBox();
  const sawPhoto=await page.locator('.equipment-types > .equipment-card .equipment-photo-frame').first().boundingBox();
  assert.ok(Math.abs(magneticPhoto.height-sawPhoto.height)<=1,'magnetic photograph uses the shared card frame');
@@ -75,7 +75,7 @@ try {
  assert.equal(await page.locator('#request-dialog').evaluate(el=>el.open),true);
  const requestBrandSnapshot=await page.locator('.request-brand').ariaSnapshot();
  assert.match(requestBrandSnapshot.replace(/- text:\s*/g,'').replace(/\s/g,''),/ОМЕГАКОМПЛЕКТ/,'ordinary request wordmark exposes the initial O in the accessibility tree');
- assert.match(await page.locator('#request-parameters').inputValue(),/LENZ Steyr-35/);
+ assert.match(await page.locator('#request-parameters').inputValue(),/Магнитный сверлильный станок/);
  await page.keyboard.press('Escape');
  await page.locator('#request-dialog').waitFor({state:'hidden'});
  await page.waitForFunction(()=>!document.documentElement.classList.contains('scroll-locked'));

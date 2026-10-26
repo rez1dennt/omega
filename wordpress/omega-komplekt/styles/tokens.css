@@ -114,6 +114,9 @@
   --selection-width: 52rem;
   --selection-space: 1.5rem;
   --selection-copy-width: 38rem;
+  --hero-action-width: 22rem;
+  --header-control-gap: clamp(.375rem,2vw,.875rem);
+  --header-brand-size: clamp(.9375rem,4.6vw,1.0625rem);
   --brand-letter-width: .9em;
   --production-photo-height: 40rem;
   --production-badge-width: 23rem;

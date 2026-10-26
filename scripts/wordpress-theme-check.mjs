@@ -115,11 +115,11 @@ async function checkClientRevisions() {
   assert.equal(await page.locator('.learn-link').getAttribute('href'), '#order');
   assert.match(await page.locator('.material-label').textContent(), /Пилы и станки/);
   assert.match(await page.locator('.production-media img').getAttribute('alt'), /IDEAL/);
-  const magnetic = page.locator('[data-request-equipment*="LENZ Steyr-35"]');
+  const magnetic = page.locator('[data-request-equipment="Магнитный сверлильный станок"]');
   assert.equal(await magnetic.count(), 1, 'One magnetic drilling product with its own request context');
   await magnetic.click();
   assert.match(await page.locator('.request-brand').ariaSnapshot(), /О\s*МЕГА\s+КОМПЛЕКТ/, 'Request wordmark retains the first letter for screen readers');
-  assert.match(await page.locator('#request-parameters').inputValue(), /LENZ Steyr-35/);
+  assert.match(await page.locator('#request-parameters').inputValue(), /Магнитный сверлильный станок/);
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
   for (const [width,height] of [[1280,900],[768,900],[360,740],[320,568],[844,390]]) {
@@ -131,7 +131,7 @@ async function checkClientRevisions() {
     const dialog = page.locator('#selection-dialog');
     await page.waitForFunction(() => document.querySelector('#selection-dialog').open);
     assert.match(await dialog.locator('#selection-title').textContent(), /Подобрать полотно/, 'Selection view model renders its heading');
-    assert.match(await dialog.locator('.selection-guide > summary').textContent(), /Таблица подбора шага зуба/, 'Selection guide has its visible label');
+    assert.match(await dialog.locator('.selection-guide > summary').textContent(), /Подобрать шаг зуба[\s\S]*Таблица для прутка и трубы/, 'Selection guide has its compact visible label');
     assert.equal(await dialog.locator('#order-form').count(), 1, 'Shared blade form lives inside selection');
     assert.equal(await page.locator('#order-form').count(), 1, 'No duplicate form identifiers');
     assert.equal(await dialog.locator('#order-email').isVisible(), true);
@@ -307,8 +307,8 @@ try {
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
   assert.equal(await page.locator('.equipment-rollers [data-request-equipment]').count(), 0);
-  assert.match(await page.locator('.equipment-rollers').innerText(), /Неприводные рольганги[\s\S]*Производство — Россия/);
-  await page.locator('[data-request-equipment="Магнитный сверлильный станок LENZ Steyr-35"]').click();
+  assert.match(await page.locator('.equipment-rollers').innerText(), /Неприводные рольганги[\s\S]*Производство\s*Россия/);
+  await page.locator('[data-request-equipment="Магнитный сверлильный станок"]').click();
   await page.waitForFunction(() => document.querySelector('#request-dialog').open);
   assert.match(await page.locator('#request-title').textContent(), /Подбор станка/);
   await page.keyboard.press('Escape');

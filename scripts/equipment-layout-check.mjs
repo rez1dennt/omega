@@ -23,10 +23,10 @@ try {
     if(await page.locator('#cookie-banner').isVisible()){await page.locator('#cookie-banner [data-cookie-save]').click();await page.locator('#cookie-banner').waitFor({state:'hidden'});}
     await page.evaluate(()=>document.fonts.ready);
     const cards=page.locator('.equipment-types > .equipment-card');
-    assert.equal(await cards.count(),4,'All four machines belong to the same grid');
+    assert.equal(await cards.count(),5,'All five equipment products belong to the same grid');
     assert.equal(await page.locator('.equipment-magnetic-heading').count(),0,'No separate magnetic category row');
     await page.locator('#equipment img,.production-media img').evaluateAll(images=>{images.forEach(image=>{image.loading='eager';});return Promise.all(images.map(image=>image.decode()));});
-    const boxes=await cards.evaluateAll(items=>items.map(card=>({card:card.getBoundingClientRect().toJSON(),action:card.querySelector('[data-request-equipment]').getBoundingClientRect().toJSON(),photo:card.querySelector('.equipment-photo-frame').getBoundingClientRect().toJSON(),display:getComputedStyle(card).display,fit:getComputedStyle(card.querySelector('img')).objectFit})));
+    const boxes=await cards.evaluateAll(items=>items.map(card=>({card:card.getBoundingClientRect().toJSON(),action:card.querySelector('[data-request-equipment]')?.getBoundingClientRect().toJSON() ?? null,photo:card.querySelector('.equipment-photo-frame').getBoundingClientRect().toJSON(),display:getComputedStyle(card).display,fit:getComputedStyle(card.querySelector('img')).objectFit})));
     for(const box of boxes){assert.equal(box.display,'flex','Every machine uses the common vertical card');assert.equal(box.fit,'contain');assert.ok(Math.abs(box.card.width-boxes[0].card.width)<=1);assert.ok(Math.abs(box.photo.height-boxes[0].photo.height)<=1);}
     if(width>=768){
       assert.ok(Math.abs(boxes[0].card.y-boxes[1].card.y)<=1,'First row has two cards');
@@ -46,11 +46,11 @@ try {
     }
     evidence.push({width,boxes,caption});
   }
-  await page.locator('[data-request-equipment*="LENZ Steyr-35"]').click();
-  assert.match(await page.locator('#request-parameters').inputValue(),/LENZ Steyr-35/);
+  await page.locator('[data-request-equipment="Магнитный сверлильный станок"]').click();
+  assert.match(await page.locator('#request-parameters').inputValue(),/Магнитный сверлильный станок/);
   await page.keyboard.press('Escape');
   await page.waitForFunction(()=>!document.documentElement.classList.contains('scroll-locked'));
   assert.deepEqual(errors,[]);assert.equal(submissions,0);
   await writeFile('qa/equipment-layout.json',JSON.stringify({evidence,errors,submissions},null,2));
-  console.log('PASS 2x2 machine cards, common appearance/action alignment, compact IDEAL badge and seven widths; magnetic request context; no submissions.');
+  console.log('PASS five standard equipment cards, common appearance/action alignment, compact IDEAL badge and seven widths; magnetic request context; no submissions.');
 } finally {await browser.close();}

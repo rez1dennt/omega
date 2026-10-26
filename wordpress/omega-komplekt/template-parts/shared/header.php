@@ -6,7 +6,7 @@
       <nav class="main-nav" id="main-nav" aria-label="Основная навигация">
         <p class="mobile-nav-label">Навигация по сайту</p>
         <a href="#production"><span>О компании</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        <a href="#machines"><span>Полотна</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a href="#order"><span>Полотна</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <a href="#equipment"><span>Оборудование</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <a href="#delivery"><span>Доставка</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <a href="#contacts"><span>Контакты</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>

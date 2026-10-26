@@ -190,7 +190,8 @@ h2 { font-size: var(--text-heading); line-height: var(--leading-heading); letter
 @media (max-width: 599px) {
   :root { --text-hero: clamp(2.75rem, 11.9vw, 4.25rem); --text-heading: clamp(2rem, 8.7vw, 2.75rem); --text-heading-small: clamp(2rem, 8.7vw, 2.75rem); --text-body: 1.0625rem; --text-copy: 1rem; --text-logo: 1.0625rem; --text-modal-title: 1.75rem; --text-document-title: 2rem; --space-section: 48px; --header-height: 76px; }
   .site-header { --header-height: 76px; }
-  .header-inner { gap: 14px; }
+  .header-inner { gap: var(--header-control-gap); }
+  .site-header .brand strong { font-size: var(--header-brand-size); }
   .brand { gap: 10px; }
   .header-phone { font-size: 0; }
   .header-phones .header-phone { min-width: var(--control-height-small); min-height: var(--control-height-small); justify-content: center; gap: 0; }
@@ -244,7 +245,7 @@ h2 { font-size: var(--text-heading); line-height: var(--leading-heading); letter
 }
 @media (max-width: 359px) {
   :root { --text-logo: 1rem; }
-  .header-inner { gap: 10px; }
+  .header-inner { gap: var(--header-control-gap); }
   .header-phone .icon { width: 18px; }
   .advantages-grid { grid-template-columns: 1fr; }
   .advantage::before { display: none; }
@@ -308,8 +309,8 @@ h2 { font-size: var(--text-heading); line-height: var(--leading-heading); letter
   .production-media > img { padding-bottom: var(--space-section); }
 }
 @media (max-width: 599px) {
-  .hero-actions { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: var(--pitch-half); width: 100%; max-width: var(--selection-copy-width); }
-  .hero-actions .button { gap: var(--pitch-half); padding-inline: var(--pitch-half); min-height: var(--control-height); white-space: normal; font-size: var(--text-control); }
+  .hero-actions { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--pitch-half); width: 100%; max-width: var(--hero-action-width); }
+  .hero-actions .button { justify-content: space-between; gap: var(--pitch-gap); padding-inline: var(--space-type-gap); min-height: var(--control-height); white-space: nowrap; font-size: var(--text-control); }
   .hero-actions .button .icon { width: var(--pitch-gap); height: var(--pitch-gap); }
   .production { --production-photo-height: 25rem; }
 }

@@ -1,6 +1,6 @@
 (() => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const elements = [...document.querySelectorAll('.section-heading,.benefit-showcase,.production-copy,.production-media,.order-copy,.order-form,.machines-copy,.machines-panel,.delivery-copy,.delivery-offer,.delivery-route,.equipment-intro,.equipment-card,.equipment-rollers,.equipment-assist')];
+  const elements = [...document.querySelectorAll('.section-heading,.benefit-showcase,.production-copy,.production-media,.order-copy,.order-form,.delivery-copy,.delivery-offer,.delivery-route,.equipment-intro,.equipment-card,.equipment-rollers,.equipment-assist')];
   const revealAll = () => elements.forEach(element => element.classList.add('is-visible'));
   elements.forEach(element => {
     element.classList.add('motion-reveal');

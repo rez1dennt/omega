@@ -7,23 +7,6 @@ updateHeader();
 const orderForm = document.querySelector('#order-form');
 const comment = orderForm.elements.comment;
 const status = orderForm.querySelector('.form-status');
-const machines = [...document.querySelectorAll('[data-machine]')];
-machines.forEach(link => {
-  link.addEventListener('click', event => {
-    event.preventDefault();
-    const name = link.dataset.machine;
-    const text = comment.value.replace(/^Станок: [^\n]*(\n|$)/, '');
-    comment.value = `Станок: ${name}${text ? `\n${text}` : ''}`;
-    orderForm.dispatchEvent(new Event('input', { bubbles: true }));
-    machines.forEach(machine => machine.removeAttribute('aria-current'));
-    link.setAttribute('aria-current', 'true');
-    document.querySelector('.selected-machine-name').textContent = name;
-    document.querySelector('.machine-word text').textContent = name;
-    fitMachineWord();
-    status.hidden = true;
-  });
-});
-
 /* Accessible single-select combobox with keyboard and pointer navigation. */
 const dropdown = document.querySelector('.tpi-dropdown');
 const trigger = dropdown.querySelector('.tpi-trigger');
@@ -47,10 +30,19 @@ function setActive(index) {
 function openDropdown() {
   listbox.hidden = false;
   listbox.classList.remove('is-above');
+  listbox.style.removeProperty('max-height');
   trigger.setAttribute('aria-expanded', 'true');
   const rect = trigger.getBoundingClientRect();
-  const height = listbox.getBoundingClientRect().height;
-  if (window.innerHeight - rect.bottom < height + 12 && rect.top > height + 12) listbox.classList.add('is-above');
+  const listRect = listbox.getBoundingClientRect();
+  const scrollport = dropdown.closest('.selection-body')?.getBoundingClientRect();
+  const top = Math.max(0, scrollport?.top ?? 0);
+  const bottom = Math.min(window.innerHeight, scrollport?.bottom ?? window.innerHeight);
+  const gap = Math.max(0, listRect.top - rect.bottom);
+  const below = Math.max(0, bottom - rect.bottom - gap);
+  const above = Math.max(0, rect.top - top - gap);
+  const opensAbove = below < listRect.height && above > below;
+  listbox.classList.toggle('is-above', opensAbove);
+  listbox.style.maxHeight = `${Math.min(listRect.height, opensAbove ? above : below)}px`;
   setActive(selectedIndex);
 }
 
@@ -156,9 +148,6 @@ function prepareRequest(opener, forceTransfer = false) {
     ? 'Опишите заготовку и задачу для оборудования' : requestCopy.placeholder;
   const lines = [];
   if (equipment) lines.push(`Оборудование: ${equipment}`);
-  else if (opener?.hasAttribute('data-request-machine') && !/^Станок:/.test(comment.value)) {
-    lines.push(`Станок: ${document.querySelector('.selected-machine-name').textContent}`);
-  }
   const orderSummary = equipment ? '' : collectOrderParameters(orderForm);
   if (orderSummary) lines.push(orderSummary);
   const summary = lines.join('\n');
@@ -180,25 +169,6 @@ document.addEventListener('site:dialog-open', event => {
 attachRequestWorkflow(requestForm, () => requestForm.elements.parameters.value.trim());
 attachRequestWorkflow(orderForm, () => collectOrderParameters(orderForm));
 requestForm.addEventListener('reset', () => { requestDrafts.delete(activeRequestContext); lastOrderSummary = ''; });
-/* Keep every brand inside the SVG frame, including the long names. */
-function fitMachineWord() {
-  const text = document.querySelector('.machine-word text');
-  const view = text.ownerSVGElement.viewBox.baseVal;
-  let size = 170;
-  text.setAttribute('font-size', String(size));
-  text.setAttribute('y', String(view.height / 2));
-  for (let attempt = 0; attempt < 4; attempt++) {
-    const box = text.getBBox();
-    const scale = Math.min(1, view.width * .84 / box.width, view.height * .8 / box.height);
-    if (scale >= .999) break;
-    size *= scale;
-    text.setAttribute('font-size', String(size));
-  }
-  const box = text.getBBox();
-  text.setAttribute('y', String(view.height - box.y - box.height / 2));
-}
-fitMachineWord();
-document.fonts.ready.then(fitMachineWord);
 orderForm.addEventListener('reset', () => {
   selectedIndex = 0; activeIndex = 0;
   caption.textContent = options[0].textContent;

@@ -32,7 +32,7 @@ const geometry = () => page.evaluate(() => ({
 }));
 // Measure the modal itself after responsive reveal/anchor motion has settled.
 // Locator.click also scrolls moving targets before dispatching the real click.
-const settleOpener = () => page.locator('.machine-description .text-link').evaluate(element => new Promise(resolve => {
+const settleOpener = () => page.locator('.hero-actions [data-dialog="request-dialog"]').evaluate(element => new Promise(resolve => {
   let last = '', stableSince = performance.now();
   const started = stableSince;
   function frame(now) {
@@ -88,16 +88,16 @@ try {
   await page.locator('#order-form [name="material"]').fill('Сталь');
   await page.getByRole('combobox').click();
   await page.getByRole('option', { name: '4/6 TPI', exact: true }).click();
-  await page.locator('[data-machine="PILOUS"]').click();
-  await page.locator('.machine-description .text-link').scrollIntoViewIfNeeded();
+  await page.locator('#order-comment').fill('Полотно для станка заказчика');
+  await page.locator('.hero-actions [data-dialog="request-dialog"]').scrollIntoViewIfNeeded();
   const before = await geometry();
-  await page.locator('.machine-description .text-link').click();
+  await page.locator('.hero-actions [data-dialog="request-dialog"]').click();
   const during = await geometry();
   assert.equal(during.overflow, 'hidden');
   assert.equal(during.gutter, 0, 'vertical page scrollbar must disappear');
   stable(before, during);
   const parameters = await fields.locator('[name="parameters"]').inputValue();
-  for (const expected of ['27', '2450', 'Сталь', '4/6 TPI', 'PILOUS']) assert.ok(parameters.includes(expected), `transfer ${expected}`);
+  for (const expected of ['27', '2450', 'Сталь', '4/6 TPI', 'станка заказчика']) assert.ok(parameters.includes(expected), `transfer ${expected}`);
   for (let i = 0; i < 20; i++) {
     await page.keyboard.press('Tab');
     assert.equal(await modal.evaluate(dialog => dialog.contains(document.activeElement)), true, `focus remains in modal at Tab ${i}: ${await page.evaluate(() => document.activeElement.outerHTML.slice(0, 200))}`);
@@ -125,10 +125,10 @@ try {
 
   for (const width of [1280, 768, 390, 360, 320]) {
     await page.setViewportSize({ width, height: 780 });
-    await page.locator('.machine-description .text-link').scrollIntoViewIfNeeded();
+    await page.locator('.hero-actions [data-dialog="request-dialog"]').scrollIntoViewIfNeeded();
     await settleOpener();
     const start = await geometry();
-    await page.locator('.machine-description .text-link').click();
+    await page.locator('.hero-actions [data-dialog="request-dialog"]').click();
     const open = await geometry();
     stable(start, open);
     assert.equal(await fields.locator('[name="parameters"]').evaluate(el => el.scrollTop), 0, `${width}: parameters should reopen from the first line`);

@@ -43,14 +43,7 @@ try {
     if (form.appearance !== 'textfield') failures.push(`${width}: native number spinner is present`);
     if (form.scrollWidth > form.width + 1 || form.placeholders.length) failures.push(`${width}: form text clipped: ${form.placeholders}`);
     evidence.push({ width, form });
-    for (const name of ['AURA','OPTIMUM','PILOUS','PROMA','METAL MASTER','JET']) {
-      await page.locator(`[data-machine="${name}"]`).click();
-      const bounds = await page.locator('.machine-word text').evaluate(el => {
-        const b=el.getBBox(); return { x:b.x, y:b.y, right:b.x+b.width, bottom:b.y+b.height };
-      });
-      if (bounds.x < 40 || bounds.right > 760 || bounds.y < 0 || bounds.bottom > 160) failures.push(`${width} ${name}: clipped SVG name ${JSON.stringify(bounds)}`);
-      if ([1440,360].includes(width) && ['OPTIMUM','METAL MASTER'].includes(name)) await page.locator('.machine-detail').screenshot({ path: `qa/brand-${name.replaceAll(' ','-')}-${width}.png`, animations: 'disabled' });
-    }
+    assert.equal(await page.locator('#machines,[data-machine]').count(),0,'Brand section is removed');
     assert.equal(await page.locator('#request-dialog').evaluate(el => el.open), false);
     if (width === 1280) {
       const markParametersMissing = async () => {
@@ -68,8 +61,8 @@ try {
       await page.getByRole('option',{name:'4/6 TPI',exact:true}).click();
       assert.equal(await page.locator('#order-comment').getAttribute('aria-invalid'), null, 'a selected TPI clears the combined-parameters error');
       await markParametersMissing();
-      await page.locator('[data-machine="PILOUS"]').click();
-      assert.equal(await page.locator('#order-comment').getAttribute('aria-invalid'), null, 'a selected machine clears the combined-parameters error');
+      await page.locator('#order-comment').fill('Помогите подобрать полотно');
+      assert.equal(await page.locator('#order-comment').getAttribute('aria-invalid'), null, 'a written task clears the combined-parameters error');
     }
     await page.locator('#order').scrollIntoViewIfNeeded();
     if ([1440,768,360,320].includes(width)) await page.locator('#order').screenshot({ path: `qa/form-layout-${width}.png`, animations: 'disabled' });
@@ -79,5 +72,5 @@ try {
   assert.equal(nonGet, 0, 'do not submit applications or send mail during QA');
   await writeFile('qa/form-layout.json',JSON.stringify({evidence,failures,nonGet},null,2));
   assert.deepEqual(failures, []);
-  console.log('PASS: inline form controls and consent; no native spinners; 6 full SVG brand names at 7 widths. No submissions or mail.');
+  console.log('PASS: inline form controls and consent; no native spinners or retired brand section, seven widths. No submissions or mail.');
 } finally { await browser.close(); }
