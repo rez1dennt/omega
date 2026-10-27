@@ -1193,7 +1193,7 @@ return array(
             'paragraph_5' => array(
                 'type' => 'text',
                 'label' => 'Пруток: подсказка результата',
-                'default' => 'Выбранный шаг можно добавить в форму ниже.'
+                'default' => 'Выбранный шаг можно добавить в заявку.'
             ),
             'paragraph_6' => array(
                 'type' => 'textarea',
@@ -1414,7 +1414,7 @@ return array(
             'transfer_success' => array(
                 'type' => 'text',
                 'label' => 'Успешное добавление в форму',
-                'default' => 'Шаг {pitch} TPI добавлен в форму заявки ниже.',
+                'default' => 'Шаг {pitch} TPI добавлен в форму заявки.',
                 'instructions' => 'Сохраните подстановки {pitch}: сайт заменяет их выбранными параметрами.'
             ),
             'transfer_error' => array(

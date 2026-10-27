@@ -92,7 +92,7 @@ function omega_theme_icon( string $slot, string $fallback, string $class = 'icon
         $url = omega_theme_media_url( $value['image'] ?? 0 );
         if ( $url ) { return '<img class="' . esc_attr( $class . ' is-custom-icon' ) . '" src="' . esc_url( $url ) . '" alt="" aria-hidden="true">'; }
     }
-    $allowed = array( 'arrow', 'chevron', 'phone', 'shield', 'check', 'play', 'lock', 'pin', 'close', 'menu' );
+    $allowed = array( 'arrow', 'chevron', 'phone', 'mail', 'shield', 'check', 'play', 'lock', 'pin', 'close', 'menu' );
     $symbol = (string) ( $value['symbol'] ?? $fallback );
     if ( ! in_array( $symbol, $allowed, true ) ) { $symbol = $fallback; }
     $viewboxes = array( 'shield' => '0 0 32 36', 'play' => '0 0 36 36', 'lock' => '0 0 24 28', 'pin' => '0 0 24 32' );

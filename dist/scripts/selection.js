@@ -1,13 +1,12 @@
-/* Reuse the live blade form and exact pitch table; no duplicate fields or drafts. */
+/* The blade form stays in its dialog; the live reference table keeps one owner. */
 (() => {
   const dialog = document.querySelector('#selection-dialog');
   const form = document.querySelector('#order-form');
   const guide = document.querySelector('#pitch-guide');
   if (!dialog || !form || !guide) return;
-  const formSlot = dialog.querySelector('#selection-form-slot');
   const pitchSlot = dialog.querySelector('#selection-pitch-slot');
   const details = dialog.querySelector('.selection-guide');
-  const pieces = [form, guide.querySelector('.pitch-card'), guide.querySelector('.pitch-break-in')];
+  const pieces = [guide.querySelector('.pitch-card'), guide.querySelector('.pitch-break-in')];
   const anchors = pieces.map(piece => {
     const placeholder = document.createElement('div');
     placeholder.className = 'selection-placeholder';
@@ -27,7 +26,7 @@
       anchors[index].style.marginTop = style.marginTop;
       anchors[index].style.marginBottom = style.marginBottom;
       anchors[index].hidden = false;
-      (index === 0 ? formSlot : pitchSlot).append(piece);
+      pitchSlot.append(piece);
     });
     details.open = false;
     mounted = true;
@@ -47,7 +46,8 @@
     if (event.detail.dialog === dialog) mount(event.detail.opener);
     else restore();
   });
-  dialog.addEventListener('close', restore);
+  // Restore the choice to the page before the shared close handler returns focus.
+  dialog.addEventListener('close', restore, {capture:true});
   document.addEventListener('site:pitch-select', event => {
     if (!dialog.open || event.defaultPrevented) return;
     details.open = false;

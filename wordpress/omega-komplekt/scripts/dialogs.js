@@ -87,6 +87,21 @@ document.addEventListener('click', event => {
     openDialog(dialog, opener);
     return;
   }
+  const pageLink = event.target.closest('a[href^="#"]:not([data-dialog])');
+  const sourceDialog = pageLink?.closest('dialog');
+  const destination = pageLink ? document.getElementById(pageLink.getAttribute('href').slice(1)) : null;
+  if (sourceDialog?.open && destination && !sourceDialog.contains(destination)) {
+    event.preventDefault();
+    sourceDialog.addEventListener('close', () => requestAnimationFrame(() => {
+      const href = pageLink.getAttribute('href');
+      if (location.hash !== href) history.pushState(null, '', href);
+      if (!destination.hasAttribute('tabindex')) destination.setAttribute('tabindex', '-1');
+      destination.focus({preventScroll:true});
+      destination.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+    }), {once:true});
+    closeDialog(sourceDialog);
+    return;
+  }
   const closer = event.target.closest('[data-close-dialog]');
   if (closer) closeDialog(closer.closest('dialog'));
 });

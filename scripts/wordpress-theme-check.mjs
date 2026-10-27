@@ -104,15 +104,41 @@ async function dismissCookies() {
   }
 }
 
+async function openSelectionFromGuide() {
+  await page.waitForFunction(() => document.querySelector('#pitch-guide')?.classList.contains('is-ready'));
+  await page.locator('#pitch-guide #pitch-tab-rod').click();
+  await page.locator('#pitch-rod-diameter').fill('60');
+  await page.locator('#pitch-panel-rod .pitch-find').click();
+  const opener = page.locator('#pitch-panel-rod .pitch-choice').filter({hasText:'5/8'});
+  await opener.scrollIntoViewIfNeeded();
+  const before = await page.evaluate(() => scrollY);
+  await opener.click();
+  await page.waitForFunction(() => document.querySelector('#selection-dialog').open);
+  return {opener, before};
+}
+
 async function checkClientRevisions() {
   await page.setViewportSize({width:1280,height:900});
   await page.goto(base.href, { waitUntil: 'networkidle' });
   await dismissCookies();
   assert.match(await page.locator('.hero-description').textContent(), /для резки металла\./);
   assert.doesNotMatch(await page.locator('.hero-description').textContent(), /алюмини|других материалов/);
+  assert.equal(await page.locator('.header-phones a[href="mailto:omegakomplekt@mail.ru"]').count(), 1, 'Lower header contact is email');
+  assert.equal(await page.locator('.header-phones a[href^="tel:"]').count(), 1, 'Header retains the primary phone');
+  for (const selector of ['.contacts-phone-list', '.footer-phones']) assert.equal(await page.locator(`${selector} a[href="tel:+78452529350"]`).count(), 1, 'Office phone remains in contacts and footer');
   assert.equal(await page.locator('.hero-actions [data-dialog="request-dialog"]').count(), 1);
-  assert.equal(await page.locator('.hero-actions [data-dialog="selection-dialog"]').count(), 1);
-  assert.equal(await page.locator('.learn-link').getAttribute('href'), '#order');
+  assert.equal(await page.locator('.hero-actions .button-outline').getAttribute('href'), '#pitch-guide');
+  assert.equal(await page.locator('.learn-link').getAttribute('href'), '#pitch-guide');
+  const bladeLinks = page.locator('a').filter({hasText:'Подобрать полотно'});
+  assert.ok(await bladeLinks.count() >= 3, 'Hero, benefits and production retain blade selection links');
+  for (const link of await bladeLinks.all()) {
+    assert.equal(await link.getAttribute('href'), '#pitch-guide', 'Blade selection links lead to the standalone guide');
+    assert.equal(await link.getAttribute('data-dialog'), null, 'Blade selection link does not open a dialog');
+  }
+  assert.equal(await page.locator('a[href="#order"], [data-dialog="selection-dialog"]').count(), 0, 'No obsolete order links or direct selection dialog openers');
+  assert.equal(await page.locator('#order, .order-section').count(), 0, 'Inline order section is removed');
+  assert.equal(await page.locator('#selection-form-slot > #order-form').count(), 1, 'Blade form permanently belongs to the selection dialog');
+  assert.equal(await page.locator('.selection-placeholder').count(), 2, 'Only the two guide pieces have placeholders');
   assert.match(await page.locator('.material-label').textContent(), /Пилы и станки/);
   assert.match(await page.locator('.production-media img').getAttribute('alt'), /IDEAL/);
   const magnetic = page.locator('[data-request-equipment="Магнитный сверлильный станок"]');
@@ -124,27 +150,32 @@ async function checkClientRevisions() {
   await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
   for (const [width,height] of [[1280,900],[768,900],[360,740],[320,568],[844,390]]) {
     await page.setViewportSize({width,height});
-    const opener = page.locator('.hero-actions [data-dialog="selection-dialog"]');
-    await opener.scrollIntoViewIfNeeded();
-    const before = await page.evaluate(() => scrollY);
-    await opener.click();
+    await page.locator('.hero-actions .button-outline').click();
+    await page.waitForFunction(() => location.hash === '#pitch-guide');
+    await page.waitForTimeout(500);
+    assert.equal(await page.locator('dialog[open]').count(), 0, 'Selection CTA navigates to the guide');
+    const {opener, before} = await openSelectionFromGuide();
     const dialog = page.locator('#selection-dialog');
-    await page.waitForFunction(() => document.querySelector('#selection-dialog').open);
     assert.match(await dialog.locator('#selection-title').textContent(), /Подобрать полотно/, 'Selection view model renders its heading');
     assert.match(await dialog.locator('.selection-guide > summary').textContent(), /Подобрать шаг зуба[\s\S]*Таблица для прутка и трубы/, 'Selection guide has its compact visible label');
-    assert.equal(await dialog.locator('#order-form').count(), 1, 'Shared blade form lives inside selection');
+    assert.equal(await dialog.locator('.selection-guide').evaluate(element => element.open), false, 'Reference guide starts collapsed');
+    assert.equal(await dialog.locator('#selection-pitch-slot > .pitch-card').count(), 1, 'Live pitch card moves into the dialog');
+    assert.equal(await dialog.locator('#selection-pitch-slot > .pitch-break-in').count(), 1, 'Break-in reference moves with the pitch card');
+    assert.equal(await dialog.locator('#selection-form-slot > #order-form').count(), 1, 'Blade form stays in its permanent dialog slot');
     assert.equal(await page.locator('#order-form').count(), 1, 'No duplicate form identifiers');
+    assert.equal(await dialog.locator('[name="tpi"]').inputValue(), '5/8 TPI', 'Page guide choice opens a prefilled application');
+    assert.match(await dialog.locator('#order-comment').inputValue(), /Пруток.*60.*5\/8/);
     assert.equal(await dialog.locator('#order-email').isVisible(), true);
+    await dialog.locator('#order-email').fill('draft@example.com');
     await dialog.locator('#order-comment').fill('QA preserved selection comment');
     const tableDetails = dialog.locator('details').filter({has: page.locator('#pitch-tab-rod')}).first();
     await tableDetails.evaluate(element => { element.open = true; });
-    await dialog.locator('#pitch-tab-rod').click();
-    await dialog.locator('#pitch-rod-diameter').fill('60');
-    await dialog.locator('#pitch-panel-rod .pitch-find').click();
+    assert.equal(await dialog.locator('#pitch-panel-rod .pitch-choice').count(), 3, 'Guide choices remain live after moving into the dialog');
     await dialog.locator('#pitch-panel-rod .pitch-choice').filter({hasText:'5/8'}).click();
     assert.equal(await dialog.locator('[name="tpi"]').inputValue(), '5/8 TPI');
     assert.match(await dialog.locator('#order-comment').inputValue(), /QA preserved selection comment/);
     assert.match(await dialog.locator('#order-comment').inputValue(), /Пруток.*60.*5\/8/);
+    assert.equal(await dialog.locator('.selection-guide').evaluate(element => element.open), false, 'Choosing another pitch collapses the reference');
     assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).overflow), 'hidden');
     const geometry = await dialog.boundingBox();
     assert.ok(geometry.y >= -1 && geometry.y + geometry.height <= height + 1, `${width}x${height}: selection fits viewport`);
@@ -152,12 +183,29 @@ async function checkClientRevisions() {
     await page.screenshot({path:resolve(qaRoot,`selection-${width}-${height}.png`),animations:'disabled'});
     await page.keyboard.press('Escape');
     await page.waitForFunction(() => !document.documentElement.classList.contains('scroll-locked'));
-    assert.equal(await page.locator('#order #order-form').count(), 1, 'Form returns to inline section');
+    assert.equal(await page.locator('#selection-form-slot > #order-form').count(), 1, 'Closing selection keeps the form in its dialog');
     assert.equal(await page.locator('#pitch-guide .pitch-card').count(), 1, 'Guide returns to standalone section');
+    assert.equal(await page.locator('#pitch-guide .pitch-break-in').count(), 1, 'Break-in reference returns to standalone section');
+    assert.equal(await page.locator('.selection-placeholder:not([hidden])').count(), 0, 'Guide placeholders are hidden after restoration');
     assert.ok(Math.abs(await page.evaluate(() => scrollY)-before) <= 1, 'Selection restores page position');
-    assert.equal(await opener.evaluate(el => document.activeElement === el), true, 'Selection returns focus to opener');
+    assert.equal(await opener.evaluate(el => document.activeElement === el), true, 'Selection returns focus to its restored pitch choice');
+    await opener.click();
+    await page.waitForFunction(() => document.querySelector('#selection-dialog').open);
+    assert.equal(await dialog.locator('#order-email').inputValue(), 'draft@example.com', 'Email draft survives closing and reopening selection');
+    assert.match(await dialog.locator('#order-comment').inputValue(), /QA preserved selection comment/, 'User comment survives reopening');
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.documentElement.classList.contains('scroll-locked'));
   }
-  console.log('PASS client revisions: hero, IDEAL, magnetic request, shared selection guide/TPI, drafts, scroll/focus at five viewport sizes; no submissions');
+  await page.setViewportSize({width:1280,height:900});
+  await page.locator('#benefit-tab-3').click();
+  await page.locator('#benefit-panel-3 a[href="#pitch-guide"]').click();
+  assert.equal(await page.locator('dialog[open]').count(), 0, 'Benefits CTA navigates without opening a dialog');
+  await page.locator('[data-dialog="production-details"]').first().click();
+  await page.waitForFunction(() => document.querySelector('#production-details').open);
+  await page.locator('#production-details a[href="#pitch-guide"]').click();
+  await page.waitForFunction(() => !document.documentElement.classList.contains('scroll-locked') && location.hash === '#pitch-guide' && document.activeElement.id === 'pitch-guide');
+  assert.equal(await page.locator('dialog[open]').count(), 0, 'Production CTA closes the popup and navigates to the guide');
+  console.log('PASS client revisions: header email, guide navigation, IDEAL, magnetic request, permanent selection form/TPI, drafts, scroll/focus at five viewport sizes; no submissions');
 }
 
 async function checkDelayedPitchModule() {
@@ -167,28 +215,40 @@ async function checkDelayedPitchModule() {
   await page.route('**/scripts/pitch-guide.js*', handler);
   try {
     await page.goto(base.href, {waitUntil:'commit'});
-    // Core may queue footer classic scripts behind a deferred module. Exercise early
-    // selection when available, otherwise release the module before the queued UI.
-    const early = await page.waitForFunction(() => document.querySelectorAll('.selection-placeholder').length === 3, null, {timeout:1500}).then(() => true, () => false);
+    // Core may queue footer classic scripts behind a deferred module. When the UI
+    // is available early, the CTA must still navigate without opening the form.
+    const early = await page.waitForFunction(() => document.querySelectorAll('.selection-placeholder').length === 2, null, {timeout:1500}).then(() => true, () => false);
     if (early) {
-      await page.locator('.hero-actions [data-dialog="selection-dialog"]').click();
-      assert.equal(await page.locator('#selection-dialog .pitch-card').count(), 1);
+      await dismissCookies();
+      await page.locator('.hero-actions .button-outline').click();
+      await page.waitForFunction(() => location.hash === '#pitch-guide');
+      assert.equal(await page.locator('dialog[open]').count(), 0, 'Delayed guide CTA does not open the application');
+      assert.equal(await page.locator('#pitch-guide .pitch-card').count(), 1);
     }
     releaseModule();
     await page.waitForLoadState('domcontentloaded');
-    if (!early) await page.locator('.hero-actions [data-dialog="selection-dialog"]').click();
+    await dismissCookies();
+    if (!early) await page.locator('.hero-actions .button-outline').click();
     await page.waitForFunction(() => document.querySelector('#pitch-guide').classList.contains('is-ready'));
+    await page.locator('#pitch-guide #pitch-tab-pipe').click();
+    await page.locator('#pitch-pipe-diameter').fill('100');
+    await page.locator('#pitch-pipe-wall').fill('4');
+    await page.locator('#pitch-panel-pipe .pitch-find').click();
+    await page.locator('#pitch-panel-pipe .pitch-choice').click();
+    await page.waitForFunction(() => document.querySelector('#selection-dialog').open);
     const dialog = page.locator('#selection-dialog');
+    assert.equal(await dialog.locator('[name="tpi"]').inputValue(), '6/10 TPI', 'Delayed module choice opens and fills the application');
+    assert.equal(await dialog.locator('#selection-form-slot > #order-form').count(), 1);
     await dialog.locator('.selection-guide').evaluate(el => {el.open=true;});
-    await dialog.locator('#pitch-tab-pipe').click();
-    await dialog.locator('#pitch-pipe-diameter').fill('100');
-    await dialog.locator('#pitch-pipe-wall').fill('4');
+    await dialog.locator('#pitch-pipe-wall').fill('2');
     await dialog.locator('#pitch-panel-pipe .pitch-find').click();
     await dialog.locator('#pitch-panel-pipe .pitch-choice').click();
-    assert.equal(await dialog.locator('[name="tpi"]').inputValue(), '6/10 TPI', 'Delayed module initializes guide moved into selection');
+    assert.equal(await dialog.locator('[name="tpi"]').inputValue(), '10/14 TPI', 'Delayed module remains interactive after the guide moves into selection');
     await page.keyboard.press('Escape');
     await page.waitForFunction(() => !document.documentElement.classList.contains('scroll-locked'));
-    console.log(`PASS delayed WordPress pitch module (${early ? 'early selection' : 'core deferred queue'}): pipe lookup and TPI transfer; no submissions`);
+    assert.equal(await page.locator('#pitch-guide .pitch-card').count(), 1);
+    assert.equal(await page.locator('#selection-form-slot > #order-form').count(), 1);
+    console.log(`PASS delayed WordPress pitch module (${early ? 'early guide navigation' : 'core deferred queue'}): pipe lookup, application opening and moved guide TPI transfer; no submissions`);
   } finally {
     releaseModule();
     await page.unroute('**/scripts/pitch-guide.js*', handler);
@@ -273,7 +333,9 @@ try {
   // Only local field validation: no submit event and no final valid form.
   await page.goto(base.href, { waitUntil: 'networkidle' });
   await page.setViewportSize({ width: 360, height: 900 });
+  await dismissCookies();
   assert.equal(await page.evaluate(() => window.OmegaTheme?.request?.endpoint), '', 'Default transport endpoint is explicitly disabled');
+  await openSelectionFromGuide();
   await page.locator('#order-email').fill('invalid');
   await page.locator('#order-phone').focus();
   assert.equal(await page.locator('#order-email').getAttribute('aria-invalid'), 'true');
@@ -281,6 +343,10 @@ try {
   await page.locator('#order-phone').fill('8 (999) 123-45-67');
   assert.equal(await page.locator('#order-phone').inputValue(), '+7 (999) 123-45-67');
   assert.equal(await page.locator('#order-consent').isChecked(), false);
+  await page.locator('#order-width').fill('27');
+  await page.locator('#order-comment').fill('QA local context only');
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => !document.documentElement.classList.contains('scroll-locked'));
 
   await page.evaluate(() => scrollTo({ top: 500, behavior: 'instant' }));
   const before = await page.evaluate(() => ({ y: scrollY, header: document.querySelector('.site-header').getBoundingClientRect().toJSON() }));
@@ -297,8 +363,6 @@ try {
   assert.ok(bounds.y >= 0 && bounds.y + bounds.height <= 901, 'Request dialog fits phone viewport');
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !document.body.classList.contains('dialog-open'));
-  await page.locator('#order-width').fill('27');
-  await page.locator('#order-comment').fill('QA local context only');
   await page.locator('[data-request-equipment="Автоматический ленточнопильный станок"]').click();
   await page.waitForFunction(() => document.querySelector('#request-dialog').open);
   assert.match(await page.locator('#request-title').textContent(), /Подбор станка/);
@@ -329,9 +393,13 @@ try {
   await page.locator('#pitch-pipe-wall').fill('2');
   await page.locator('#pitch-panel-pipe .pitch-find').click();
   await page.locator('#pitch-panel-pipe .pitch-choice').click();
+  await page.waitForFunction(() => document.querySelector('#selection-dialog').open);
   assert.equal(await page.locator('#order-form [name="tpi"]').inputValue(), '10/14 TPI');
+  assert.match(await page.locator('#order-comment').inputValue(), /QA local context only/, 'Pitch selection preserves the application draft');
   assert.match(await page.locator('#order-comment').inputValue(), /Труба Ø 90 мм, стенка 2 мм; диаграмма LENOX/);
   assert.equal(await page.locator('.pitch-bahco-table tbody td').count(), 350);
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => !document.documentElement.classList.contains('scroll-locked'));
 
   const legalPages = runPHP('legal-pages');
   runPHP('contracts');

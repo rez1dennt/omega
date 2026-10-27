@@ -232,13 +232,6 @@
     "image_1_alt": "Стальные ленточные полотна крупным планом"
   },
   "order": {
-    "eyebrow_1": "ПОДБОР ПОД ВАШЕ ОБОРУДОВАНИЕ",
-    "heading_1": "Какое полотно",
-    "heading_2": "нужно вашему",
-    "heading_3": "станку?",
-    "label_1": "—",
-    "paragraph_1": "Укажите параметры полотна и контакты — подберем решение, рассчитаем стоимость и свяжемся с вами.",
-    "label_2": "Таблица подбора шага зуба",
     "label_3": "Ширина, мм",
     "label_4": "Длина, мм",
     "label_5": "Шаг зуба / TPI",
@@ -259,7 +252,6 @@
     "label_20": "Политика обработки данных",
     "label_21": "Не заполняйте это поле",
     "label_22": "Отправить заявку",
-    "image_1": "assets/images/bandsaw.webp",
     "order_32c5d8_attribute_003": "27",
     "order_32c5d8_attribute_004": "2450",
     "order_32c5d8_attribute_005": "Шаг зуба / TPI",
@@ -270,7 +262,6 @@
     "order_32c5d8_attribute_028": "Как к вам обращаться",
     "order_32c5d8_text_029": "Для оформления заказа позвоните",
     "order_32c5d8_text_030": "или напишите",
-    "image_1_alt": "",
     "tpi_help": "Нужна помощь с подбором"
   },
   "production": {
@@ -466,11 +457,6 @@
       "symbol": "play",
       "image": 0
     },
-    "order_c79a08_icon_001": {
-      "mode": "builtin",
-      "symbol": "arrow",
-      "image": 0
-    },
     "production_3ae01a_icon_001": {
       "mode": "builtin",
       "symbol": "shield",
@@ -533,7 +519,7 @@
     },
     "layout_header_8cc6bb_icon_008": {
       "mode": "builtin",
-      "symbol": "phone",
+      "symbol": "mail",
       "image": 0
     },
     "menu_open": {
@@ -564,7 +550,7 @@
       "new_tab": true
     },
     "overlays_29512b_link_006": {
-      "target": "#selection-dialog",
+      "target": "#pitch-guide",
       "url": "",
       "new_tab": false
     },
@@ -579,7 +565,7 @@
       "new_tab": false
     },
     "advantages_5ba160_link_011": {
-      "target": "#selection-dialog",
+      "target": "#pitch-guide",
       "url": "",
       "new_tab": false
     },
@@ -639,16 +625,11 @@
       "new_tab": false
     },
     "hero_d4bd32_link_005": {
-      "target": "#selection-dialog",
+      "target": "#pitch-guide",
       "url": "",
       "new_tab": false
     },
     "hero_d4bd32_link_006": {
-      "target": "#order",
-      "url": "",
-      "new_tab": false
-    },
-    "order_c79a08_link_002": {
       "target": "#pitch-guide",
       "url": "",
       "new_tab": false
@@ -664,7 +645,7 @@
       "new_tab": false
     },
     "layout_footer_0e84c0_link_002": {
-      "target": "#order",
+      "target": "#pitch-guide",
       "url": "",
       "new_tab": false
     },
@@ -694,7 +675,7 @@
       "new_tab": false
     },
     "layout_header_8cc6bb_link_010": {
-      "target": "#order",
+      "target": "#pitch-guide",
       "url": "",
       "new_tab": false
     },
@@ -759,14 +740,6 @@
     "hero-wave": {
       "visible": true,
       "image": "plugin:assets/defaults/decor-hero-wave.png"
-    },
-    "order-lines": {
-      "visible": true,
-      "image": "plugin:assets/defaults/decor-order-lines.png"
-    },
-    "order-wave": {
-      "visible": true,
-      "image": "plugin:assets/defaults/decor-order-wave.png"
     },
     "production-lines": {
       "visible": true,

@@ -72,13 +72,13 @@ document.addEventListener('site:pitch-select',event=>{
   if(next.length>comment.maxLength) {
     event.preventDefault();
     status.textContent='Подбор не добавлен: сократите комментарий, чтобы в нём поместились размеры заготовки. Ваш текст и прежний шаг сохранены.';status.hidden=false;
-    comment.focus({preventScroll:true});
-    if(!inSelection)document.querySelector('#order').scrollIntoView({behavior:'instant',block:'start'});return;
+    if(!inSelection)openDialog(document.querySelector('#selection-dialog'), event.detail.opener || document.activeElement);
+    comment.focus({preventScroll:true});comment.scrollIntoView({block:'nearest',behavior:'instant'});return;
   }
   selectOption(index);
   comment.value=next;
   orderForm.dispatchEvent(new Event('input',{bubbles:true}));
-  if(!inSelection)document.querySelector('#order').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+  if(!inSelection)openDialog(document.querySelector('#selection-dialog'), event.detail.opener || document.activeElement);
 });
 
 trigger.addEventListener('click', () => listbox.hidden ? openDropdown() : closeDropdown());

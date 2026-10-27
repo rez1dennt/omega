@@ -34,6 +34,7 @@
     "verify:pipe-continuous": "node scripts/pipe-continuous-check.mjs",
     "verify:pitch-validation": "node scripts/pitch-validation-check.mjs",
     "verify:revisions-oct26": "node scripts/oct26-revisions-check.mjs",
-    "build:wordpress-plugin": "node scripts/build-wordpress-theme.mjs --plugin"
+    "build:wordpress-plugin": "node scripts/build-wordpress-theme.mjs --plugin",
+    "verify:pitch-navigation": "node scripts/oct27-pitch-navigation-check.mjs"
   }
 }

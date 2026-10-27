@@ -132,7 +132,7 @@ function omega_site_settings_admin_assets(): void {
 add_action( 'admin_enqueue_scripts', 'omega_site_settings_admin_assets' );
 
 function omega_site_settings_icon_names(): array {
-    return array( 'arrow' => 'Стрелка', 'chevron' => 'Раскрытие списка', 'phone' => 'Телефон', 'shield' => 'Щит', 'check' => 'Галочка', 'play' => 'Воспроизведение', 'lock' => 'Защита данных', 'pin' => 'Метка карты', 'close' => 'Закрытие окна', 'menu' => 'Меню' );
+    return array( 'arrow' => 'Стрелка', 'chevron' => 'Раскрытие списка', 'phone' => 'Телефон', 'mail' => 'Почта', 'shield' => 'Щит', 'check' => 'Галочка', 'play' => 'Воспроизведение', 'lock' => 'Защита данных', 'pin' => 'Метка карты', 'close' => 'Закрытие окна', 'menu' => 'Меню' );
 }
 
 function omega_site_settings_icon_preview( array $field ): void {

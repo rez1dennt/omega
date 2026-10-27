@@ -77,7 +77,13 @@ try {
 
   assert.equal(await page.locator('#machines,[data-machine]').count(), 0, 'Brand section is removed');
   assert.equal(await page.locator('a[href="#machines"]').count(), 0, 'No navigation points to the removed section');
+  await page.locator('#pitch-rod-diameter').fill('60');
+  await page.locator('#pitch-panel-rod .pitch-find').click();
+  await page.locator('#pitch-panel-rod .pitch-choice').first().click();
+  await page.waitForFunction(() => document.querySelector('#selection-dialog').open);
   await page.locator('#order-form textarea').fill('Материал: сталь');
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => !document.documentElement.classList.contains('scroll-locked'));
   await page.locator('.delivery-terms').click();
   assert.equal(await page.locator('#delivery-details').evaluate(dialog => dialog.open), true);
   assert.match(await page.locator('#delivery-details').textContent(), /каждую среду/);

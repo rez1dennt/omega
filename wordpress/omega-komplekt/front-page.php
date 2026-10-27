@@ -4,7 +4,7 @@ get_header();
 ?>
 <main id="main">
 <?php
-$omega_sections = array( 'hero', 'advantages', 'production', 'pitch-guide', 'order', 'equipment', 'delivery', 'contacts' );
+$omega_sections = array( 'hero', 'advantages', 'production', 'pitch-guide', 'equipment', 'delivery', 'contacts' );
 foreach ( $omega_sections as $omega_section ) {
     $omega_content = omega_theme_content( $omega_section );
     do_action( 'omega_theme_before_section', $omega_section, $omega_content );

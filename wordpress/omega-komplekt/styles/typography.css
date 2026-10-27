@@ -195,7 +195,7 @@ h2 { font-size: var(--text-heading); line-height: var(--leading-heading); letter
   .brand { gap: 10px; }
   .header-phone { font-size: 0; }
   .header-phones .header-phone { min-width: var(--control-height-small); min-height: var(--control-height-small); justify-content: center; gap: 0; }
-  .header-phones .header-phone-office { display: none; }
+  .header-phones .header-email { display: none; }
   .hero-copy { width: 100%; padding-top: 124px; padding-bottom: 0; }
   .hero h1 { letter-spacing: -.04em; line-height: 1.04; }
   .hero .eyebrow { letter-spacing: .2em; }
@@ -314,3 +314,5 @@ h2 { font-size: var(--text-heading); line-height: var(--leading-heading); letter
   .hero-actions .button .icon { width: var(--pitch-gap); height: var(--pitch-gap); }
   .production { --production-photo-height: 25rem; }
 }
+
+.nav-email { overflow-wrap: anywhere; font-size: var(--text-small); }

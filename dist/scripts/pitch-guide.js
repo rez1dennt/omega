@@ -23,7 +23,7 @@ pitchTabs.forEach((tab,index)=>{
 function clearPitchResult(panel) {
   panel.querySelector('.pitch-choices').replaceChildren();
   panel.querySelector('.pitch-status').textContent=panel.id==='pitch-panel-pipe'?'Укажите диаметр и стенку — покажем рекомендуемый шаг.':'Укажите размеры — покажем значения из таблицы.';
-  panel.querySelector('.pitch-result-note').textContent=panel.id==='pitch-panel-pipe'?'Биметаллическое полотно · стенка от 1,25 до 50 мм. Шаг по диаграмме LENOX.':'Выбранный шаг можно добавить в форму ниже.';
+  panel.querySelector('.pitch-result-note').textContent=panel.id==='pitch-panel-pipe'?'Биметаллическое полотно · стенка от 1,25 до 50 мм. Шаг по диаграмме LENOX.':'Выбранный шаг можно добавить в заявку.';
   panel.querySelectorAll('.is-match').forEach(cell=>cell.classList.remove('is-match'));
   panel.querySelectorAll('input[aria-invalid]').forEach(input=>input.removeAttribute('aria-invalid'));
   panel.querySelectorAll('.pitch-field-error').forEach(error=>{error.hidden=true;error.textContent='';});
@@ -55,8 +55,8 @@ function addPitchChoice(panel,pitch,description,parameters) {
   const use=document.createElementNS('http://www.w3.org/2000/svg','use');use.setAttribute('href','#i-arrow');arrow.append(use);action.append(arrow);
   button.append(value,unit,caption,action);
   button.addEventListener('click',()=>{
-    const transferred=document.dispatchEvent(new CustomEvent('site:pitch-select',{cancelable:true,detail:{tpi:`${pitch} TPI`,parameters:`${parameters}; шаг ${pitch} TPI`}}));
-    panel.querySelector('.pitch-status').textContent=transferred?`Шаг ${pitch} TPI добавлен в форму заявки ниже.`:'Подбор не добавлен: сократите комментарий в форме и попробуйте ещё раз. Прежние данные сохранены.';
+    const transferred=document.dispatchEvent(new CustomEvent('site:pitch-select',{cancelable:true,detail:{opener:button,tpi:`${pitch} TPI`,parameters:`${parameters}; шаг ${pitch} TPI`}}));
+    panel.querySelector('.pitch-status').textContent=transferred?`Шаг ${pitch} TPI добавлен в форму заявки.`:'Подбор не добавлен: сократите комментарий в форме и попробуйте ещё раз. Прежние данные сохранены.';
   });
   panel.querySelector('.pitch-choices').append(button);
 }
