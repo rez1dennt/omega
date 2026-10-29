@@ -142,7 +142,7 @@ function prepareRequest(opener, forceTransfer = false) {
   document.querySelector('#request-intro').textContent = equipment
     ? 'Расскажите о задаче и оставьте контакты — обсудим подходящее оборудование.' : requestCopy.intro;
   document.querySelector('#request-parameters-help').textContent = equipment
-    ? kind === 'roller' ? 'Укажите длину и вес заготовок, нужную длину рольганга и модель станка, если он уже есть.' : 'Укажите материал, сечение заготовки и объём работ. Модель, комплектацию и стоимость уточним при подборе.'
+    ? kind === 'roller' ? 'Укажите длину и вес заготовок, нужную длину рольганга и модель станка, если он уже есть.' : 'Расскажите о ваших технических задачах — поможем подобрать оборудование.'
     : requestCopy.help;
   requestForm.elements.parameters.placeholder = equipment
     ? 'Опишите заготовку и задачу для оборудования' : requestCopy.placeholder;
