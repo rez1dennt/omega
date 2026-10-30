@@ -40,16 +40,17 @@ export function lookupPipe(diameter, wall, adjacent = false) {
 
 
 export function recommendPipe(diameter,wall,adjacent=false) {
-  const base={diameter,wall,adjacent,source:lenoxSource,pitches:[]};
-  if(![diameter,wall].every(n=>Number.isFinite(n)&&n>0))return {...base,state:'invalid',reason:'dimension'};
-  if(wall>=diameter/2)return {...base,state:'invalid',reason:'geometry'};
-  if(wall<lenoxSource.minWall||wall>lenoxSource.maxWall)return {...base,state:'outside',reason:'wall-range'};
-  const upper=lenoxWallAxis.findIndex(([value])=>value>=wall);
-  const [a,b]=upper===0?[lenoxWallAxis[0],lenoxWallAxis[0]]:[lenoxWallAxis[upper-1],lenoxWallAxis[upper]];
-  const x=a[0]===b[0]?a[1]:a[1]+(wall-a[0])/(b[0]-a[0])*(b[1]-a[1]);
-  const groups=lenoxPitchBands.flatMap((band,index)=>x>=band.from-5&&x<=band.to+5?[index]:[]);
-  // The same page directs bundled material to one coarser pitch group.
-  if(adjacent&&groups.some(index=>index===lenoxPitchBands.length-1))return {...base,state:'outside',reason:'bundle-range'};
-  const selected=[...new Set(groups.map(index=>index+(adjacent?1:0)))];
-  return {...base,state:'recommendation',nearBoundary:groups.length>1,bandIndexes:selected,pitches:[...new Set(selected.flatMap(index=>lenoxPitchBands[index].pitches))]};
+  const effectiveWall=adjacent?wall*2:wall;
+  const base={diameter,wall,adjacent,effectiveWall,choices:[]};
+  if(![diameter,wall,effectiveWall].every(n=>Number.isFinite(n)&&n>0)) return {...base,state:'invalid',reason:'dimension'};
+  if(wall>=diameter/2) return {...base,state:'invalid',reason:'geometry'};
+  function bounds(axis,value) {
+    const i=axis.findIndex(n=>n>=value);
+    if(i<0 || (i===0 && axis[0]!==value)) return [];
+    return axis[i]===value?[i]:[i-1,i];
+  }
+  const rows=bounds(pipeWalls,effectiveWall),columns=bounds(pipeDiameters,diameter);
+  if(!rows.length||!columns.length) return {...base,state:'outside'};
+  const choices=rows.flatMap(row=>columns.map(column=>({row,column,diameter:pipeDiameters[column],wall:pipeWalls[row],pitch:pipePitches[row][column]||null})));
+  return {...base,state:!choices.some(choice=>choice.pitch)?'missing':rows.length===1&&columns.length===1?'match':'nearby',choices};
 }

@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 $ui = omega_theme_pitch_ui();
 $pitch_data = omega_theme_pitch_data();
-$method_values = array( 'source' => $pitch_data['lenoxSource']['name'], 'min_wall' => str_replace( '.', ',', (string) $pitch_data['lenoxSource']['minWall'] ), 'max_wall' => str_replace( '.', ',', (string) $pitch_data['lenoxSource']['maxWall'] ) );
+$method_values = array();
 $text = static function ( string $key, array $values = array() ) use ( $ui, $method_values ): string {
     $replacements = array();
     foreach ( array_merge( $method_values, $values ) as $name => $value ) {
@@ -30,8 +30,8 @@ $number = static function ( $value ): string { return str_replace( '.', ',', (st
                 <div class="pitch-field"><label for="pitch-pipe-diameter"><?php echo esc_html( $text( 'label_6' ) ); ?></label><input id="pitch-pipe-diameter" type="text" inputmode="decimal" maxlength="9" autocomplete="off" placeholder="<?php echo esc_attr( $text( 'diameter_placeholder' ) ); ?>" aria-describedby="pitch-pipe-diameter-error"><p id="pitch-pipe-diameter-error" class="pitch-field-error" hidden></p></div>
                 <div class="pitch-field"><label for="pitch-pipe-wall"><?php echo esc_html( $text( 'label_7' ) ); ?></label><input id="pitch-pipe-wall" type="text" inputmode="decimal" maxlength="9" autocomplete="off" placeholder="<?php echo esc_attr( $text( 'wall_placeholder' ) ); ?>" aria-describedby="pitch-pipe-wall-error"><p id="pitch-pipe-wall-error" class="pitch-field-error" hidden></p></div>
                 <label class="pitch-adjacent"><input id="pitch-pipe-adjacent" type="checkbox"><span><?php echo esc_html( $text( 'label_8' ) ); ?></span></label><button class="button pitch-find" type="button"><?php echo esc_html( $text( 'label_9' ) ); ?><?php echo omega_theme_icon( 'pitch_arrow', 'arrow' ); ?></button>
-            </div><div class="pitch-result"><p class="pitch-result-label"><?php echo esc_html( $text( 'paragraph_7' ) ); ?></p><p class="pitch-status" role="status" aria-live="polite"><?php echo esc_html( $text( 'paragraph_8' ) ); ?></p><div class="pitch-choices"></div><p class="pitch-result-note"><?php echo esc_html( $text( 'paragraph_9' ) ); ?></p></div></div>
-            <p class="pitch-overlap"><?php echo esc_html( $text( 'paragraph_10' ) ); ?></p>
+            </div><div class="pitch-result"><p class="pitch-result-label"><?php echo esc_html( $text( 'paragraph_7' ) ); ?></p><p class="pitch-status" role="status" aria-live="polite"><?php echo esc_html( $text( 'paragraph_8' ) ); ?></p><div class="pitch-choices"></div><p class="pitch-result-note"><?php echo esc_html( $text( 'omega_default_note' ) ); ?></p></div></div>
+            <p class="pitch-overlap"><?php echo esc_html( $text( 'omega_bundle_note' ) ); ?></p>
             <details class="pitch-reference"><summary><?php echo esc_html( $text( 'label_10' ) ); ?><?php echo omega_theme_icon( 'pitch_chevron', 'chevron' ); ?></summary><p class="pitch-scroll-hint"><?php echo esc_html( $text( 'paragraph_11' ) ); ?></p><div class="pitch-table-wrap pitch-pipe-scroll" role="region" tabindex="0" aria-label="<?php echo esc_attr( $text( 'pipe_region_label' ) ); ?>"><table class="pitch-pipe-table"><caption class="visually-hidden"><?php echo esc_html( $text( 'pipe_caption' ) ); ?></caption><thead><tr><th scope="col"><?php echo esc_html( $text( 'wall_column' ) ); ?></th>
                 <?php foreach ( $pitch_data['pipeDiameters'] as $diameter ) : ?><th scope="col"><?php echo esc_html( $number( $diameter ) ); ?></th><?php endforeach; ?>
             </tr></thead><tbody>

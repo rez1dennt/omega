@@ -85,3 +85,7 @@
   .pitch-table-wrap th, .pitch-table-wrap td { padding-inline: var(--pitch-half); }
 }
 @media (prefers-reduced-motion: reduce) { .pitch-tabs > button, .pitch-choice, .pitch-reference summary > .icon { transition: none; } }
+
+.pitch-consult { display: inline-flex; align-items: center; min-height: var(--pitch-control-height); margin-block-start: var(--pitch-half); padding: 0; border: 0; background: transparent; color: var(--color-white); text-decoration: underline; text-underline-offset: var(--pitch-quarter); font: inherit; cursor: pointer; }
+.pitch-consult:focus-visible { outline-color: var(--color-white); }
+.pitch-empty:hover { background: transparent; border-color: var(--color-muted-light); }

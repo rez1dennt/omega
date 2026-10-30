@@ -24,7 +24,7 @@
     "verify:mobile-overlays": "node scripts/mobile-overlays-check.mjs",
     "render:pitch": "node scripts/render-pitch-guide.mjs",
     "verify:pitch-data": "node scripts/pitch-data-check.mjs",
-    "verify:pitch": "node scripts/pitch-guide-check.mjs",
+    "verify:pitch": "node scripts/oct30-pitch-browser-check.mjs",
     "verify:client": "node scripts/client-revisions-check.mjs",
     "verify:pages": "node scripts/pages-check.mjs",
     "prepare:wordpress": "node scripts/wordpress-fixture.mjs prepare",

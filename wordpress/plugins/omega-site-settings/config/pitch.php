@@ -1130,6 +1130,22 @@ return array(
     'pitch_ui' => array(
         'title' => 'Подбор шага: тексты и подсказки',
         'fields' => array(
+            'omega_result_label' => array( 'type' => 'text', 'label' => 'Подбор трубы: заголовок результата', 'default' => 'ШАГ ПО ТАБЛИЦЕ' ),
+            'omega_method' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Описание метода', 'default' => 'Подбор по таблице «Омега Комплект» с учётом наружного диаметра и толщины стенки.' ),
+            'omega_default_note' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Подсказка до подбора', 'default' => 'Для точного размера покажем значение таблицы, для промежуточного — соседние ячейки.' ),
+            'omega_bundle_note' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Примечание о трубах в пакете', 'default' => 'Для труб в пакете используем удвоенную толщину стенки по примечанию к таблице.' ),
+            'omega_exact' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Подпись точного значения', 'default' => 'Значение по таблице «Омега Комплект».' ),
+            'omega_nearby' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Пояснение соседних значений', 'default' => 'В таблице нет точной ячейки: показаны соседние размеры и значения. Это ориентир, окончательный шаг уточнит специалист.' ),
+            'omega_missing' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Нет значения в ячейке', 'default' => 'В этой ячейке таблицы значение не указано. Обратитесь за консультацией.' ),
+            'omega_outside' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Размер вне таблицы', 'default' => 'Для этих размеров таблица не содержит соседних значений. Обратитесь за консультацией.' ),
+            'omega_consult' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Кнопка консультации', 'default' => 'Получить консультацию' ),
+            'omega_caption' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Подпись размеров ячейки', 'default' => 'Диаметр {diameter} мм · стенка {wall} мм' ),
+            'omega_status' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Строка введённых размеров', 'default' => '{description}. {bundle}' ),
+            'omega_bundle_status' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Пояснение расчётной стенки', 'default' => 'Для пакета учитываем стенку {effective_wall} мм.' ),
+            'omega_geometry' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Ошибка толщины стенки', 'default' => 'Толщина стенки должна быть меньше половины наружного диаметра.' ),
+            'omega_missing_cell' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Пустая ячейка таблицы', 'default' => 'В таблице не указано' ),
+            'omega_table' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Название таблицы', 'default' => 'Таблица «Омега Комплект»' ),
+            'omega_exact_note' => array( 'type' => 'textarea', 'label' => 'Подбор трубы: Пояснение точного результата', 'default' => 'Добавьте шаг в заявку или уточните подбор у специалиста.' ),
             'eyebrow_1' => array(
                 'type' => 'text',
                 'label' => 'Надзаголовок раздела',

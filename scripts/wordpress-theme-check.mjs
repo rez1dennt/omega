@@ -388,16 +388,16 @@ try {
   await page.locator('#pitch-pipe-diameter').fill('90');
   await page.locator('#pitch-pipe-wall').fill('4');
   await page.locator('#pitch-panel-pipe .pitch-find').click();
-  assert.match(await page.locator('#pitch-panel-pipe .pitch-status').innerText(), /LENOX/);
-  assert.equal(await page.locator('#pitch-panel-pipe .pitch-choice strong').innerText(), '6/10');
+  assert.deepEqual(await page.locator('#pitch-panel-pipe .pitch-choice strong').allTextContents(), ['8/12','8/12']);
+  assert.match(await page.locator('#pitch-panel-pipe .pitch-result-note').innerText(), /соседние размеры/);
   await page.locator('#pitch-pipe-wall').fill('2');
   await page.locator('#pitch-panel-pipe .pitch-find').click();
-  await page.locator('#pitch-panel-pipe .pitch-choice').click();
+  await page.locator('#pitch-panel-pipe .pitch-choice').first().click();
   await page.waitForFunction(() => document.querySelector('#selection-dialog').open);
-  assert.equal(await page.locator('#order-form [name="tpi"]').inputValue(), '10/14 TPI');
+  assert.equal(await page.locator('#order-form [name="tpi"]').inputValue(), '14 TPI');
   assert.match(await page.locator('#order-comment').inputValue(), /QA local context only/, 'Pitch selection preserves the application draft');
-  assert.match(await page.locator('#order-comment').inputValue(), /Труба Ø 90 мм, стенка 2 мм; диаграмма LENOX/);
-  assert.equal(await page.locator('.pitch-bahco-table tbody td').count(), 350);
+  assert.match(await page.locator('#order-comment').inputValue(), /Труба Ø 90 мм, стенка 2 мм/);
+  assert.equal(await page.locator('.pitch-bahco-table').count(), 0);
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !document.documentElement.classList.contains('scroll-locked'));
 
