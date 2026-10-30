@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Омега — Настройка сайта
  * Description: Редактируемый контент сайта, документы и справочники через ACF PRO.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Requires at least: 6.6
  * Requires PHP: 8.1
  * Text Domain: omega-site-settings
  */
 defined( 'ABSPATH' ) || exit;
 
-define( 'OMEGA_SITE_SETTINGS_VERSION', '1.1.0' );
+define( 'OMEGA_SITE_SETTINGS_VERSION', '1.1.1' );
 define( 'OMEGA_SITE_SETTINGS_FILE', __FILE__ );
 define( 'OMEGA_SITE_SETTINGS_DIR', __DIR__ );
 define( 'OMEGA_SITE_SETTINGS_URL', plugin_dir_url( __FILE__ ) );

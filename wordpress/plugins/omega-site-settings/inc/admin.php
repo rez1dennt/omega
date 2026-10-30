@@ -51,6 +51,35 @@ function omega_site_settings_body_class( string $classes ): string {
 }
 add_filter( 'admin_body_class', 'omega_site_settings_body_class' );
 
+/** Navigation groups do not alter the registered pages or their saved field keys. */
+function omega_site_settings_navigation_groups( array $schema ): array {
+    $groups = array(
+        'company'   => array( 'title' => 'Компания', 'sections' => array( 'company', 'branding', 'contacts' ) ),
+        'pages'     => array( 'title' => 'Страницы сайта', 'sections' => array( 'layout_header', 'hero', 'advantages', 'production', 'equipment', 'delivery', 'layout_footer' ) ),
+        'requests'  => array( 'title' => 'Заявки', 'sections' => array( 'request', 'order', 'selection', 'overlays' ) ),
+        'pitch'     => array( 'title' => 'Подбор шага', 'sections' => array( 'pitch_ui', 'pitch_omega' ) ),
+        'documents' => array( 'title' => 'Документы и cookie', 'sections' => array( 'document_privacy', 'document_consent', 'cookies' ) ),
+        'advanced'  => array( 'title' => 'Дополнительно', 'sections' => array( 'links', 'icons', 'decor', 'runtime', 'pitch_data', 'pitch_bahco', 'system' ) ),
+    );
+    $assigned = array();
+    foreach ( $groups as $key => &$group ) {
+        $group['sections'] = array_values( array_intersect( $group['sections'], array_keys( $schema ) ) );
+        $assigned = array_merge( $assigned, $group['sections'] );
+        if ( ! $group['sections'] ) {
+            unset( $groups[ $key ] );
+        }
+    }
+    unset( $group );
+    $remaining = array_diff( array_keys( $schema ), $assigned );
+    if ( $remaining ) {
+        if ( ! isset( $groups['advanced'] ) ) {
+            $groups['advanced'] = array( 'title' => 'Дополнительно', 'sections' => array() );
+        }
+        $groups['advanced']['sections'] = array_merge( $groups['advanced']['sections'], $remaining );
+    }
+    return $groups;
+}
+
 function omega_site_settings_admin_notice(): void {
     if ( ! current_user_can( 'manage_options' ) ) {
         return;
@@ -63,22 +92,42 @@ function omega_site_settings_admin_notice(): void {
     if ( ! $current ) {
         return;
     }
+    $schema = omega_site_settings_schema();
+    $groups = omega_site_settings_navigation_groups( $schema );
+    $current_group = '';
+    foreach ( $groups as $group_key => $group ) {
+        if ( in_array( $current, $group['sections'], true ) ) {
+            $current_group = $group_key;
+            break;
+        }
+    }
     ?>
     <div class="omega-settings-intro">
-        <nav class="nav-tab-wrapper omega-settings-nav" aria-label="Разделы настройки сайта">
-        <?php foreach ( omega_site_settings_schema() as $section => $definition ) : ?>
-            <a class="nav-tab<?php echo $current === $section ? ' nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=' . omega_site_settings_page_slug( $section ) ) ); ?>"<?php echo $current === $section ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $definition['title'] ?? $section ); ?></a>
-        <?php endforeach; ?>
+        <nav class="omega-settings-nav" aria-label="Навигация по настройкам сайта">
+            <p class="omega-nav-heading">Выберите, что хотите изменить</p>
+            <div class="omega-nav-groups" aria-label="Категории настроек">
+                <?php foreach ( $groups as $group_key => $group ) : ?>
+                    <a class="omega-nav-group<?php echo $current_group === $group_key ? ' is-active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=' . omega_site_settings_page_slug( $group['sections'][0] ) ) ); ?>"<?php echo $current_group === $group_key ? ' aria-current="true"' : ''; ?>><?php echo esc_html( $group['title'] ); ?></a>
+                <?php endforeach; ?>
+            </div>
+            <?php if ( isset( $groups[ $current_group ] ) ) : ?>
+                <div class="omega-nav-sections" aria-label="Разделы выбранной категории">
+                    <span class="omega-nav-sections-label"><?php echo esc_html( $groups[ $current_group ]['title'] ); ?>:</span>
+                    <?php foreach ( $groups[ $current_group ]['sections'] as $section ) : ?>
+                        <a class="omega-nav-section<?php echo $current === $section ? ' is-active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=' . omega_site_settings_page_slug( $section ) ) ); ?>"<?php echo $current === $section ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $schema[ $section ]['title'] ?? $section ); ?></a>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         </nav>
         <p>Редактируйте нужный раздел и нажмите «Сохранить раздел». Каждый раздел сохраняется отдельно. Изображения выбираются из медиатеки; пустое сохранённое поле остаётся пустым. <a href="<?php echo esc_url( home_url( '/' ) ); ?>" target="_blank" rel="noopener">Открыть сайт ↗</a></p>
         <details class="omega-settings-guide">
             <summary>Как изменять сайт</summary>
             <ol>
-                <li>Выберите вкладку: например, «Первый экран», «Оборудование» или «Контакты и карта».</li>
+                <li>Выберите категорию, затем нужный раздел: например, «Страницы сайта» → «Первый экран» или «Компания» → «Контакты и карта».</li>
                 <li>Измените текст в подписанном поле. Для фотографии нажмите на карандаш или «Добавить изображение» и выберите файл в медиатеке.</li>
-                <li>Нажмите «Сохранить раздел» справа и обновите открытую страницу сайта. Перед переходом в другую вкладку сохраните правки.</li>
+                <li>Нажмите «Сохранить раздел» справа и обновите открытую страницу сайта. Перед переходом в другой раздел сохраните правки.</li>
             </ol>
-            <p>Общие телефоны, почта и реквизиты меняются во вкладке «Компания и реквизиты». Иконки можно выбрать из готовых или заменить своим изображением. Тексты документов редактируются визуально, а таблицы — обычными ячейками. Поиск ниже найдёт поле в открытом разделе.</p>
+            <p>Общие телефоны, почта и реквизиты меняются в разделе «Компания и реквизиты». Иконки можно выбрать из готовых или заменить своим изображением. Тексты документов редактируются визуально, а таблицы — обычными ячейками. Поиск ниже найдёт поле в открытом разделе.</p>
         </details>
         <div class="omega-settings-search" role="search" aria-label="Поиск полей текущего раздела">
             <label for="omega-settings-search">Найти поле в этом разделе</label>
