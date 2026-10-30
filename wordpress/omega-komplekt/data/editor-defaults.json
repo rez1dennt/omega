@@ -856,8 +856,8 @@
     "layout_header_8cc6bb_text_024": "Оставить заявку"
   },
   "branding": {
-    "logo_light": "plugin:assets/defaults/logo-light.png",
-    "logo_dark": "plugin:assets/defaults/logo-dark.png",
+    "logo_light": "",
+    "logo_dark": "",
     "logo_alt": "ОМЕГА КОМПЛЕКТ",
     "favicon": "assets/favicon.svg",
     "tagline": "Ленточные пилы и комплектующие"

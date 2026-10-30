@@ -5944,12 +5944,14 @@
       "logo_light": {
         "label": "Логотип на тёмном фоне",
         "type": "image",
-        "default": "plugin:assets/defaults/logo-light.png"
+        "default": "",
+        "instructions": "Необязательно. Если файл не выбран, показывается название компании и фирменный знак."
       },
       "logo_dark": {
         "label": "Логотип на светлом фоне",
         "type": "image",
-        "default": "plugin:assets/defaults/logo-dark.png"
+        "default": "",
+        "instructions": "Необязательно. Если файл не выбран, показывается название компании и фирменный знак."
       },
       "logo_alt": {
         "label": "Название логотипа",

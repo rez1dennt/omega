@@ -57,11 +57,7 @@ function omega_theme_current_document(): string {
     return '';
 }
 
-/** First letter follows the client wordmark; custom brand text remains escaped. */
+/** Keep the editable company name readable in each logo. */
 function omega_theme_wordmark(): string {
-    $brand = omega_theme_contact( 'brand' );
-    if ( ! preg_match( '/^[ОO]МЕГА/u', $brand ) ) {
-        return esc_html( $brand );
-    }
-    return '<span class="visually-hidden">О</span><svg class="brand-omega" viewBox="0 0 40 34" aria-hidden="true" focusable="false"><path d="M1 33v-8h8C4 21 2 17 2 12 2 4 9 0 20 0s18 4 18 12c0 5-2 9-7 13h8v8H24V23c4-3 6-6 6-10 0-5-4-8-10-8S10 8 10 13c0 4 2 7 6 10v10Z" fill="currentColor"/></svg>' . esc_html( preg_replace( '/^[ОO]/u', '', $brand, 1 ) );
+    return esc_html( omega_theme_contact( 'brand' ) );
 }
